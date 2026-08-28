@@ -13,28 +13,28 @@ body{font-family:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;font-size:8
 .page{display:flex;flex-direction:column;min-height:297mm;padding:13mm 15mm 12mm;page-break-after:always;}
 .page:last-child{page-break-after:auto;}
 .page-body{flex:1 1 auto;}
-.foot{margin-top:auto;padding-top:3mm;border-top:0.5pt solid var(--line);font-size:6.6pt;letter-spacing:.03em;color:var(--grey);display:flex;justify-content:space-between;}
+.foot{margin-top:auto;padding-top:4.5mm;border-top:0.5pt solid var(--line);font-size:6.6pt;letter-spacing:.03em;color:var(--grey);display:flex;justify-content:space-between;}
 
 /* header */
-.brandbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2mm;}
+.brandbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:3mm;}
 .bl{display:flex;align-items:center;gap:2.4mm;}
 .bl img{height:7mm;width:auto;display:block;}
 .bl .wm{font-size:11.5pt;font-weight:700;letter-spacing:-.025em;color:#141414;}
 .br img{height:4.9mm;width:auto;display:block;}
 h1{font-size:16pt;font-weight:700;letter-spacing:-.018em;color:var(--navy);line-height:1.1;}
-.meta{margin-top:1.6mm;font-size:7.6pt;color:var(--grey);line-height:1.45;}
+.meta{margin-top:2mm;font-size:7.6pt;color:var(--grey);line-height:1.45;}
 .meta b{color:var(--ink);font-weight:600;}
-.rule{height:2pt;background:var(--navy);margin-top:2.4mm;position:relative;}
+.rule{height:2pt;background:var(--navy);margin-top:3.2mm;position:relative;}
 .rule::after{content:"";position:absolute;left:0;top:0;height:2pt;width:26%;background:var(--cyan);}
 
 /* sections */
-section{margin-top:3.4mm;}
-h2{font-size:10.5pt;font-weight:600;color:var(--navy);letter-spacing:-.012em;display:flex;align-items:center;gap:2.8mm;margin-bottom:2mm;}
+section{margin-top:4.6mm;}
+h2{font-size:10.5pt;font-weight:600;color:var(--navy);letter-spacing:-.012em;display:flex;align-items:center;gap:2.8mm;margin-bottom:3mm;}
 h2 .num{width:5mm;height:5mm;border-radius:1.4pt;background:var(--navy);color:#fff;font-size:7.4pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
-p{margin-bottom:1.6mm;}
+p{margin-bottom:2.2mm;}
 p:last-child{margin-bottom:0;}
-.lede{font-size:8.9pt;line-height:1.36;}
-.boundary{margin-top:1.4mm;padding:1.9mm 3.2mm;background:var(--wash);border-left:2pt solid var(--cyan);font-size:8.2pt;}
+.lede{font-size:8.9pt;line-height:1.44;}
+.boundary{margin-top:2mm;padding:1.9mm 3.2mm;background:var(--wash);border-left:2pt solid var(--cyan);font-size:8.2pt;}
 .boundary b{color:var(--navy);font-weight:600;}
 figure{margin:0;}figure svg{display:block;width:100%;height:auto;}
 
@@ -62,7 +62,7 @@ li::before{content:"";position:absolute;left:0;top:1.5mm;width:1.5mm;height:1.5m
 .wide .card-h .n{background:var(--cyan);}
 .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:6.5mm;}
 .changes{margin-top:3mm;}
-.changes .lbl{margin-bottom:2mm;}
+.changes .lbl{margin-bottom:3mm;}
 .ch-cols{display:grid;grid-template-columns:repeat(3,1fr);}
 .ch-cols>div{display:flex;flex-direction:column;padding:0 4.2mm;border-left:0.6pt solid var(--line);}
 .ch-cols>div:first-child{padding-left:0;border-left:none;}
@@ -70,7 +70,13 @@ li::before{content:"";position:absolute;left:0;top:1.5mm;width:1.5mm;height:1.5m
 .ch-h{font-size:8.6pt;font-weight:600;color:var(--navy);margin-bottom:1.2mm;line-height:1.2;}
 .ch-p{font-size:7.4pt;color:var(--ink);line-height:1.4;}
 .ch-o{font-size:7.4pt;font-weight:600;color:var(--navy);line-height:1.35;margin-top:auto;padding-top:2.4mm;border-top:0.6pt solid var(--line);}
-.legend{font-size:7pt;color:var(--grey);margin-top:1.2mm;}
+.legend{font-size:7pt;color:var(--grey);margin-top:1.8mm;display:flex;gap:7mm;align-items:center;}
+.key{display:inline-flex;align-items:center;gap:1.5mm;}
+.key i{width:1.7mm;height:1.7mm;border-radius:50%;display:inline-block;flex:0 0 auto;}
+.kr{background:#00AEEF;}
+.kw{background:#FBAD18;}
+.ks{background:var(--navy);border-radius:0.5mm;}
+.dnote{font-size:7.4pt;color:var(--ink);margin-top:2.2mm;line-height:1.45;}
 .viability{margin-top:5.5mm;font-size:7.6pt;color:var(--grey);}
 .viability b{color:var(--navy);font-weight:600;}
 
@@ -141,125 +147,82 @@ td.k{font-weight:600;color:var(--navy);}
     <div class="boundary"><b>Starting point:</b> North America, banking and healthcare, one SDR, through to SAL. Extendable to further verticals once the model is proven.</div>
   </section>
 
-  <section><h2><span class="num">2</span>Current sales motion</h2><figure><svg viewBox="0 0 720 186" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Current sales motion across marketing campaign, SDR outreach and AE fit call stages">
-        <defs><marker id="m1" markerWidth="7.5" markerHeight="7.5" refX="6" refY="2.8" orient="auto">
-            <path d="M0,0 L6,2.8 L0,5.6 z" fill="#7A8A9B"/>
-          </marker><marker id="m1d" markerWidth="7.5" markerHeight="7.5" refX="6" refY="2.8" orient="auto">
-            <path d="M0,0 L6,2.8 L0,5.6 z" fill="#A9B6C4"/>
-          </marker></defs>
-        <g font-family="Inter, Helvetica, Arial, sans-serif">
-          <rect x="44" y="0" width="676" height="54" rx="4" fill="#F6FAFE"/><rect x="44" y="64" width="676" height="48" rx="4" fill="#F6FAFE"/><rect x="44" y="122" width="676" height="48" rx="4" fill="#F6FAFE"/>
-          <g fill="#003C77" font-size="6.8" font-weight="700" letter-spacing="1.15" text-anchor="middle">
-          <rect x="0" y="0" width="38" height="54" rx="3" fill="#DCE9F7"/>
-          <text x="14" y="27" transform="rotate(-90 14 27)">MARKETING</text><text x="26" y="27" transform="rotate(-90 26 27)">CAMPAIGN</text>
-          <rect x="0" y="64" width="38" height="48" rx="3" fill="#DCE9F7"/>
-          <text x="14" y="88" transform="rotate(-90 14 88)">SDR</text><text x="26" y="88" transform="rotate(-90 26 88)">OUTREACH</text>
-          <rect x="0" y="122" width="38" height="48" rx="3" fill="#DCE9F7"/>
-          <text x="14" y="146" transform="rotate(-90 14 146)">AE</text><text x="26" y="146" transform="rotate(-90 26 146)">FIT CALL</text>
-          </g>
-          <g fill="#FFFFFF" stroke="#C6D3E1" stroke-width="0.9">
-            <rect x="64" y="16" width="198" height="30" rx="3"/><rect x="283" y="16" width="198" height="30" rx="3"/><rect x="502" y="16" width="198" height="30" rx="3"/>
-            <rect x="64" y="73" width="144" height="30" rx="3"/><rect x="228" y="73" width="144" height="30" rx="3"/><rect x="392" y="73" width="144" height="30" rx="3"/><rect x="556" y="73" width="144" height="30" rx="3"/>
-            <rect x="64" y="131" width="233" height="30" rx="3"/><rect x="467" y="131" width="233" height="30" rx="3"/>
-          </g>
-          <g fill="#2C3540" font-size="8.6" text-anchor="middle">
-            <text x="163" y="35">ZoomInfo list built</text><text x="382" y="35">Phave cadences and paid ads</text><text x="601" y="35">Engagement score in Salesforce</text>
-            <text x="136" y="92">Account picked up at 50+</text><text x="300" y="92">Research and contact prep</text><text x="464" y="92">Outreach via Nooks</text><text x="628" y="92">Fit call booked</text>
-            <text x="180" y="150">Fit call held, scored 1&#8211;10</text><text x="583" y="150">Discovery</text>
-          </g>
-          <g stroke="#7A8A9B" stroke-width="1" fill="none" marker-end="url(#m1)">
-            <path d="M263,31 L279,31"/><path d="M482,31 L498,31"/>
-            <path d="M209,88 L224,88"/><path d="M373,88 L388,88"/><path d="M537,88 L552,88"/>
-            <path d="M301,146 L462,146"/>
-            <path d="M601,46 L601,53 Q601,59 595,59 L141,59 Q136,59 136,64 L136,69"/>
-            <path d="M628,103 L628,111 Q628,117 622,117 L185,117 Q180,117 180,122 L180,127"/>
-          </g>
-          <text x="382" y="139" font-size="7.4" font-weight="600" fill="#003C77" text-anchor="middle">7 and above = SAL</text>
-          <g stroke="#A9B6C4" stroke-width="0.95" stroke-dasharray="3.5 3" fill="none" marker-end="url(#m1d)">
-            <path d="M180,161 L180,172 Q180,178 174,178 L58,178 Q52,178 52,172 L52,15 Q52,9 58,9 L380.5,9 Q382,9 382,10.5 L382,12"/>
-          </g>
-          <text x="192" y="182" font-size="7" fill="#6B7684" font-style="italic">below 7 &#8594; nurture</text>
-        </g>
-      </svg></figure></section>
 
-  <section><h2><span class="num">3</span>Signal in the motion</h2><figure><svg viewBox="0 0 720 277" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sales motion with Signal spanning the SDR stage and the fit call, an intelligence layer over fit scoring, contacts and drafting, and a sales command centre rail beneath">
-        <defs><marker id="m2" markerWidth="7.5" markerHeight="7.5" refX="6" refY="2.8" orient="auto">
-            <path d="M0,0 L6,2.8 L0,5.6 z" fill="#7A8A9B"/>
-          </marker><marker id="m2c" markerWidth="7.5" markerHeight="7.5" refX="6" refY="2.8" orient="auto">
-            <path d="M0,0 L6,2.8 L0,5.6 z" fill="#00AEEF"/>
-          </marker><marker id="m2d" markerWidth="7.5" markerHeight="7.5" refX="6" refY="2.8" orient="auto">
-            <path d="M0,0 L6,2.8 L0,5.6 z" fill="#A9B6C4"/>
-          </marker></defs>
+  <section><h2><span class="num">2</span>Signal in the motion</h2><figure><svg viewBox="0 0 720 378" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Signal sales motion across sourcing, marketing, SDR outreach and AE fit call, showing where Signal reads from and writes to Salesforce">
+        <defs><marker id="s" markerWidth="7.5" markerHeight="7.5" refX="6" refY="2.8" orient="auto"><path d="M0,0 L6,2.8 L0,5.6 z" fill="#7A8A9B"/></marker><marker id="sc" markerWidth="7.5" markerHeight="7.5" refX="6" refY="2.8" orient="auto"><path d="M0,0 L6,2.8 L0,5.6 z" fill="#00AEEF"/></marker><marker id="sd" markerWidth="7.5" markerHeight="7.5" refX="6" refY="2.8" orient="auto"><path d="M0,0 L6,2.8 L0,5.6 z" fill="#A9B6C4"/></marker><marker id="sw" markerWidth="7.5" markerHeight="7.5" refX="6" refY="2.8" orient="auto"><path d="M0,0 L6,2.8 L0,5.6 z" fill="#FFFFFF"/></marker></defs>
         <g font-family="Inter, Helvetica, Arial, sans-serif">
-          <rect x="44" y="0" width="676" height="54" rx="4" fill="#F6FAFE"/><rect x="44" y="64" width="676" height="105" rx="4" fill="#F6FAFE"/><rect x="44" y="179" width="676" height="52" rx="4" fill="#F6FAFE"/>
-          <g fill="#003C77" font-size="6.8" font-weight="700" letter-spacing="1.15" text-anchor="middle">
-          <rect x="0" y="0" width="38" height="54" rx="3" fill="#DCE9F7"/>
-          <text x="14" y="27" transform="rotate(-90 14 27)">MARKETING</text><text x="26" y="27" transform="rotate(-90 26 27)">CAMPAIGN</text>
-          <rect x="0" y="64" width="38" height="105" rx="3" fill="#DCE9F7"/>
-          <text x="14" y="116" transform="rotate(-90 14 116)">SDR</text><text x="26" y="116" transform="rotate(-90 26 116)">OUTREACH</text>
-          <rect x="0" y="179" width="38" height="52" rx="3" fill="#DCE9F7"/>
-          <text x="14" y="205" transform="rotate(-90 14 205)">AE</text><text x="26" y="205" transform="rotate(-90 26 205)">FIT CALL</text>
-          </g>
-          <g fill="#FFFFFF" stroke="#C6D3E1" stroke-width="0.9">
-            <rect x="64" y="16" width="198" height="30" rx="3"/><rect x="283" y="16" width="198" height="30" rx="3"/><rect x="502" y="16" width="198" height="30" rx="3"/>
-          </g>
-          <g fill="#2C3540" font-size="8.6" text-anchor="middle">
-            <text x="163" y="35">ZoomInfo list built</text><text x="382" y="35">Phave cadences and paid ads</text><text x="601" y="35">Engagement score in Salesforce</text>
+          <rect x="44" y="0" width="676" height="114" rx="4" fill="#F6FAFE"/><rect x="44" y="126" width="676" height="54" rx="4" fill="#F6FAFE"/><rect x="44" y="196" width="676" height="54" rx="4" fill="#F6FAFE"/><rect x="44" y="262" width="676" height="54" rx="4" fill="#F6FAFE"/>
+          <g font-size="6.8" font-weight="700" text-anchor="middle">
+          <rect x="0" y="0" width="38" height="114" rx="3" fill="#DCE9F7"/><text x="14" y="57" transform="rotate(-90 14 57)" fill="#003C77" letter-spacing="1.15">SOURCING</text><text x="26" y="57" transform="rotate(-90 26 57)" fill="#0084B4" letter-spacing="1.15">SIGNAL</text>
+          <rect x="0" y="126" width="38" height="54" rx="3" fill="#DCE9F7"/><text x="19" y="153" transform="rotate(-90 19 153)" fill="#003C77" letter-spacing="0.7">MARKETING</text>
+          <rect x="0" y="196" width="38" height="54" rx="3" fill="#DCE9F7"/><text x="14" y="223" transform="rotate(-90 14 223)" fill="#003C77" letter-spacing="1.15">SDR</text><text x="26" y="223" transform="rotate(-90 26 223)" fill="#003C77" letter-spacing="1.15">OUTREACH</text>
+          <rect x="0" y="262" width="38" height="54" rx="3" fill="#DCE9F7"/><text x="14" y="289" transform="rotate(-90 14 289)" fill="#003C77" letter-spacing="1.15">AE</text><text x="26" y="289" transform="rotate(-90 26 289)" fill="#003C77" letter-spacing="1.15">FIT CALL</text>
           </g>
 
-          <path d="M68,72 L696,72 Q700,72 700,76 L700,157 Q700,161 696,161 L314,161 Q310,161 310,165 L310,223 Q310,227 306,227 L68,227 Q64,227 64,223 L64,76 Q64,72 68,72 Z" fill="#E9F7FE" stroke="#00AEEF" stroke-width="1.1"/>
-          <text x="72" y="83" font-size="7.2" font-weight="700" letter-spacing="1.7" fill="#0084B4">SIGNAL</text>
-          <rect x="182" y="88" width="258" height="14" rx="3" fill="#CDEBF9"/>
-          <text x="311" y="98" font-size="7.2" font-weight="700" letter-spacing="1.2" fill="#00648C" text-anchor="middle">INTELLIGENCE LAYER</text>
+          <g fill="#FFFFFF" stroke="#C6D3E1" stroke-width="0.9">
+            <rect x="64" y="10" width="140" height="26" rx="3"/><rect x="64" y="44" width="140" height="26" rx="3"/>
+            <rect x="64" y="138" width="240" height="32" rx="3"/><rect x="353" y="138" width="240" height="32" rx="3"/>
+            <rect x="390" y="208" width="147" height="32" rx="3"/><rect x="553" y="208" width="147" height="32" rx="3"/>
+            <rect x="64" y="274" width="233" height="32" rx="3"/><rect x="467" y="274" width="233" height="32" rx="3"/>
+          </g>
           <g fill="#003C77">
-            <rect x="72" y="93" width="96" height="24" rx="3"/><rect x="72" y="129" width="96" height="24" rx="3"/>
-            <rect x="182" y="108" width="78" height="30" rx="3"/><rect x="272" y="108" width="78" height="30" rx="3"/><rect x="362" y="108" width="78" height="30" rx="3"/>
-          </g>
-          <g fill="#FFFFFF" font-size="7.4" text-anchor="middle">
-            <text x="120" y="108">Existing list</text><text x="120" y="144">Lookalike accounts</text>
-            <text x="221" y="119.5">Fit scoring</text><text x="221" y="130">and ranking</text>
-            <text x="311" y="119.5">Contacts</text><text x="311" y="130">and context</text>
-            <text x="401" y="119.5">Draft</text><text x="401" y="130">prepared</text>
-          </g>
-          <text x="120" y="127" font-size="12" font-weight="700" fill="#003C77" text-anchor="middle">+</text>
-          <path d="M168,105 L172,105 Q176,105 176,109 L176,137 Q176,141 172,141 L168,141" stroke="#00AEEF" stroke-width="1.1" fill="none"/>
-          <g stroke="#00AEEF" stroke-width="1.1" fill="none" marker-end="url(#m2c)">
-            <path d="M176,123 L180,123"/><path d="M261,123 L269,123"/><path d="M351,123 L359,123"/>
+            <rect x="64" y="78" width="140" height="26" rx="3"/>
+            <rect x="262" y="41" width="150" height="32" rx="3"/><rect x="470" y="41" width="150" height="32" rx="3"/>
+            <rect x="64" y="208" width="147" height="32" rx="3"/><rect x="227" y="208" width="147" height="32" rx="3"/>
           </g>
 
-          <g fill="#FFFFFF" stroke="#C6D3E1" stroke-width="0.9">
-            <rect x="456" y="108" width="112" height="30" rx="3"/><rect x="580" y="108" width="112" height="30" rx="3"/>
-            <rect x="72" y="189" width="230" height="30" rx="3"/><rect x="467" y="189" width="233" height="30" rx="3"/>
+          <g fill="#2C3540" font-size="8.4" text-anchor="middle">
+            <text x="134" y="26">ZoomInfo lists</text><text x="134" y="60">Salesforce accounts</text>
           </g>
-          <g fill="#2C3540" font-size="8.2" text-anchor="middle">
-            <text x="512" y="127" font-weight="600">SDR reviews and sends</text>
-            <text x="636" y="127">Fit call booked</text>
+          <g fill="#FFFFFF" font-size="8.4" text-anchor="middle">
+            <text x="134" y="94">Signal-sourced lookalikes</text>
+            <text x="337" y="60">Account enrichment</text><text x="545" y="60">Fit score and rank</text>
+            <text x="137" y="227">Contacts and context</text><text x="300" y="227">Draft: email and call script</text>
           </g>
           <g fill="#2C3540" font-size="8.6" text-anchor="middle">
-            <text x="187" y="208">Fit call held, scored 1&#8211;10</text><text x="583" y="208">Discovery</text>
+            <text x="184" y="157">Phave campaign</text><text x="473" y="157">Engagement score</text>
+            <text x="463" y="227">Outreach via Nooks</text><text x="626" y="227">Fit call booked</text>
+            <text x="180" y="293">Fit call held, scored 1&#8211;10</text><text x="583" y="293">Discovery</text>
           </g>
 
-          <g stroke="#7A8A9B" stroke-width="1" fill="none" marker-end="url(#m2)">
-            <path d="M263,31 L279,31"/><path d="M482,31 L498,31"/>
-            <path d="M441,123 L453,123"/><path d="M569,123 L577,123"/>
-            <path d="M314,204 L463,204"/>
-            <path d="M262,54 L262,68"/>
-            <path d="M636,138 L636,144 Q636,150 630,150 L193,150 Q187,150 187,156 L187,185"/>
+          <path d="M204,23 L210,23 Q216,23 216,29 L216,85 Q216,91 210,91 L204,91" stroke="#7A8A9B" stroke-width="1" fill="none"/>
+          <path d="M204,57 L216,57" stroke="#7A8A9B" stroke-width="1" fill="none"/>
+          <g stroke="#7A8A9B" stroke-width="1" fill="none" marker-end="url(#s)">
+            <path d="M216,57 L258,57"/><path d="M413,57 L466,57"/>
+            <path d="M308,154 L349,154"/>
+            <path d="M212,224 L223,224"/><path d="M375,224 L386,224"/><path d="M538,224 L549,224"/>
+            <path d="M314,290 L463,290"/>
+            <path d="M490,73 L490,113 Q490,120 483,120 L191,120 Q184,120 184,127 L184,134"/>
+            <path d="M590,73 L590,91 Q590,98 597,98 L669,98 Q676,98 676,105 L676,193 Q676,200 669,200 L172,200 Q170,200 170,202 L170,204"/>
+            <path d="M473,170 L473,181 Q473,188 466,188 L117,188 Q110,188 110,195 L110,204"/>
+            <path d="M626,240 L626,247 Q626,254 619,254 L187,254 Q180,254 180,261 L180,270"/>
           </g>
-          <text x="388" y="197" font-size="7.4" font-weight="600" fill="#0084B4" text-anchor="middle">7 and above = SAL, source tagged</text>
-          <g fill="#00AEEF">
-            <circle cx="692" cy="24" r="3"/><circle cx="684" cy="116" r="3"/><circle cx="294" cy="197" r="3"/>
-          </g>
-          <g stroke="#A9B6C4" stroke-width="0.95" stroke-dasharray="3.5 3" fill="none" marker-end="url(#m2d)">
-            <path d="M187,219 L187,235 Q187,241 181,241 L58,241 Q52,241 52,235 L52,15 Q52,9 58,9 L380.5,9 Q382,9 382,10.5 L382,12"/>
-          </g>
-          <text x="199" y="245" font-size="7" fill="#6B7684" font-style="italic">below 7 &#8594; nurture</text>
+          <path d="M610,47 A5.5,5.5 0 1 1 602.5,47.6" stroke="#FFFFFF" stroke-width="1.2" fill="none" marker-end="url(#sw)"/>
 
-          <rect x="44" y="255" width="676" height="18" rx="3" fill="#E9F7FE" stroke="#00AEEF" stroke-width="1.1"/>
-          <text x="382" y="267" font-size="7.6" text-anchor="middle"><tspan font-weight="700" letter-spacing="1.1" fill="#0084B4">SALES COMMAND CENTRE</tspan><tspan fill="#003C77" letter-spacing="0"> &#183; every account end to end &#183; outcomes against baseline &#183; by SDR, vertical and region &#183; stalled accounts surfaced</tspan></text>
+          <g stroke="#A9B6C4" stroke-width="0.95" stroke-dasharray="3.5 3" fill="none" marker-end="url(#sd)">
+            <path d="M520,138 L520,77"/>
+            <path d="M240,306 L240,323 Q240,330 247,330 L705,330 Q712,330 712,323 L712,64 Q712,57 705,57 L624,57"/>
+            <path d="M150,306 L150,329 Q150,336 143,336 L59,336 Q52,336 52,329 L52,157 Q52,154 55,154 L58,154"/>
+          </g>
+
+          <g font-size="7.2" fill="#6B7684">
+            <text x="200" y="132">all accounts</text>
+            <text x="633" y="92" text-anchor="middle">top-ranked, in parallel</text>
+            <text x="528" y="124">engagement feeds ranking</text>
+            <text x="700" y="34" text-anchor="end">outcomes tune the ranking</text>
+            <text x="160" y="344" font-style="italic">below 7 &#8594; nurture</text>
+          </g>
+          <text x="388" y="283" font-size="7.6" font-weight="600" fill="#0084B4" text-anchor="middle">7 and above = SAL</text>
+
+          <g fill="#00AEEF"><circle cx="196" cy="52" r="3.2"/><circle cx="585" cy="146" r="3.2"/><circle cx="289" cy="282" r="3.2"/></g>
+          <g fill="#FBAD18"><circle cx="296" cy="146" r="3.2"/><circle cx="529" cy="216" r="3.2"/></g>
+
+          <rect x="44" y="354" width="676" height="18" rx="3" fill="#E9F7FE" stroke="#00AEEF" stroke-width="1.1"/>
+          <text x="382" y="366" font-size="7.6" text-anchor="middle"><tspan font-weight="700" letter-spacing="1.1" fill="#0084B4">SALES COMMAND CENTRE</tspan><tspan fill="#003C77" letter-spacing="0"> &#183; every account end to end &#183; outcomes against baseline &#183; by SDR, vertical and region &#183; stalled accounts surfaced</tspan></text>
         </g>
       </svg></figure>
-    <p class="legend">Marked steps are where Signal reads from or writes to Salesforce</p>
+    <p class="legend"><span class="key"><i class="kr"></i>Reads from Salesforce</span><span class="key"><i class="kw"></i>Writes to Salesforce</span><span class="key"><i class="ks"></i>Signal</span></p>
+    <p class="dnote">Fit score and engagement score stay separate. Fit ranks the account; engagement shows interest. Fit call outcomes are reviewed against Signal's score to tune the model.</p>
     <div class="changes">
       <div class="lbl">What changes</div>
       <div class="ch-cols">
@@ -273,7 +236,7 @@ td.k{font-weight:600;color:var(--navy);}
 
 <div class="page"><div class="page-body">
   <section style="margin-top:0">
-    <h2><span class="num">4</span>Scope</h2>
+    <h2><span class="num">3</span>Scope</h2>
     <div class="cards"><div class="card">
         <div class="card-h"><span class="n">1</span><span class="t">Sourcing &amp;<br>prioritisation</span></div>
         <div class="card-b"><ul><li>Salesforce records, including the ZoomInfo lists synced into it</li><li>Lookalike accounts modelled on past wins</li><li>Existing customers and live opportunities excluded automatically</li><li>Account and contact-level fit scoring, configurable to Servion's criteria, engagement score as one input</li></ul></div>
@@ -297,7 +260,7 @@ td.k{font-weight:600;color:var(--navy);}
   </section>
 
   <section style="margin-top:8mm">
-    <h2><span class="num">5</span>Success measures</h2>
+    <h2><span class="num">4</span>Success measures</h2>
     <p style="margin-bottom:3mm;color:var(--grey);font-size:7.8pt;">Servion's baseline, shared 25 Aug.</p>
     <table class="metrics">
       <thead><tr><th style="width:20%">Measure</th><th style="width:38%">Servion today</th><th style="width:42%">Definition</th></tr></thead>
@@ -314,7 +277,7 @@ td.k{font-weight:600;color:var(--navy);}
 
 <div class="page"><div class="page-body">
   <section style="margin-top:0">
-    <h2><span class="num">6</span>Delivery plan</h2>
+    <h2><span class="num">5</span>Delivery plan</h2>
     <div class="gantt">
       <div class="g-side"><div class="g-h"></div><div class="g-rows">
         <div class="g-r">Access &amp; setup</div><div class="g-r">Build &amp; testing</div>
@@ -342,7 +305,7 @@ td.k{font-weight:600;color:var(--navy);}
   </section>
 
   <section>
-    <h2><span class="num">7</span>Communication and escalation</h2>
+    <h2><span class="num">6</span>Communication and escalation</h2>
     <table>
       <thead><tr><th style="width:15%">Type</th><th style="width:31%">To</th><th style="width:33%">Contents</th><th style="width:21%">When</th></tr></thead>
       <tbody>
