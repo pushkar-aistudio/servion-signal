@@ -42,22 +42,22 @@ figure{margin:0;}figure svg{display:block;width:100%;height:auto;}
 .cards{display:flex;align-items:stretch;gap:0;}
 .card{flex:1 1 0;min-width:0;display:flex;flex-direction:column;border:0.7pt solid var(--line);border-top:2.2pt solid var(--navy);border-radius:3pt;overflow:hidden;}
 .chev{flex:0 0 5.6mm;display:flex;align-items:flex-start;justify-content:center;padding-top:3.1mm;color:#9DBBD6;font-size:12pt;font-weight:600;line-height:1;}
-.card-h{background:var(--wash);border-bottom:0.6pt solid #DAE5F0;padding:3.2mm 3.2mm;display:flex;align-items:center;gap:2.4mm;}
+.card-h{background:var(--wash);border-bottom:0.6pt solid #DAE5F0;padding:2.8mm 3.2mm;display:flex;align-items:center;gap:2.4mm;}
 .card-h .n{width:4.8mm;height:4.8mm;border-radius:50%;background:var(--navy);color:#fff;font-size:7pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
 .card-h .t{font-size:8.8pt;font-weight:600;color:var(--navy);line-height:1.22;}
-.card-b{flex:1 1 auto;padding:5.6mm 3.4mm 5.6mm;}
+.card-b{flex:1 1 auto;padding:4.2mm 3.4mm 4.2mm;}
 .card-f{background:#F4F6F9;border-top:0.6pt solid #E3E8EE;padding:3.2mm 3.2mm 3.6mm;}
 .lbl{font-size:6.4pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:1.9mm;}
 .card-f .lbl{color:#8A96A3;}
 ul{list-style:none;}
-li{position:relative;padding-left:3.2mm;margin-bottom:3.2mm;font-size:8pt;line-height:1.4;}
+li{position:relative;padding-left:3.2mm;margin-bottom:2.5mm;font-size:8pt;line-height:1.4;}
 li:last-child{margin-bottom:0;}
 li::before{content:"";position:absolute;left:0;top:1.5mm;width:1.5mm;height:1.5mm;border-radius:50%;background:var(--cyan);}
 .card-f li{font-size:7.3pt;color:var(--grey);line-height:1.38;margin-bottom:1.4mm;}
 .card-f li::before{background:#B9C3CE;width:1.3mm;height:1.3mm;}
 
 /* wide card */
-.wide{margin-top:6.5mm;border-top-color:var(--cyan);}
+.wide{margin-top:5mm;border-top-color:var(--cyan);}
 .wide .card-h{background:#E4F4FC;border-bottom-color:#C6E7F6;}
 .wide .card-h .n{background:var(--cyan);}
 .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:6.5mm;}
@@ -76,8 +76,9 @@ li::before{content:"";position:absolute;left:0;top:1.5mm;width:1.5mm;height:1.5m
 .kr{background:#00AEEF;}
 .kw{background:#FBAD18;}
 .kbox{background:var(--navy);color:#fff;font-size:5.6pt;font-weight:700;letter-spacing:.03em;padding:0.6mm 1.7mm;border-radius:0.8mm;margin-right:1.6mm;line-height:1.1;}
+.nw{white-space:nowrap;}
 .dnote{font-size:7.4pt;color:var(--ink);margin-top:1.8mm;line-height:1.45;}
-.viability{margin-top:5.5mm;font-size:7.6pt;color:var(--grey);}
+.viability{margin-top:4mm;font-size:7.6pt;color:var(--grey);}
 .viability b{color:var(--navy);font-weight:600;}
 
 /* tables */
@@ -89,7 +90,7 @@ tr:last-child td{border-bottom:none;}
 td.k{font-weight:600;color:var(--navy);}
 .wk{display:block;font-size:6.7pt;font-weight:400;color:var(--grey);margin-top:.7mm;white-space:nowrap;}
 .tnote{font-size:7.4pt;color:var(--grey);margin-top:2.6mm;}
-.metrics td{padding-top:5.4mm;padding-bottom:5.4mm;}
+.metrics td{padding-top:4.2mm;padding-bottom:4.2mm;}
 .metrics td.k{font-size:8.4pt;}
 .recips{color:var(--grey);}
 .date{color:var(--navy);font-weight:600;}
@@ -113,8 +114,8 @@ td.k{font-weight:600;color:var(--navy);}
 .bar{height:3.6mm;border-radius:1.8mm;margin:0 .7mm;position:relative;z-index:1;}
 .b1{grid-column:1/2;background:var(--cyan);}
 .b2{grid-column:2/6;background:var(--navy);}
-.b3{grid-column:6/8;background:#4E8FC4;}
-.b4{grid-column:8/9;background:#93B2CB;}
+.b3{grid-column:6/7;background:#4E8FC4;}
+.b4{grid-column:7/9;background:#93B2CB;}
 .g-mile{height:6.4mm;position:relative;}
 .mile-line{position:absolute;left:62.5%;top:5.2mm;bottom:3.4mm;border-left:1.1pt dashed var(--amber);z-index:2;}
 .mile-mark{position:absolute;left:62.5%;bottom:0.2mm;transform:translateX(-1.3mm);display:flex;align-items:center;gap:1.6mm;z-index:3;}
@@ -143,7 +144,7 @@ td.k{font-weight:600;color:var(--navy);}
   <section>
     <h2><span class="num">1</span>What Signal is</h2>
     <p class="lede">Signal is an intelligence layer for outbound. It decides who to engage, with what message, and when. It uses Servion's existing methods and data, pulled into one place rather than replaced.</p>
-    <p class="lede">Signal connects to Servion's data sources, prioritises the account lists Servion already builds, and finds new accounts that look like past wins, automatically skipping existing customers and anything already in the pipeline. For each one, it identifies the right stakeholders with verified email and phone, builds the account research, and drafts the outreach for the SDR to review and send.</p>
+    <p class="lede">Signal connects to Servion's data sources, brings together the account lists Servion already builds, and finds new accounts that look like past wins, automatically skipping existing customers and anything already in the pipeline. It scores and ranks every account so the strongest reach the SDR first, identifies the right stakeholders with verified email and phone, builds the account research, and drafts the outreach for the SDR to review and send.</p>
     <div class="boundary"><b>Starting point:</b> North America, banking and healthcare, one SDR, through to SAL. Extendable to further verticals once the model is proven.</div>
   </section>
 
@@ -206,15 +207,16 @@ td.k{font-weight:600;color:var(--navy);}
 
           <g stroke="#A9B6C4" stroke-width="0.95" stroke-dasharray="3.5 3" fill="none" marker-end="url(#sd)">
             <path d="M430,160 L430,128"/>
-            <path d="M250,364 L250,381 Q250,388 257,388 L701,388 Q708,388 708,381 L708,41 Q708,34 701,34 L598,34"/>
+            <path d="M250,364 L250,381 Q250,388 257,388 L701,388 Q708,388 708,381 L708,29 Q708,22 701,22 L598,22"/>
             <path d="M140,364 L140,385 Q140,392 133,392 L59,392 Q52,392 52,385 L52,179 Q52,176 55,176 L58,176"/>
           </g>
 
           <g font-size="7.2" fill="#6B7684">
             <text x="196" y="154">all accounts to campaign</text>
-            <text x="585" y="104" text-anchor="end">top-ranked accounts, direct to SDR</text>
+            <text x="640" y="40" text-anchor="end">top-ranked also</text>
+            <text x="640" y="50" text-anchor="end">go direct to SDR</text>
             <text x="422" y="150" text-anchor="end">engagement feeds the score</text>
-            <text x="700" y="20" text-anchor="end">outcomes tune the ranking</text>
+            <text x="700" y="12" text-anchor="end">outcomes tune the ranking</text>
             <text x="62" y="202" font-style="italic">below 7 &#8594; nurture</text>
           </g>
           <text x="346" y="333" font-size="7.6" font-weight="600" fill="#0084B4" text-anchor="middle">7 and above = SAL</text>
@@ -244,13 +246,13 @@ td.k{font-weight:600;color:var(--navy);}
     <h2><span class="num">3</span>Scope</h2>
     <div class="cards"><div class="card">
         <div class="card-h"><span class="n">1</span><span class="t">Sourcing &amp;<br>prioritisation</span></div>
-        <div class="card-b"><ul><li>Salesforce records, including the ZoomInfo lists synced into it</li><li>Lookalike accounts modelled on past wins</li><li>Existing customers and live opportunities excluded automatically</li><li>Account and contact-level lead scoring, configurable to Servion's criteria, engagement score as one input</li></ul></div>
+        <div class="card-b"><ul><li>Accounts from ZoomInfo lists, Salesforce records, and lookalikes modelled on past wins</li><li>Existing customers and live opportunities excluded automatically</li><li>Account and contact-level lead scoring, configurable to Servion's criteria, engagement score as one input</li><li>Salesforce integration, read and write</li><li>All ranked accounts pushed to Phave for campaign, with top-ranked also going direct to the SDR</li></ul></div>
       </div><div class="chev">›</div><div class="card">
         <div class="card-h"><span class="n">2</span><span class="t">Enrichment &amp;<br>context</span></div>
         <div class="card-b"><ul><li>Account enriched through ZoomInfo, Clay and Apollo</li><li>Contacts identified and verified against Servion's persona set, ranked on role fit and data completeness</li><li>Research pack per account surfaced</li></ul></div>
       </div><div class="chev">›</div><div class="card">
         <div class="card-h"><span class="n">3</span><span class="t">Outreach</span></div>
-        <div class="card-b"><ul><li>Personalised email, call script and LinkedIn drafts on Servion's own templates, matched to the account's campaign</li><li>Drafts placed with the SDR to review and send</li><li>Real-time notification on high-sentiment replies</li><li>Write-back: lead, activity and a Signal source tag into Salesforce</li></ul></div>
+        <div class="card-b"><ul><li>Personalised email, call script and LinkedIn drafts on Servion's own templates, matched to the account's campaign</li><li>Drafts placed with the SDR to review and send</li><li>Real-time notification on <span class='nw'>high-sentiment</span> replies</li><li>Write-back: lead score, activity and a Signal source tag into Salesforce</li><li>Every account tagged by source, so ZoomInfo, Salesforce and Signal-sourced can be compared</li></ul></div>
       </div></div>
     <div class="card wide">
       <div class="card-h"><span class="t">Sales command centre</span></div>
@@ -261,10 +263,10 @@ td.k{font-weight:600;color:var(--navy);}
           <ul><li>Accounts that have gone quiet between steps, flagged for follow-up</li></ul>
         </div></div>
     </div>
-    <p class="viability"><b>Scope boundaries.</b> Signal writes Leads and activity; new Accounts follow Servion's approval process. Every message is reviewed and sent by a person, one at a time, with mass campaign execution staying with Phave. Calls and meetings are booked by the team rather than automatically, and call recordings sit outside Signal. The AE scores every fit call, and the pilot follows accounts through to SAL.</p>
+    <p class="viability"><b>Scope boundaries.</b> Signal writes Leads and activity; new Accounts follow Servion's approval process. Every message is reviewed and sent by a person, one at a time, with mass campaign execution staying with Phave. Calls and meetings are booked by the team rather than automatically, and call recordings sit outside Signal. The AE scores every fit call, and Signal follows accounts through to SAL.</p>
   </section>
 
-  <section style="margin-top:8mm">
+  <section style="margin-top:5mm">
     <h2><span class="num">4</span>Success measures</h2>
     <p style="margin-bottom:3mm;color:var(--grey);font-size:7.8pt;">Servion's baseline, shared 25 Aug.</p>
     <table class="metrics">
@@ -286,26 +288,23 @@ td.k{font-weight:600;color:var(--navy);}
     <div class="gantt">
       <div class="g-side"><div class="g-h"></div><div class="g-rows">
         <div class="g-r">Access &amp; setup</div><div class="g-r">Build &amp; testing</div>
-        <div class="g-r">Hypercare</div><div class="g-r">Review &amp; next steps</div><div class="g-mile"></div>
+        <div class="g-r">Go live &amp; rollout</div><div class="g-r">Hypercare &amp; tuning</div>
       </div></div>
       <div class="g-main">
         <div class="g-h"><div class="g-weeks"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span><span>W8</span></div></div>
-        <div class="g-rows"><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b1"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b2"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b3"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b4"></div></div></div><div class="g-mile"></div></div>
-        <div class="mile-line"></div>
-        <div class="mile-mark"><div class="diamond"></div><div class="mile-txt">GO LIVE</div></div>
+        <div class="g-rows"><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b1"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b2"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b3"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b4"></div></div></div></div>
       </div>
     </div>
     <table>
       <thead><tr><th style="width:11%">Week</th><th style="width:19%">Phase</th><th style="width:41%">In this phase</th><th style="width:29%">What you'll have</th></tr></thead>
       <tbody>
         <tr><td class="k">1</td><td class="k">Access &amp; setup</td><td>Salesforce read access live, structure mapped. Scoring criteria, personas and templates configured. Build begins.</td><td>Access in place and configuration agreed with your team</td></tr>
-        <tr><td class="k">2–5</td><td class="k">Build &amp; testing</td><td>Salesforce integration, sourcing, lead scoring, enrichment, account context, drafts, sales command centre. Sandbox write tested. SDR tests end to end on real accounts.</td><td>A working platform your SDR has tested end to end, with anything outstanding agreed together</td></tr>
-        <tr style="background:#FFF7E6"><td class="k">Start of 6</td><td class="k" style="color:#B27A00">Go live</td><td>Platform live with the SDR, handover pack issued, initial live tuning</td><td>Signal live and in daily use</td></tr>
-        <tr><td class="k">6–7</td><td class="k">Hypercare</td><td>Hands-on support while the team settles into it, tuning as we learn from live use</td><td>Signal running steadily as part of the daily routine</td></tr>
-        <tr><td class="k">8</td><td class="k">Review &amp; next steps</td><td>Full handover to your team, the numbers against baseline, and agreement on what comes next</td><td>Your team running Signal, with the measures in view</td></tr>
+        <tr><td class="k">2–5</td><td class="k">Build &amp; testing</td><td>Salesforce integration, sourcing, lead scoring, enrichment, account context, drafts, sales command centre, Phave and Nooks integration. Sandbox write tested. SDR tests end to end on real accounts.</td><td>A working platform your SDR has tested end to end, with anything outstanding agreed together</td></tr>
+        <tr style="background:#FFF7E6"><td class="k">6</td><td class="k" style="color:#B27A00">Go live &amp; rollout</td><td>Signal live with the SDR, adoption kit issued, rolled out across the team through the week</td><td>Signal in daily use, with the team set up to run it</td></tr>
+        <tr><td class="k">7–8</td><td class="k">Hypercare &amp; tuning</td><td>Hands-on support, fixes and tuning as we learn from live use. Tracking the measures against baseline and adjusting where the numbers say we should.</td><td>Signal running as part of the daily routine, with performance visible against baseline</td></tr>
       </tbody>
     </table>
-    <p class="tnote">This is the pace we're aiming for. Week 1 begins the day Salesforce read access lands. Assuming that is <span class="date">1 Sep</span>, Signal goes live on <span class="date">6 Oct</span> and we review together on <span class="date">26 Oct</span>. We'll keep tracking the agreed measures with you past that point, until the numbers show Signal is delivering what it should.</p>
+    <p class="tnote">These are the dates we are working to, set to move quickly rather than to leave room for slippage. Week 1 begins the day Salesforce read access lands. Assuming that is <span class="date">1 Sep</span>, Signal is live with the team from <span class="date">6 Oct</span>. From there we keep tracking the agreed measures with you and tuning as the numbers come in, for as long as it takes to see the uplift we're aiming for.</p>
     <p class="owed"><b>Servion-owed inputs:</b> baseline metrics <span class="ok">✓ received</span> · Salesforce read access on production, Salesforce sandbox with write access, ZoomInfo access, vertical outreach templates, mailbox authorisation for the SDR, and Nooks and Phave access for the viability assessment, all requested in the access list sent on 20 Aug.</p>
   </section>
 
