@@ -111,9 +111,10 @@ td.k{font-weight:600;color:var(--navy);}
 .g-cells i{border-left:0.5pt solid var(--line);}
 .g-cells i:last-child{border-right:0.5pt solid var(--line);}
 .g-bars{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);align-items:center;}
-.bar{height:3.6mm;border-radius:1.8mm;margin:0 .7mm;position:relative;z-index:1;}
+.bar{height:3.6mm;border-radius:1.8mm;margin:0 .7mm;position:relative;z-index:1;display:flex;align-items:center;padding-left:1.8mm;font-size:5.6pt;font-weight:600;color:#fff;letter-spacing:.02em;white-space:nowrap;overflow:hidden;}
 .b1{grid-column:1/2;background:var(--cyan);}
-.b2{grid-column:2/6;background:var(--navy);}
+.b2a{grid-column:2/4;background:var(--navy);}
+.b2b{grid-column:4/6;background:#2E6BA8;}
 .b3{grid-column:6/7;background:#4E8FC4;}
 .b4{grid-column:7/9;background:#93B2CB;}
 .g-mile{height:6.4mm;position:relative;}
@@ -225,7 +226,7 @@ td.k{font-weight:600;color:var(--navy);}
           <g fill="#FBAD18"><circle cx="572" cy="63" r="3.2"/><circle cx="296" cy="168" r="3.2"/><circle cx="524" cy="252" r="3.2"/></g>
 
           <rect x="44" y="408" width="676" height="18" rx="3" fill="#E9F7FE" stroke="#00AEEF" stroke-width="1.1"/>
-          <text x="382" y="420" font-size="7.6" text-anchor="middle"><tspan font-weight="700" letter-spacing="1.1" fill="#0084B4">SALES COMMAND CENTRE</tspan><tspan fill="#003C77" letter-spacing="0"> &#183; every account end to end &#183; outcomes against baseline &#183; by SDR, vertical and region &#183; stalled accounts surfaced</tspan></text>
+          <text x="382" y="420" font-size="7.6" text-anchor="middle"><tspan font-weight="700" letter-spacing="1.1" fill="#0084B4">SALES COMMAND CENTRE</tspan><tspan fill="#003C77" letter-spacing="0"> &#183; every account end to end &#183; outcomes against baseline &#183; by SDR, source, vertical and region &#183; stalled accounts surfaced</tspan></text>
         </g>
       </svg></figure>
     <p class="legend"><span class="key"><i class="kr"></i>Signal reads</span><span class="key"><i class="kw"></i>Signal writes</span><span class="key"><b class="kbox">Signal</b>Signal step</span></p>
@@ -259,7 +260,7 @@ td.k{font-weight:600;color:var(--navy);}
       <div class="card-b">
         <div class="cols">
           <ul><li>Every account in one place: campaign history, Signal activity, outreach to date, and the AE's fit score once it returns</li></ul>
-          <ul><li>Executive view of activity and outcomes against the agreed measures, tracked from baseline</li></ul>
+          <ul><li>Activity and outcomes by SDR, source, vertical and region, daily, weekly and monthly, tracked against baseline</li></ul>
           <ul><li>Accounts that have gone quiet between steps, flagged for follow-up</li></ul>
         </div></div>
     </div>
@@ -292,14 +293,14 @@ td.k{font-weight:600;color:var(--navy);}
       </div></div>
       <div class="g-main">
         <div class="g-h"><div class="g-weeks"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span><span>W8</span></div></div>
-        <div class="g-rows"><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b1"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b2"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b3"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b4"></div></div></div></div>
+        <div class="g-rows"><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b1"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b2a">Build</div><div class="bar b2b">SDR testing</div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b3"></div></div></div><div class="g-r"><div class="g-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="g-bars"><div class="bar b4"></div></div></div></div>
       </div>
     </div>
     <table>
       <thead><tr><th style="width:11%">Week</th><th style="width:19%">Phase</th><th style="width:41%">In this phase</th><th style="width:29%">What you'll have</th></tr></thead>
       <tbody>
         <tr><td class="k">1</td><td class="k">Access &amp; setup</td><td>Salesforce read access live, structure mapped. Scoring criteria, personas and templates configured. Build begins.</td><td>Access in place and configuration agreed with your team</td></tr>
-        <tr><td class="k">2–5</td><td class="k">Build &amp; testing</td><td>Salesforce integration, sourcing, lead scoring, enrichment, account context, drafts, sales command centre, Phave and Nooks integration. Sandbox write tested. SDR tests end to end on real accounts.</td><td>A working platform your SDR has tested end to end, with anything outstanding agreed together</td></tr>
+        <tr><td class="k">2–5</td><td class="k">Build &amp; testing</td><td>Weeks 2 and 3: Salesforce integration, sourcing, lead scoring, enrichment, account research, drafts, sales command centre, Phave and Nooks. Weeks 4 and 5: your SDR tests on real accounts, fixes going in weekly.</td><td>A platform your SDR has tested end to end, with anything outstanding agreed together</td></tr>
         <tr style="background:#FFF7E6"><td class="k">6</td><td class="k" style="color:#B27A00">Go live &amp; rollout</td><td>Signal live with the SDR, adoption kit issued, rolled out across the team through the week</td><td>Signal in daily use, with the team set up to run it</td></tr>
         <tr><td class="k">7–8</td><td class="k">Hypercare &amp; tuning</td><td>Hands-on support, fixes and tuning as we learn from live use. Tracking the measures against baseline and adjusting where the numbers say we should.</td><td>Signal running as part of the daily routine, with performance visible against baseline</td></tr>
       </tbody>
@@ -309,12 +310,12 @@ td.k{font-weight:600;color:var(--navy);}
   </section>
 
   <section>
-    <h2><span class="num">6</span>Communication and escalation</h2>
+    <h2><span class="num">6</span>Working rhythm</h2>
     <table>
       <thead><tr><th style="width:15%">Type</th><th style="width:31%">To</th><th style="width:33%">Contents</th><th style="width:21%">When</th></tr></thead>
       <tbody>
         <tr><td class="k">Ad-hoc update</td><td class="recips">Whoever raised it, plus Katie Bjornson</td><td>One item: what changed and what it means</td><td>As it happens</td></tr>
-        <tr><td class="k">Operations update</td><td class="recips">Katie Bjornson, Bruce Eidsvik, Selvakumar Sundaram, Shriram Rajamani, Harisudhan S, Patricia Shostak</td><td>Every open item as Resolved, In progress, Needs discussion, or Pending on you, each with an owner and a date</td><td>Weekly, Thursday evening US Central</td></tr>
+        <tr><td class="k">Weekly update</td><td class="recips">Katie Bjornson, Bruce Eidsvik, Selvakumar Sundaram, Shriram Rajamani, Harisudhan S, Patricia Shostak</td><td>Every open item as Resolved, In progress, Needs discussion, or Pending on you, each with an owner and a date</td><td>Call Thursday morning US CDT, written update after</td></tr>
         <tr><td class="k">Escalation</td><td class="recips">Katie Bjornson</td><td>The item, why it is stuck, what is needed and by when, with an owner on both sides</td><td>When an item is stuck, or a client-side blocker stops moving</td></tr>
         
       </tbody>
