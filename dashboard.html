@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Servion · Sales Command Centre</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#f5f6f8; --card:#fff; --card-2:#fafbfc;
+    --line:#e5e7ec; --line-2:#eef0f3;
+    --ink:#13151a; --ink-2:#525a66; --ink-3:#89919d; --ink-4:#b3b9c2;
+    --nav:#16191e; --nav-2:#22262d; --nav-ink:#c9cfd8;
+    --blue:#2f6fed; --blue-l:#e7effd; --blue-d:#1b4fb5;
+    --green:#12a05e; --green-l:#dcf3e7; --green-d:#0a6e40;
+    --violet:#7c5cf0; --violet-l:#ece6fd;
+    --amber:#d98510; --amber-l:#fdf1dc; --amber-d:#8a5a0d;
+    --rose:#d63c48; --rose-l:#fce3e5; --rose-d:#a52832;
+    --r:10px;
+  }
+  *{box-sizing:border-box}
+  html,body{background:var(--bg)}
+  body{margin:0;color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  h1,h2{margin:0;letter-spacing:-.015em}
+
+  .shell{display:flex;min-height:100vh}
+  .side{width:208px;flex:none;background:var(--nav);color:var(--nav-ink);
+    display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+  .brand{display:flex;align-items:center;gap:9px;padding:15px 14px 16px}
+  .mark{width:25px;height:25px;border-radius:6px;background:var(--rose);flex:none;
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px}
+  .brand .bt{font-size:12.5px;font-weight:640;color:#fff;line-height:1.25}
+  .brand .bt span{display:block;font-size:10.5px;color:#7e8794;font-weight:450}
+  .navsec{font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:#6b737f;
+    font-weight:680;padding:13px 16px 5px}
+  .nav{padding:0 8px;display:flex;flex-direction:column;gap:1px}
+  .nav a{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:7px;
+    color:var(--nav-ink);text-decoration:none;font-size:12.5px}
+  .nav a:hover{background:var(--nav-2);color:#fff}
+  .nav a.on{background:#fff;color:var(--nav);font-weight:600}
+  .nav a i{width:13px;flex:none;opacity:.8;font-style:normal}
+  .sideft{margin-top:auto;padding:10px;border-top:1px solid #262a31}
+  .who{display:flex;align-items:center;gap:9px;padding:6px 8px;font-size:12px}
+  .av{width:24px;height:24px;border-radius:50%;background:#343a43;flex:none;
+    display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:650;color:#fff}
+  .who b{display:block;color:#fff;font-weight:600}
+  .who span{color:#7e8794;font-size:10.5px}
+
+  .main{flex:1;min-width:0}
+  .topbar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
+  .topin{padding:0 20px;display:flex;align-items:center;gap:12px;height:48px}
+  .ttl{font-size:14.5px;font-weight:660;white-space:nowrap}
+  .ttl span{color:var(--ink-3);font-weight:450}
+  .tright{margin-left:auto;display:flex;align-items:center;gap:7px}
+  .ico{width:29px;height:29px;border-radius:7px;border:1px solid var(--line);background:var(--card);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;
+    color:var(--ink-2);font-size:12.5px}
+  .ico:hover{background:var(--card-2)}
+  .badge{position:absolute;top:-5px;right:-5px;background:var(--rose);color:#fff;font-size:9px;
+    font-weight:700;border-radius:9px;padding:1px 4px;line-height:1.4}
+  .lang{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+  .lang button{border:0;background:var(--card);font:inherit;font-size:11px;font-weight:600;
+    padding:6px 8px;color:var(--ink-3);cursor:pointer}
+  .lang button.on{background:var(--nav);color:#fff}
+  .body{padding:0 20px 70px;max-width:1400px}
+
+  .banner{display:flex;align-items:center;gap:10px;margin-top:13px;padding:10px 13px;
+    background:var(--amber-l);border:1px solid #f0dcb4;border-radius:var(--r);
+    font-size:12.5px;color:#7a5410}
+  .banner b{font-weight:650}
+  .bsp{margin-left:auto;display:flex;gap:7px;align-items:center}
+  .bbtn{border:1px solid #d9b871;background:#fff;color:#7a5410;border-radius:6px;padding:4px 10px;
+    font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+  .bx{border:0;background:none;color:#a8834a;cursor:pointer;font-size:15px;padding:1px 4px}
+
+  /* ===== verdict ===== */
+  .verdict{display:flex;align-items:stretch;margin-top:12px;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .vseg{padding:13px 18px;display:flex;align-items:center;gap:11px;border-right:1px solid var(--line)}
+  .vseg:last-child{border-right:0}
+  .vstate{font-size:15px;font-weight:670;white-space:nowrap;display:flex;align-items:center;gap:9px}
+  .vstate .d{width:9px;height:9px;border-radius:50%;flex:none}
+  .vstate.ok{color:var(--green-d)} .vstate.ok .d{background:var(--green)}
+  .vstate.risk{color:var(--amber-d)} .vstate.risk .d{background:var(--amber)}
+  .vstate.bad{color:var(--rose-d)} .vstate.bad .d{background:var(--rose)}
+  .vsub{font-size:12.5px;color:var(--ink-2)} .vsub b{color:var(--ink);font-weight:640}
+  .vblock{flex:1;min-width:0}
+  .vwarn{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-2)}
+  .vwarn .ex{width:18px;height:18px;border-radius:50%;background:var(--rose-l);color:var(--rose-d);
+    font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+  .vwarn b{color:var(--ink);font-weight:640}
+  .vgo{border:1px solid var(--line);background:var(--card);border-radius:7px;padding:6px 12px;
+    font:inherit;font-size:12.5px;font-weight:580;color:var(--blue);cursor:pointer;white-space:nowrap}
+  .vgo:hover{background:var(--blue-l);border-color:var(--blue)}
+
+  /* ===== controls ===== */
+  .ctl{display:flex;align-items:center;gap:10px;margin-top:11px;flex-wrap:wrap}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--card)}
+  .seg button{border:0;background:var(--card);padding:6px 12px;font:inherit;font-size:12px;
+    color:var(--ink-2);cursor:pointer;border-right:1px solid var(--line)}
+  .seg button:last-child{border-right:0}
+  .seg button:hover{background:var(--card-2)}
+  .seg button[aria-pressed="true"]{background:var(--nav);color:#fff;font-weight:580}
+  .cright{margin-left:auto;display:flex;align-items:center;gap:9px}
+  .lnk{border:0;background:none;color:var(--blue);font:inherit;font-size:12px;cursor:pointer;padding:3px 2px}
+  .lnk:hover{text-decoration:underline}
+  .lnk[disabled]{color:var(--ink-4);cursor:default;text-decoration:none}
+  .adv{display:none;flex-wrap:wrap;gap:7px;align-items:center;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r);padding:8px 10px;margin-top:9px}
+  .adv.on{display:flex}
+  .flab{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .chk{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:6px;
+    padding:5px 9px;font-size:12px;color:var(--ink-2);cursor:pointer;background:var(--card)}
+  .chk[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-l);color:var(--blue-d);font-weight:580}
+  .chk i{width:8px;height:8px;border-radius:2px}
+  select{font:inherit;font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;
+    background:var(--card);color:var(--ink-2);max-width:220px}
+  select.on{border-color:var(--blue);color:var(--blue-d);font-weight:560}
+  .fdiv{width:1px;height:18px;background:var(--line)}
+
+  /* ===== blocks ===== */
+  .blk{margin-top:20px}
+  .bh{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .bh h2{font-size:14px;font-weight:660}
+  .bh .r{margin-left:auto;display:flex;gap:6px;align-items:center}
+  .pill{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);
+    border:1px solid var(--line);border-radius:20px;padding:2px 8px;font-weight:670;background:var(--card)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+  .note{font-size:11.5px;color:var(--ink-3);padding:10px 16px;border-top:1px solid var(--line-2)}
+  .note b{color:var(--ink-2);font-weight:620}
+
+  /* ===== mosaic ===== */
+  .mosaic{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:11px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px}
+  .tile.hero{grid-row:span 2;display:flex;flex-direction:column}
+  .tk{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .tv{display:flex;align-items:baseline;gap:7px;margin-top:8px;flex-wrap:wrap}
+  .tv .n{font-size:30px;font-weight:700;line-height:.9;letter-spacing:-.032em}
+  .hero .tv .n{font-size:60px;letter-spacing:-.042em}
+  .tv .of{font-size:16px;color:var(--ink-3);font-weight:560}
+  .tv .u{font-size:15px;color:var(--ink-3);font-weight:560}
+  .pop{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:650;
+    padding:2px 7px;border-radius:20px;white-space:nowrap}
+  .pop.up{background:var(--green-l);color:var(--green-d)}
+  .pop.dn{background:var(--rose-l);color:var(--rose-d)}
+  .pop.fl{background:var(--line-2);color:var(--ink-3)}
+  .spk{display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:12px}
+  .spk i{flex:1;border-radius:2px 2px 0 0;min-height:2px;background:#c9d8f5}
+  .spk i.now{background:var(--blue)}
+  .spkl{display:flex;justify-content:space-between;font-size:9.5px;color:var(--ink-4);margin-top:4px}
+  .tf{font-size:11.5px;color:var(--ink-3);margin-top:11px;line-height:1.5}
+  .tf b{color:var(--ink-2);font-weight:620}
+  .ptr{height:8px;background:var(--line-2);border-radius:5px;position:relative;margin-top:14px}
+  .pfl{height:100%;border-radius:5px;background:var(--green)}
+  .pfr{position:absolute;top:0;bottom:0;border-radius:5px;
+    background:repeating-linear-gradient(45deg,#a8dfc2,#a8dfc2 3px,transparent 3px,transparent 6px)}
+  .plg{display:flex;gap:14px;margin-top:9px;font-size:10.5px;color:var(--ink-3);flex-wrap:wrap}
+  .plg span{display:inline-flex;align-items:center;gap:5px}
+  .plg i{width:9px;height:9px;border-radius:2px}
+  .gap{margin-top:auto;padding-top:14px;font-size:12.5px;color:var(--ink-2);line-height:1.55}
+  .gap b{color:var(--ink);font-weight:650}
+  .up7{display:flex;align-items:flex-end;gap:4px;height:28px;margin-top:11px}
+  .up7 div{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .up7 i{width:100%;background:var(--violet);border-radius:2px 2px 0 0;min-height:2px}
+  .up7 b{font-size:9px;color:var(--ink-3);font-weight:650}
+  .up7l{display:flex;gap:4px;margin-top:4px}
+  .up7l span{flex:1;text-align:center;font-size:9px;color:var(--ink-4)}
+
+  /* ===== FUNNEL — the visual anchor ===== */
+  .fn{padding:16px 20px 4px}
+  .frow{display:grid;grid-template-columns:158px 1fr 78px 74px 96px;gap:16px;align-items:center;
+    padding:10px 0}
+  .fhd{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);
+    font-weight:680;padding:0 0 9px;border-bottom:1px solid var(--line)}
+  .fhd.r{text-align:right}
+  .fst{font-size:13.5px;font-weight:600}
+  .fwho{display:block;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+    color:var(--ink-4);font-weight:680;margin-top:2px}
+  .ftr{display:flex;height:34px;border-radius:5px;overflow:hidden;background:var(--line-2);min-width:6px}
+  .fgo{height:100%;cursor:pointer;transition:filter .12s}
+  .fgo:hover{filter:brightness(1.08)}
+  .fstop{height:100%;background:repeating-linear-gradient(45deg,#f1f2f5,#f1f2f5 5px,#e4e6ea 5px,#e4e6ea 10px)}
+  .fn .num{text-align:right;font-size:19px;font-weight:690;letter-spacing:-.02em}
+  .fn .cv{text-align:right;font-size:13px;color:var(--ink-2);font-weight:620}
+  .fn .cv.dim{color:var(--ink-4);font-weight:450}
+  .fstk{text-align:right}
+  .fstk button{border:0;background:var(--amber-l);color:var(--amber-d);border-radius:20px;
+    padding:3px 10px;font:inherit;font-size:11.5px;font-weight:680;cursor:pointer}
+  .fstk button:hover{background:#fbe6c4}
+  .fstk .z{color:var(--ink-4);font-size:11.5px}
+  .fout{display:flex;gap:0;border-top:1px solid var(--line);margin-top:6px}
+  .fo{padding:12px 20px;border-right:1px solid var(--line);flex:1}
+  .fo:last-child{border-right:0}
+  .fo .k{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .fo .v{font-size:17px;font-weight:690;margin-top:4px}
+  .fo .s{font-size:11px;color:var(--ink-3)}
+  .flg{display:flex;gap:14px;flex-wrap:wrap;font-size:10.5px;color:var(--ink-3);
+    padding:9px 20px;border-top:1px solid var(--line-2)}
+  .flg span{display:inline-flex;align-items:center;gap:6px}
+  .flg i{width:15px;height:9px;border-radius:2px}
+  .flg i.stop{background:repeating-linear-gradient(45deg,#f1f2f5,#f1f2f5 3px,#e4e6ea 3px,#e4e6ea 6px);
+    border:1px solid var(--line)}
+
+  /* ===== tabs + tables ===== */
+  .tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--line);padding:0 6px}
+  .tabs button{border:0;background:none;font:inherit;font-size:12.5px;color:var(--ink-2);
+    padding:11px 13px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;
+    white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+  .tabs button:hover{background:var(--card-2)}
+  .tabs button b{font-weight:700;font-size:13px}
+  .tabs .qtl{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25}
+  .tabs .qtl em{font-style:normal;font-size:9.5px;color:var(--ink-4);font-weight:500}
+  .tabs button[aria-selected="true"] .qtl em{color:var(--ink-3)}
+  .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--nav);font-weight:600}
+  .tabs button.r b{color:var(--rose)} .tabs button.a b{color:var(--amber)}
+  .tabs button[aria-selected="true"].r b,.tabs button[aria-selected="true"].a b{color:inherit}
+  .tw{overflow-x:auto}
+  table.d{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.d th{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);
+    font-weight:680;text-align:left;padding:11px 13px 11px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.d th:first-child{padding-left:16px} table.d th:last-child{padding-right:16px}
+  table.d th.r{text-align:right}
+  table.d td{padding:11px 13px 11px 0;border-bottom:1px solid var(--line-2)}
+  table.d td:first-child{padding-left:16px} table.d td:last-child{padding-right:16px}
+  table.d td.r{text-align:right}
+  table.d tbody tr:last-child td{border-bottom:0}
+  table.d tfoot td{border-bottom:0;border-top:1px solid var(--line);font-weight:660;color:var(--ink-2)}
+  .rn{font-weight:600}
+  .rn span{display:block;font-size:10.5px;color:var(--ink-3);font-weight:450;margin-top:1px}
+  .noown{color:var(--rose);font-weight:600}
+  .wt{font-weight:650} .wt.r{color:var(--rose)} .wt.a{color:var(--amber)}
+  .act{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:4px 10px;
+    font:inherit;font-size:11.5px;font-weight:580;color:var(--blue);cursor:pointer;white-space:nowrap}
+  .act:hover{background:var(--blue-l);border-color:var(--blue)}
+  .dotk{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:8px;vertical-align:1px}
+  .cell{display:inline-flex;align-items:center;gap:8px}
+  .cell .t{width:48px;height:6px;border-radius:3px;background:var(--line-2);flex:none}
+  .cell .t i{display:block;height:100%;border-radius:3px;background:var(--blue)}
+  .cell .t i.g{background:var(--green)} .cell .t i.a{background:var(--amber)}
+  .cell .t i.v{background:var(--violet)}
+  .cell b{min-width:36px;text-align:right;font-weight:640}
+  .tag{font-size:10.5px;padding:2px 7px;border-radius:4px;border:1px solid var(--line);
+    color:var(--ink-2);background:var(--card-2);white-space:nowrap}
+  .tag.sig{color:var(--violet);border-color:var(--violet-l);background:#f7f4fe}
+  .tag.sf{color:var(--blue-d);border-color:var(--blue-l);background:#f0f6fe}
+  .sbox{display:inline-block;min-width:22px;padding:2px 7px;border-radius:4px;font-weight:680;
+    font-size:12.5px;text-align:center}
+  .s5{background:var(--green-l);color:var(--green-d)} .s4{background:#e6f5ec;color:#12854f}
+  .s3{background:var(--amber-l);color:var(--amber-d)}
+  .showmore{text-align:center;padding:11px;border-top:1px solid var(--line-2)}
+
+  .split{display:grid;grid-template-columns:minmax(220px,1fr) minmax(240px,1.1fr)}
+  .spL{padding:15px;border-right:1px solid var(--line)} .spR{padding:15px}
+  .subk{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+    font-weight:680;margin-bottom:11px}
+  .chn{display:flex;flex-direction:column;gap:12px}
+  .chnr{display:grid;grid-template-columns:76px 1fr 88px;gap:10px;align-items:center;font-size:12.5px}
+  .chnr .cn{display:flex;align-items:center;gap:7px;color:var(--ink-2);font-weight:560}
+  .chnr .ct{height:17px;background:var(--line-2);border-radius:4px;overflow:hidden}
+  .chnr .ct i{display:block;height:100%;border-radius:4px}
+  .chnr .cv{text-align:right} .chnr .cv b{font-weight:680} .chnr .cv span{color:var(--ink-3);font-size:11px}
+  .rqbar{display:flex;height:28px;border-radius:5px;overflow:hidden;margin-bottom:11px}
+  .rqbar i{height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;
+    font-weight:660;color:#fff;min-width:12px}
+  .rqr{display:grid;grid-template-columns:11px 1fr 38px 44px;gap:8px;align-items:center;
+    padding:6px 0;border-top:1px solid var(--line-2);font-size:12.5px}
+  .rqr:first-child{border-top:0}
+  .rqr .sw{width:9px;height:9px;border-radius:2px}
+  .rqr .n{text-align:right;font-weight:660}
+  .rqr .p{text-align:right;color:var(--ink-3);font-size:11px}
+  .chart{width:100%;height:168px;display:block;padding:13px 16px 2px}
+  .clg{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:11px;color:var(--ink-2);padding:2px 0 10px}
+  .clg span{display:inline-flex;align-items:center;gap:6px}
+  .clg i{width:9px;height:9px;border-radius:2px} .clg i.ln{width:13px;height:2px}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line)}
+  .kp{padding:11px 14px;border-right:1px solid var(--line)}
+  .kp:last-child{border-right:0}
+  .kp .a{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .kp .b{font-size:18px;font-weight:690;margin-top:3px;letter-spacing:-.02em}
+  .kp .c{font-size:10.5px;color:var(--ink-3)}
+  .kp.warn .b{color:var(--rose)}
+  tr.det td{background:var(--card-2);padding:0;border-bottom:1px solid var(--line)}
+  .detin{padding:14px 16px}
+  .dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(116px,1fr));gap:12px;margin-bottom:12px}
+  .dk{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .dv{font-size:12.5px;margin-top:3px;font-weight:540}
+  .tlk{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);
+    font-weight:680;padding-top:11px;border-top:1px solid var(--line);margin-bottom:7px}
+  ul.tl{list-style:none;margin:0;padding:0}
+  ul.tl li{display:grid;grid-template-columns:56px 66px 1fr;gap:10px;padding:5px 0;
+    border-top:1px solid var(--line-2);font-size:11.5px;align-items:baseline}
+  ul.tl li:first-child{border-top:0}
+  ul.tl .dd{color:var(--ink-3)} ul.tl .ww{font-weight:620}
+  ul.tl .ww.ae{color:var(--green)} ul.tl .ww.sdr{color:var(--blue)} ul.tl .ww.sig{color:var(--violet)}
+  ul.tl .xx{color:var(--ink-2)}
+  tbody tr.click{cursor:pointer} tbody tr.click:hover{background:var(--card-2)}
+
+  footer{margin-top:24px;padding-top:13px;border-top:1px solid var(--line);
+    font-size:11px;color:var(--ink-3);line-height:1.65}
+  footer b{color:var(--ink-2)}
+  .fab{position:fixed;right:17px;bottom:17px;width:37px;height:37px;border-radius:50%;
+    background:var(--nav);color:#fff;border:0;cursor:pointer;display:flex;align-items:center;
+    justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:40}
+  .connx{margin-top:14px;padding-top:12px;border-top:1px solid var(--line-2);font-size:12.5px;
+    color:var(--ink-2);display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .connx b{font-size:20px;font-weight:690;color:var(--ink);letter-spacing:-.02em}
+  .connx span{color:var(--ink-3);font-size:11.5px}
+  .aewrap{padding:14px 16px 4px;border-top:1px solid var(--line-2)}
+  .aer{display:grid;grid-template-columns:132px 1fr 74px;gap:12px;align-items:center;padding:5px 0}
+  .aen{font-size:12.5px;font-weight:560;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .aeb{position:relative;height:20px}
+  .aeb i{position:absolute;left:0;border-radius:3px;display:block}
+  .aeb i.h{top:0;height:20px;background:#bfd0f0}
+  .aeb i.s{top:4px;height:12px;background:var(--green)}
+  .aev{text-align:right;font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .aev b{color:var(--green-d);font-weight:700}
+  .aelg{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:11px;color:var(--ink-3);
+    padding-top:10px;margin-top:6px;border-top:1px solid var(--line-2)}
+  .aelg span{display:inline-flex;align-items:center;gap:6px}
+  .aelg i{width:14px;height:9px;border-radius:2px;display:inline-block}
+  .aelg i.h{background:#bfd0f0} .aelg i.s{background:var(--green)}
+  .aelg b{color:var(--ink-2)}
+  /* performance stat row */
+  .perfwrap{display:grid;grid-template-columns:minmax(250px,1fr) minmax(340px,2.1fr)}
+  .perfhero{padding:20px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column}
+  .hn{display:flex;align-items:baseline;gap:11px;margin-top:10px;flex-wrap:wrap}
+  .hn .big{font-size:64px;font-weight:700;line-height:.88;letter-spacing:-.045em}
+  .hsub{font-size:12.5px;color:var(--ink-2);line-height:1.55;margin-top:14px}
+  .hsub b{color:var(--ink);font-weight:650}
+  .hsec{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;
+    border-top:1px solid var(--line-2)}
+  .hsec .k{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .hsec .v{font-size:26px;font-weight:690;letter-spacing:-.025em;margin-top:5px}
+  .hsec .s{font-size:11px;color:var(--ink-3);margin-top:2px}
+  @media(max-width:1000px){
+    .perfwrap{grid-template-columns:1fr}
+    .perfhero{border-right:0;border-bottom:1px solid var(--line)}
+  }
+  @media(max-width:680px){ .hn .big{font-size:50px} }
+  .st{padding:14px 18px;border-right:1px solid var(--line)}
+  .st:last-child{border-right:0}
+  .chart.tall{height:212px}
+  /* by-people bars: same encoding as Performance, x-axis = person */
+  .pchart{padding:14px 16px 2px}
+  .pr{display:grid;grid-template-columns:180px 1fr 70px 44px;gap:13px;align-items:center;padding:7px 0}
+  .pn{font-size:12.5px;font-weight:600;overflow:hidden}
+  .pn span{display:block;font-size:10.5px;color:var(--ink-3);font-weight:450;margin-top:1px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pn .warnx{color:var(--rose);font-weight:650}
+  .pb{position:relative;height:22px}
+  .pb i{position:absolute;left:0;border-radius:3px;display:block}
+  .pb i.h{top:0;height:22px;background:#bfd0f0}
+  .pb i.s{top:0;height:22px;background:var(--green)}
+  .pv{text-align:right;font-size:12.5px;color:var(--ink-2)}
+  .pv b{color:var(--green-d);font-weight:700}
+  .pp{text-align:right;font-size:12.5px;font-weight:660}
+  /* single-SDR card */
+  .sdrcard{display:grid;grid-template-columns:repeat(4,1fr);padding:0}
+  .sdrc{padding:14px 16px;border-right:1px solid var(--line)}
+  .sdrc:last-child{border-right:0}
+  /* route rows in channels */
+  .chip2{display:inline-block;font-size:10.5px;font-weight:620;padding:2px 8px;border-radius:20px;white-space:nowrap}
+  .chip2.c-sal{background:var(--green-l);color:var(--green-d)}
+  .chip2.c-fch{background:var(--blue-l);color:var(--blue-d)}
+  .chip2.c-nur{background:var(--amber-l);color:var(--amber-d)}
+  .nosc{color:var(--rose);font-weight:620;font-size:11.5px}
+  .mix{font-variant-numeric:tabular-nums;font-weight:650}
+  .mix .tg{color:var(--ink-3);font-weight:450}
+  .mix b{margin-left:6px;font-size:11px;padding:1px 5px;border-radius:3px}
+  .mix b.over{background:var(--amber-l);color:var(--amber-d)}
+  .mix b.under{background:var(--line-2);color:var(--ink-3)}
+  .rtr{display:grid;grid-template-columns:118px 1fr 132px;gap:10px;align-items:center;
+    padding:5px 0;font-size:12.5px}
+  .rtn{color:var(--ink-2);font-weight:560}
+  .rtb{height:16px;background:var(--line-2);border-radius:4px;overflow:hidden}
+  .rtb i{display:block;height:100%;border-radius:4px}
+  .rtv{text-align:right;font-weight:660}
+  .rtv span{color:var(--ink-3);font-weight:450;font-size:11px}
+  /* ---------- tooltip ---------- */
+  #tip{position:fixed;z-index:90;pointer-events:none;background:#0f1319;color:#fff;
+    border-radius:8px;padding:9px 11px;font-size:12px;line-height:1.5;max-width:280px;
+    box-shadow:0 8px 26px rgba(10,14,20,.28);opacity:0;transition:opacity .09s;
+    font-variant-numeric:tabular-nums}
+  #tip.on{opacity:1}
+  #tip .th{font-weight:670;margin-bottom:5px;font-size:12.5px}
+  #tip .tr{display:flex;gap:14px;justify-content:space-between}
+  #tip .tr span{color:#9aa4b2}
+  #tip .tr b{font-weight:660}
+  #tip .tb{margin-top:6px;padding-top:6px;border-top:1px solid #263040;color:#c3ccd8}
+  #tip .pos{color:#5fd99a} #tip .neg{color:#f2949c}
+  /* hoverable affordances */
+  .def{border-bottom:1px dotted var(--ink-4);cursor:help}
+  th .def{border-bottom-color:var(--ink-3)}
+  [data-tip]{cursor:default}
+  rect[data-tip],.fgo[data-tip],.fstop[data-tip],.pb i[data-tip],.rqbar i[data-tip]{cursor:pointer}
+  rect[data-tip]:hover,.rqbar i[data-tip]:hover{filter:brightness(1.08)}
+  .pb i[data-tip]:hover,.ct i[data-tip]:hover{filter:brightness(1.06)}
+  table.d th.srt{cursor:pointer;user-select:none}
+  table.d th.srt:hover{color:var(--ink-2)}
+  table.d th .car{opacity:0;font-size:8px;margin-left:4px}
+  table.d th[data-on] .car{opacity:1}
+  table.d th[data-on]{color:var(--ink)}
+  .menu{display:none}
+  .scrim{display:none;position:fixed;inset:0;background:rgba(10,12,15,.45);z-index:55}
+  .scrim.on{display:block}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+  @media(max-width:1240px){
+    .mosaic{grid-template-columns:1fr 1fr}
+    .tile.hero{grid-column:1/-1;grid-row:auto}
+    .hero .tv .n{font-size:48px}
+  }
+  @media(max-width:1000px){
+    .verdict{flex-wrap:wrap}
+    .vseg{border-right:0;border-bottom:1px solid var(--line);width:100%}
+    .vseg:last-child{border-bottom:0}
+    .kpis{grid-template-columns:repeat(3,1fr)} .kp:nth-child(3){border-right:0}
+    .fout{flex-wrap:wrap} .fo{min-width:50%;border-bottom:1px solid var(--line)}
+  }
+  @media(max-width:900px){
+    .menu{display:flex}
+    .side{position:fixed;left:-208px;z-index:60;transition:left .18s}
+    .side.open{left:0}
+    .split{grid-template-columns:1fr}
+    .spL{border-right:0;border-bottom:1px solid var(--line)}
+    .frow{grid-template-columns:112px 1fr 56px 52px 62px;gap:9px}
+  }
+  @media(max-width:900px){
+    .sdrcard{grid-template-columns:1fr 1fr}
+    .sdrc:nth-child(2){border-right:0}
+    .sdrc:nth-child(1),.sdrc:nth-child(2){border-bottom:1px solid var(--line)}
+    .pr{grid-template-columns:1fr 70px 44px;row-gap:5px}
+    .pr .pb{grid-column:1/-1;order:9}
+    .rtr{grid-template-columns:1fr 116px;row-gap:4px}
+    .rtr .rtb{grid-column:1/-1;order:9}
+  }
+  @media(max-width:680px){
+    .statrow{grid-template-columns:1fr}
+    .st{border-right:0;border-bottom:1px solid var(--line)}
+    .st:last-child{border-bottom:0}
+    .body{padding:0 12px 60px}
+    .topin{padding:0 12px}
+    .mosaic{grid-template-columns:1fr} .hero .tv .n{font-size:42px}
+    .kpis{grid-template-columns:1fr 1fr} .kp{border-right:0;border-bottom:1px solid var(--line)}
+    .frow{grid-template-columns:1fr 56px 50px;row-gap:4px}
+    .frow .ftw{grid-column:1/-1;order:9}
+    .frow .fstk{grid-column:1/-1;order:10;text-align:left}
+    .ttl span{display:none}
+  }
+</style>
+</head>
+<body>
+<div id="tip" role="tooltip" aria-hidden="true"></div>
+<div class="shell">
+
+  <aside class="side" id="side">
+    <div class="brand"><div class="mark">S</div>
+      <div class="bt">Servion<span>Global Solutions</span></div></div>
+    <div class="navsec">Workspace</div>
+    <nav class="nav">
+      <a href="#"><i>▤</i>Company</a>
+      <a href="#" class="on"><i>◧</i>Dashboard</a>
+      <a href="#"><i>≡</i>Activity Logs</a>
+      <a href="#"><i>◈</i>Leads</a>
+      <a href="#"><i>➤</i>Actions</a>
+      <a href="#"><i>▦</i>Contracts</a>
+    </nav>
+    <div class="navsec">Settings</div>
+    <nav class="nav">
+      <a href="#"><i>◔</i>Feedback</a>
+      <a href="#"><i>⚙</i>Config</a>
+    </nav>
+    <div class="sideft"><div class="who"><div class="av">KB</div>
+      <div><b>Katie Bjornson</b><span>Servion</span></div></div></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar"><div class="topin">
+      <button class="ico menu" id="menu" aria-expanded="false" title="Menu">☰</button>
+      <div class="ttl">Signal <span>· Sales Command Centre</span></div>
+      <div class="tright">
+        <button class="ico" title="Notifications">◔<span class="badge">12</span></button>
+        <div class="lang"><button class="on">EN</button><button>IT</button></div>
+        <button class="ico" title="Theme">◐</button>
+      </div>
+    </div></div>
+
+    <div class="body">
+
+      <div class="banner" id="banner">
+        <span>⚠</span><div><b>Nooks call logging is 3 hours behind.</b></div>
+        <div class="bsp"><button class="bbtn">Check connection</button>
+          <button class="bx" id="bx">×</button></div>
+      </div>
+
+      <div class="verdict" id="verdict"></div>
+
+      <div class="ctl">
+        <div class="seg" id="segP">
+          <button data-p="day" aria-pressed="false">Day</button><button data-p="week" aria-pressed="false">Week</button><button data-p="month" aria-pressed="true">Month</button><button data-p="quarter" aria-pressed="false">Quarter</button>
+        </div>
+        <div class="cright">
+          <span style="font-size:11.5px;color:var(--ink-3)" id="fCount">No filters</span>
+          <button class="lnk" id="advBtn">Filters</button>
+          <button class="lnk" id="fClear" disabled>Clear</button>
+        </div>
+      </div>
+      <div class="adv" id="adv">
+        <span class="flab">Channel</span>
+        <button class="chk" data-ch="email" aria-pressed="false"><i style="background:var(--blue)"></i>Email</button>
+        <button class="chk" data-ch="call" aria-pressed="false"><i style="background:var(--green)"></i>Calls</button>
+        <button class="chk" data-ch="li" aria-pressed="false"><i style="background:var(--violet)"></i>LinkedIn</button>
+        <div class="fdiv"></div>
+        <select id="fSdr"></select>
+        <select id="fCamp"></select>
+        <select id="fVert"></select>
+        <select id="fReg"></select>
+        <select id="fPlat"></select>
+      </div>
+
+      <!-- PERFORMANCE -->
+      <div class="blk">
+        <div class="bh"><h2>Performance</h2>
+          <span class="r"><span class="pill def" data-tipk="elapsed" id="pLab">Nov 2026</span></span></div>
+        <div class="card">
+          <div class="perfwrap">
+            <div class="perfhero" id="perfHero"></div>
+            <div class="perfchart">
+              <svg class="chart tall" id="perf" role="img"
+                aria-label="Fit calls held and SALs converted over time"></svg>
+              <div class="clg">
+                <span><i style="background:#bfd0f0"></i>Fit calls held</span>
+                <span><i style="background:var(--green)"></i>SALs converted</span>
+                <span style="color:var(--ink-4)">% above each bar = SAL rate</span>
+              </div>
+            </div>
+          </div>
+          <div class="note" id="perfNote"></div>
+        </div>
+      </div>
+
+      <!-- FUNNEL -->
+      <div class="blk">
+        <div class="bh"><h2>Pipeline funnel</h2>
+          <span class="r"><span class="pill">Accounts</span></span></div>
+        <div class="card">
+          <div class="fn">
+            <div class="frow"><div class="fhd">Stage</div><div class="fhd">Moved on vs stopped</div>
+              <div class="fhd r">Accounts</div><div class="fhd r">Conv.</div><div class="fhd r">Stuck</div></div>
+            <div id="fnl"></div>
+          </div>
+          <div class="fout" id="fout"></div>
+          <div class="flg">
+            <span><i id="lg1" style="background:var(--blue)"></i>Moved on</span>
+            <span><i class="stop"></i>Stopped here</span>
+            <span style="color:var(--ink-4)">Bar width = share of accounts worked</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEEDS ACTION -->
+      <div class="blk" id="needs">
+        <div class="bh"><h2>Needs action</h2>
+          <span class="r"><span class="pill" id="recPill">4 SALs recovered</span></span></div>
+        <div class="card">
+          <div class="tabs" id="qTabs"></div>
+          <div class="tw"><table class="d">
+            <thead><tr><th>Account</th><th>To do</th><th class="r">Engagement</th><th>Owner</th>
+              <th class="r">Waiting</th><th class="r"></th></tr></thead>
+            <tbody id="qBody"></tbody>
+          </table></div>
+          <div class="showmore"><button class="lnk" id="qMore"></button></div>
+        </div>
+      </div>
+
+      <!-- BY MARKET -->
+      <div class="blk">
+        <div class="bh"><h2>Market breakdown</h2>
+          <span class="r"><span class="pill">Where to invest</span>
+            <button class="lnk">Export CSV</button></span></div>
+        <div class="card">
+          <div class="tabs" id="mTabs">
+            <button data-k="vertical" aria-selected="true">Sector</button><button data-k="region" aria-selected="false">Region</button><button data-k="platform" aria-selected="false">Incumbent platform</button><button data-k="source" aria-selected="false">Source</button>
+          </div>
+          <div class="tw"><table class="d">
+            <thead id="mHead"></thead>
+            <tbody id="mBody"></tbody><tfoot id="mFoot"></tfoot>
+          </table></div>
+          <div class="note" id="mNote"></div>
+        </div>
+      </div>
+
+      <!-- BY PEOPLE -->
+      <div class="blk">
+        <div class="bh"><h2>By people</h2>
+          <span class="r"><span class="pill">Who needs support</span></span></div>
+        <div class="card">
+          <div class="tabs" id="pTabs">
+            <button data-k="ae" aria-selected="true">AE — holds &amp; scores the call</button><button data-k="sdr" aria-selected="false">SDR — books the call</button>
+          </div>
+          <div id="peopleBody"></div>
+          <div class="note" id="pNote"></div>
+        </div>
+      </div>
+
+      <!-- SAL LEADS -->
+      <div class="blk">
+        <div class="bh"><h2>Accounts at fit call and beyond</h2>
+          <span class="r"><span class="pill" id="salPill">14</span>
+            <button class="lnk">Export CSV</button></span></div>
+        <div class="card">
+          <div class="tw"><table class="d">
+            <thead><tr><th>Company</th><th>Stage</th><th>SDR</th><th>Sector</th><th>Source</th>
+              <th>Hook</th><th class="r">AE score</th><th>Owner</th><th>Next step</th></tr></thead>
+            <tbody id="salBody"></tbody>
+          </table></div>
+          <div class="showmore"><button class="lnk" id="salMore"></button></div>
+        </div>
+      </div>
+
+      <!-- CHANNELS -->
+      <div class="blk">
+        <div class="bh"><h2>Channels and replies</h2>
+          <span class="r"><span class="pill">Actions</span></span></div>
+        <div class="card"><div class="split">
+          <div class="spL"><div class="subk">Effort by channel</div><div class="chn" id="chn"></div>
+            <div class="connx" id="connx"></div></div>
+          <div class="spR"><div class="subk">Replies · <span id="rqN">118</span></div>
+            <div class="rqbar" id="rqbar"></div><div id="rqrows"></div>
+            <div class="routex"><div class="subk" style="margin:14px 0 10px">How the account reached the SDR</div>
+              <div id="routex"></div></div></div>
+        </div></div>
+      </div>
+
+      <!-- DAILY ACTIVITY (demoted) -->
+      <div class="blk">
+        <div class="bh"><h2>Daily activity</h2>
+          <span class="r"><span class="pill">Reference</span></span></div>
+        <div class="card">
+          <svg class="chart" id="chart" role="img" aria-label="Daily outbound by channel with replies"></svg>
+          <div class="clg">
+            <span><i style="background:var(--blue)"></i>Email</span>
+            <span><i style="background:var(--green)"></i>Calls</span>
+            <span><i style="background:var(--violet)"></i>LinkedIn</span>
+            <span><i class="ln" style="background:var(--rose)"></i>Replies</span>
+          </div>
+          <div class="kpis" id="kpis"></div>
+        </div>
+      </div>
+
+      <!-- DIAGNOSTIC -->
+      <div class="blk">
+        <div class="bh"><h2>Score validation</h2>
+          <span class="r"><span class="pill">Diagnostic · all time · ignores filters</span></span></div>
+        <div class="card">
+          <div class="tabs" id="sTabs">
+            <button data-k="lead" aria-selected="true">Lead score — set before any contact</button><button data-k="eng" aria-selected="false">Engagement score — from campaign activity</button>
+          </div>
+          <div class="tw"><table class="d">
+            <thead><tr><th id="sCol">Lead score bucket</th><th class="r">Accounts</th><th class="r">Reached</th>
+              <th class="r">Replied</th><th class="r">Hot</th><th class="r">SAL</th></tr></thead>
+            <tbody id="lsvBody"></tbody>
+          </table></div>
+          <div class="note" id="lsvNote"></div>
+        </div>
+      </div>
+
+      <footer>
+        <b>SAL</b> — fit call the AE scored 7 or above; below 7 goes to nurture.
+        <b>Accounts worked</b> — at least one action out. <b>Reply rate</b> — accounts replied ÷ accounts worked.
+        <b>Connect rate</b> — contacts reached in live conversation ÷ contacts attempted, the only
+        contact-level measure here. Accounts and actions are never mixed. Sample build — figures illustrative.
+      </footer>
+    </div>
+  </div>
+</div>
+<div class="scrim" id="scrim"></div>
+<button class="fab" title="Feedback">◔</button>
+
+<script>
+(function(){
+'use strict';
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var nf=function(n){return Math.round(n).toLocaleString('en-US');};
+var pc=function(n,d,dp){return d?((n/d*100).toFixed(dp||0)+'%'):'—';};
+
+function lcg(s){return function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;};}
+function buildDays(n,seed){
+  var r=lcg(seed),out=[],i,dow,b;
+  for(i=0;i<n;i++){dow=(i+2)%7;b=(dow>=5)?0.06:(0.75+r()*0.5);
+    out.push({email:Math.round(b*(58+r()*34)),call:Math.round(b*(24+r()*16)),li:Math.round(b*(3+r()*4))});}
+  out.forEach(function(d,k){var s=out[Math.max(0,k-2)];
+    d.rep=Math.round((s.email*0.055+s.call*0.09+s.li*0.05)*(0.7+r()*0.7));});
+  return out;
+}
+/* No target is set. Servion's own 5.6 leads/wk is derived from ACV and win-rate
+   maths that sit outside Signal's scope, and no target is agreed yet. Set this
+   to a number and the hero renders attainment; leave null and it shows the rate. */
+var TARGET=null;
+/* One series per period. The final bucket(s) sum to that period's totals, so the
+   chart and the stat row can never disagree. held = fit calls held, sal = SALs. */
+var SERIES={
+  day:    {lab:'last 10 days', x:['d-9','d-8','d-7','d-6','d-5','d-4','d-3','d-2','yest','today'],
+           held:[1,2,1,2,1,3,2,1,2,1], sal:[0,1,1,1,0,2,1,1,1,1], tail:1},
+  week:   {lab:'this week, by day', x:['Mon','Tue','Wed','Thu','Fri'],
+           held:[1,2,1,1,1], sal:[1,1,0,1,1], tail:5},
+  month:  {lab:'last 12 weeks', x:['w-11','w-10','w-9','w-8','w-7','w-6','w-5','w-4','w-3','w-2','w-1','now'],
+           held:[2,3,3,4,3,4,5,4,5,4,6,4], sal:[1,2,2,3,2,3,4,3,4,3,4,3], tail:4},
+  quarter:{lab:'last 6 months', x:['Jun','Jul','Aug','Sep','Oct','Nov'],
+           held:[12,14,15,17,19,20], sal:[8,10,11,13,14,14], tail:3}
+};
+var ELAPSED={day:'62% elapsed',week:'80% elapsed',month:'70% elapsed',quarter:'78% elapsed'};
+/* engagement score exists only once an account has been contacted, so its pool is
+   the worked accounts — not the whole ranked pool the lead score covers */
+var ESV=[{b:'70–100 · hot',n:148,reached:68.2,replied:62.2,hot:8.8,sal:6.8},
+         {b:'35–69 · warm',n:196,reached:44.4,replied:35.7,hot:3.6,sal:2.6},
+         {b:'1–34 · cool',n:176,reached:25.0,replied:15.9,hot:1.1,sal:0.6}];
+var NURTURE_POOL=38;   /* standing pool of accounts scored below 7 */
+
+var PER={
+  day:    {lab:'Today',days:buildDays(1,90),target:TARGET,fore:1,att:68,con:5,
+           hist:[1,0,1,2,0,1],hl:['','now'],prev:1,unit:'day'},
+  week:   {lab:'This week',days:buildDays(7,4711),target:TARGET,fore:3,att:432,con:31,
+           hist:[2,3,3,4,3,4],hl:['w-5','now'],prev:3,unit:'week'},
+  month:  {lab:'Nov 2026',days:buildDays(21,1234),target:TARGET,fore:5,att:1340,con:97,
+           hist:[7,9,8,11,12,14],hl:['Jun','Nov'],prev:12,unit:'month'},
+  quarter:{lab:'Sep–Nov 2026',days:buildDays(62,8899),target:TARGET,fore:5,att:3810,con:263,
+           hist:[21,26,30,34,38,41],hl:['Q1','now'],prev:34,unit:'quarter'}
+};
+var RATE={
+  day:{sal:[0,0,100,50,0,100],con:[6.2,7.0,6.4,7.8,6.9,7.4],psal:0,pcon:6.9},
+  week:{sal:[62,66,68,70,66,67],con:[6.1,6.4,6.8,7.0,6.9,7.2],psal:66,pcon:6.9},
+  month:{sal:[64,67,63,70,72,74],con:[3.5,4.1,4.6,5.8,6.5,7.2],psal:72,pcon:6.5},
+  quarter:{sal:[64,66,68,70,72,73],con:[3.5,4.2,5.0,5.9,6.4,6.9],psal:72,pcon:6.4}
+};
+/* cuts: [name, note, worked, replies, held, sals] · sdr adds booked as [6]
+   Sector list and the intended mix are Servion's own portfolio balance;
+   geography is the ICP's US + Canada; platform is the incumbent estate,
+   which the lead score already boosts for. Every cut sums to the funnel. */
+var MIXTGT={'Banking & financial services':23,'Insurance & payers':20,'Healthcare':12,
+  'Telecom & media':10,'Retail & e-commerce':10,'Utilities & energy':8,
+  'Travel & logistics':7,'BPO':5,'Technology':5};
+var FN={
+  day:{worked:26,replied:6,booked:2,held:1,sal:1,nurture:0,
+    cuts:{sdr:[['Patricia Shostak','',9,2,1,1,1],['Dylan Reyes','',7,2,0,0,1],
+               ['Nadia Haddad','',6,1,0,0,0],['Owen Tsai','',4,1,0,0,0]],
+      source:[['Signal-sourced','',11,3,1,1],['Salesforce','',9,2,0,0],['ZoomInfo','',6,1,0,0]],
+      route:[['Campaign-warmed','reached after the campaign',16,4,1,1],
+             ['Direct to SDR','top-ranked, worked straight away',10,2,0,0]],
+      vertical:[['Banking & financial services','',6,1,0,0],['Insurance & payers','',5,2,1,1],
+                ['Healthcare','',3,1,0,0],['Telecom & media','',3,1,0,0],
+                ['Retail & e-commerce','',3,1,0,0],['Utilities & energy','',2,0,0,0],
+                ['Travel & logistics','',2,0,0,0],['BPO','',1,0,0,0],['Technology','',1,0,0,0]],
+      region:[['United States','',23,5,1,1],['Canada','',3,1,0,0]],
+      platform:[['Genesys','',7,2,1,1],['Cisco','',5,1,0,0],['Avaya','',5,1,0,0],
+                ['NICE','',4,1,0,0],['Amazon Connect','',2,1,0,0],['Not identified','',3,0,0,0]]},
+    ae:[['Joe Klosterman',1,1,9.0,0],['Mike Scott',0,0,null,0],['Eric Chanh',0,0,null,0],['John Galluzzo',0,0,null,0],['Tony Janusky',0,0,null,0],['Not yet scored',0,0,null,0]]},
+  week:{worked:168,replied:39,booked:8,held:6,sal:4,nurture:1,
+    cuts:{sdr:[['Patricia Shostak','',54,13,2,2,3],['Dylan Reyes','',46,11,2,1,2],
+               ['Nadia Haddad','',38,9,1,1,2],['Owen Tsai','',30,6,1,0,1]],
+      source:[['Signal-sourced','',70,19,3,2],['Salesforce','',56,12,2,1],['ZoomInfo','',42,8,1,1]],
+      route:[['Campaign-warmed','reached after the campaign',101,26,4,2],
+             ['Direct to SDR','top-ranked, worked straight away',67,13,2,2]],
+      vertical:[['Banking & financial services','',39,8,1,1],['Insurance & payers','',34,9,2,1],
+                ['Healthcare','',20,6,1,1],['Telecom & media','',17,4,1,1],
+                ['Retail & e-commerce','',17,4,1,0],['Utilities & energy','',14,3,0,0],
+                ['Travel & logistics','',12,3,0,0],['BPO','',8,1,0,0],['Technology','',7,1,0,0]],
+      region:[['United States','',146,34,5,4],['Canada','',22,5,1,0]],
+      platform:[['Genesys','',43,10,2,2],['Cisco','',34,8,1,1],['Avaya','',31,7,1,1],
+                ['NICE','',25,6,1,0],['Amazon Connect','',17,4,1,0],['Not identified','',18,4,0,0]]},
+    ae:[['Joe Klosterman',2,1,8.0,0],['Mike Scott',1,1,7.5,0],['Eric Chanh',1,1,9.0,0],['John Galluzzo',1,1,7.0,0],['Tony Janusky',0,0,null,0],['Not yet scored',1,0,null,1]]},
+  month:{worked:520,replied:118,booked:24,held:19,sal:14,nurture:3,
+    cuts:{sdr:[['Patricia Shostak','',168,42,7,5,8],['Dylan Reyes','',142,33,5,4,7],
+               ['Nadia Haddad','',118,26,4,3,5],['Owen Tsai','',92,17,3,2,4]],
+      source:[['Signal-sourced','',212,54,8,6],['Salesforce','',178,39,6,5],['ZoomInfo','',130,25,5,3]],
+      route:[['Campaign-warmed','reached after the campaign',312,79,11,8],
+             ['Direct to SDR','top-ranked, worked straight away',208,39,8,6]],
+      vertical:[['Banking & financial services','',148,24,4,3],['Insurance & payers','',96,26,5,4],
+                ['Healthcare','',57,18,4,3],['Telecom & media','',47,12,2,2],
+                ['Retail & e-commerce','',47,11,2,1],['Utilities & energy','',40,9,1,1],
+                ['Travel & logistics','',34,8,1,0],['BPO','',26,5,0,0],['Technology','',25,5,0,0]],
+      region:[['United States','',452,103,17,13],['Canada','',68,15,2,1]],
+      platform:[['Genesys','',132,32,6,5],['Cisco','',104,24,4,3],['Avaya','',96,22,4,3],
+                ['NICE','',78,17,3,2],['Amazon Connect','',52,12,1,1],['Not identified','',58,11,1,0]]},
+    ae:[['Joe Klosterman',5,4,8.5,0],['Mike Scott',4,3,7.8,0],['Eric Chanh',4,4,8.8,0],['John Galluzzo',3,2,7.3,0],['Tony Janusky',1,1,7.0,0],['Not yet scored',2,0,null,2]]},
+  quarter:{worked:1480,replied:337,booked:71,held:56,sal:41,nurture:10,
+    cuts:{sdr:[['Patricia Shostak','',478,109,18,13,23],['Dylan Reyes','',404,92,15,11,19],
+               ['Nadia Haddad','',336,76,13,10,16],['Owen Tsai','',262,60,10,7,13]],
+      source:[['Signal-sourced','',604,154,24,18],['Salesforce','',506,111,18,14],['ZoomInfo','',370,72,14,9]],
+      route:[['Campaign-warmed','reached after the campaign',888,226,32,24],
+             ['Direct to SDR','top-ranked, worked straight away',592,111,24,17]],
+      vertical:[['Banking & financial services','',421,71,12,9],['Insurance & payers','',274,74,14,11],
+                ['Healthcare','',163,51,11,8],['Telecom & media','',133,34,7,5],
+                ['Retail & e-commerce','',133,32,5,4],['Utilities & energy','',114,26,4,3],
+                ['Travel & logistics','',96,23,3,1],['BPO','',74,14,0,0],['Technology','',72,12,0,0]],
+      region:[['United States','',1287,293,50,37],['Canada','',193,44,6,4]],
+      platform:[['Genesys','',376,91,18,14],['Cisco','',296,68,12,9],['Avaya','',273,62,11,8],
+                ['NICE','',222,49,8,6],['Amazon Connect','',148,34,4,3],['Not identified','',165,33,3,1]]},
+    ae:[['Joe Klosterman',15,12,8.3,0],['Mike Scott',12,10,7.7,0],['Eric Chanh',12,11,8.6,0],['John Galluzzo',9,6,7.2,0],['Tony Janusky',3,2,7.0,0],['Not yet scored',5,0,null,5]]}
+};
+/* campaigns cover a share of the worked accounts */
+var CAMPAIGNS=[{n:'Contact centre modernisation',share:0.42},
+               {n:'Patient & member access',share:0.22},
+               {n:'Voice AI & automation',share:0.21},
+               {n:'Cloud migration',share:0.15}];
+var MIX=[{k:'Wants to talk',s:0.288,c:'var(--green)'},{k:'Wants pricing',s:0.144,c:'var(--blue)'},
+  {k:'Not now',s:0.441,c:'var(--amber)'},{k:'Opted out',s:0.127,c:'var(--rose)'}];
+var STG=[
+  {k:'worked',lab:'Accounts worked',who:'SDR',col:'var(--blue)',stall:47,q:'followup'},
+  {k:'replied',lab:'Replied',who:'SDR',col:'var(--violet)',stall:12,q:'reply'},
+  {k:'booked',lab:'Fit call booked',who:'SDR',col:'var(--amber)',stall:3,q:'followup'},
+  {k:'held',lab:'Fit call held',who:'AE',col:'#b06f0c',stall:2,q:'score'},
+  {k:'sal',lab:'SAL converted',who:'AE',col:'var(--green)',stall:1,q:'assign'}
+];
+/* queues named for the step in Servion's process that owes the action */
+var Q=[
+  {k:'score',   lab:'To be scored',       at:'Fit call held',    n:2, cls:'r', sev:0},
+  {k:'assign',  lab:'To be given an owner',at:'SAL converted',  n:1, cls:'r', sev:0},
+  {k:'reply',   lab:'To be answered',     at:'Replied',          n:12,cls:'r', sev:0},
+  {k:'approve', lab:'To be approved',     at:'Signal-sourced',   n:2, cls:'a', sev:1},
+  {k:'sent',    lab:'To be sent',         at:'Draft ready',      n:7, cls:'a', sev:1},
+  {k:'followup',lab:'To be chased',       at:'Approached',       n:50,cls:'a', sev:2}
+];
+var QR={
+  score:[{c:'SECU',s:'Banking · N. Carolina',need:'Log the AE score',own:'John Galluzzo',d:14,eng:52},
+         {c:'Velera',s:'Banking · Michigan',need:'Log the AE score',own:'Tony Janusky',d:14,eng:58}],
+  assign:[{c:'LPL Financial',s:'Banking · California',need:'Assign an owner',own:null,d:6,eng:68}],
+  reply:[{c:'Regions Bank',s:'Banking · Alabama',need:'Reply to the account',own:'Patricia Shostak',d:2,eng:88},
+         {c:'Sanford Health',s:'Healthcare · S. Dakota',need:'Reply to the account',own:'Patricia Shostak',d:1,eng:84},
+         {c:'Novant Health',s:'Healthcare · N. Carolina',need:'Reply to the account',own:'Patricia Shostak',d:5,eng:74},
+         {c:'Atrium Health',s:'Healthcare · N. Carolina',need:'Reply to the account',own:'Patricia Shostak',d:4,eng:71},
+         {c:'Zions Bancorporation',s:'Banking · Utah',need:'Reply to the account',own:'Patricia Shostak',d:3,eng:66}],
+  approve:[{c:'Nordic Health Partners',s:'Healthcare · Minnesota',need:'Approve as a new account',own:'Sales ops',d:4,eng:0},
+           {c:'Piedmont Healthcare',s:'Healthcare · Georgia',need:'Approve as a new account',own:'Sales ops',d:3,eng:0}],
+  sent:[{c:'AdventHealth',s:'Healthcare · Florida',need:'Send the draft',own:'Patricia Shostak',d:9,eng:0},
+        {c:'M&T Bank',s:'Banking · New York',need:'Send the draft',own:'Patricia Shostak',d:8,eng:0}],
+  followup:[{c:'Truist Financial',s:'Banking · N. Carolina',need:'Send a follow-up',own:'Patricia Shostak',d:19,eng:24},
+            {c:'BankUnited',s:'Banking · Florida',need:'Rebook the call',own:'Patricia Shostak',d:18,eng:61},
+            {c:'Intermountain Health',s:'Healthcare · Utah',need:'Send a follow-up',own:'Patricia Shostak',d:16,eng:31},
+            {c:'Prisma Health',s:'Healthcare · S. Carolina',need:'Rebook the call',own:'Patricia Shostak',d:16,eng:57},
+            {c:'Old National Bank',s:'Banking · Indiana',need:'Rebook the call',own:'Patricia Shostak',d:15,eng:54},
+            {c:'Desjardins Group',s:'Banking · Quebec',need:'Send a follow-up',own:'Patricia Shostak',d:13,eng:28},
+            {c:'Fulton Financial',s:'Banking · Pennsylvania',need:'Send a follow-up',own:'Patricia Shostak',d:12,eng:19},
+            {c:'Tampa General Hospital',s:'Healthcare · Florida',need:'Send a follow-up',own:'Patricia Shostak',d:11,eng:22}]
+};
+var SALS=[
+  {c:'Carle Health',route:'Campaign-warmed',camp:'Healthcare · Patient access',lead:91,eng:86,
+   sdr:'Patricia Shostak',v:'Healthcare',src:'Salesforce',hook:'Speech platform end-of-life',fit:9,
+   own:'Joe Klosterman',next:'Discovery 24 Nov',role:'IT Exec Director',sz:'11,400',
+   touch:'1 email · 1 call',first:'01 Nov',
+   tl:[['01 Nov','Signal','Sourced from Salesforce — no open opportunity'],
+       ['03 Nov','Signal','6 contacts, 5 verified'],['04 Nov','Phave','Added to Patient access campaign'],
+       ['05 Nov','SDR','Email 1 sent'],['08 Nov','Account','Replied'],
+       ['12 Nov','Nooks','Call connected, 11 min'],['17 Nov','SDR','Fit call booked'],
+       ['20 Nov','AE','Scored 9 of 10 → SAL']]},
+  {c:'Lee Health',route:'Direct to SDR',camp:'Healthcare · Patient access',lead:88,eng:81,
+   sdr:'Patricia Shostak',v:'Healthcare',src:'Signal-sourced',hook:'Lookalike of past wins',fit:9,
+   own:'Eric Chanh',next:'Discovery 25 Nov',role:'Guest Services Coordinator',sz:'14,200',
+   touch:'2 emails · 1 LinkedIn',first:'02 Nov',
+   tl:[['02 Nov','Signal','Sourced by Signal — not in the CRM'],['03 Nov','Servion','New account approved'],
+       ['04 Nov','Signal','5 contacts, 4 verified'],['06 Nov','SDR','Email 1 sent'],
+       ['09 Nov','Account','Replied'],['13 Nov','Nooks','Call connected, 14 min'],
+       ['18 Nov','SDR','Fit call booked'],['21 Nov','AE','Scored 9 of 10 → SAL']]},
+  {c:'Baylor Scott &amp; White',route:'Campaign-warmed',camp:'Healthcare · Patient access',lead:84,eng:77,
+   sdr:'Patricia Shostak',v:'Healthcare',src:'Salesforce',hook:'Cloud contact centre RFI',fit:8,
+   own:'John Galluzzo',next:'Discovery 26 Nov',role:'VP Patient Access',sz:'48,000',
+   touch:'1 email · 1 call',first:'04 Nov',
+   tl:[['04 Nov','Signal','Closed-lost 2024, re-scored'],['06 Nov','Signal','7 contacts, 6 verified'],
+       ['08 Nov','SDR','Email 1 sent'],['14 Nov','Account','Replied'],
+       ['19 Nov','SDR','Fit call booked'],['21 Nov','AE','Scored 8 of 10 → SAL']]},
+  {c:'Fifth Third Bank',route:'Campaign-warmed',camp:'Banking · Contact centre modernisation',lead:80,eng:72,
+   sdr:'Patricia Shostak',v:'Banking',src:'ZoomInfo',hook:'Genesys renewal window',fit:8,
+   own:'Mike Scott',next:'Discovery 27 Nov',role:'Snr Dir, Customer Care Tech',sz:'19,000',
+   touch:'2 emails',first:'03 Nov',
+   tl:[['03 Nov','Signal','Sourced from ZoomInfo list'],['05 Nov','Signal','5 contacts, 4 verified'],
+       ['07 Nov','SDR','Email 1 sent'],['13 Nov','SDR','Email 2 sent'],['16 Nov','Account','Replied'],
+       ['20 Nov','SDR','Fit call booked'],['21 Nov','AE','Scored 8 of 10 → SAL']]},
+  {c:'UMB Financial',route:'Direct to SDR',camp:'Banking · Contact centre modernisation',lead:82,eng:74,
+   sdr:'Patricia Shostak',v:'Banking',src:'Salesforce',hook:'Ageing Avaya estate',fit:7,
+   own:'Mike Scott',next:'Qualifying',role:'Dir, Service Center Experience',sz:'3,900',
+   touch:'2 emails · 1 call',first:'02 Nov',
+   tl:[['02 Nov','Signal','Sourced from Salesforce'],['04 Nov','Signal','4 contacts, 3 verified'],
+       ['06 Nov','SDR','Email 1 sent'],['12 Nov','Nooks','Call connected, 6 min'],
+       ['15 Nov','Account','Replied'],['18 Nov','SDR','Fit call booked'],
+       ['20 Nov','AE','Scored 7 of 10 → SAL']]},
+  {c:'LPL Financial',route:'Direct to SDR',camp:'Banking · Contact centre modernisation',lead:79,eng:68,
+   sdr:'Patricia Shostak',v:'Banking',src:'Signal-sourced',hook:'Lookalike of past wins',fit:7,
+   own:null,next:'Assign an owner',role:'Assistant VP, Technology',sz:'4,600',
+   touch:'1 email',first:'05 Nov',
+   tl:[['05 Nov','Signal','Sourced by Signal — not in the CRM'],['06 Nov','Servion','New account approved'],
+       ['07 Nov','Signal','2 contacts, 2 verified'],['09 Nov','SDR','Email 1 sent'],
+       ['13 Nov','Account','Replied'],['16 Nov','SDR','Fit call booked'],
+       ['18 Nov','AE','Scored 7 of 10 → SAL'],['19 Nov','Signal','Flagged — no owner set']]},
+  {c:'Ochsner Health',route:'Campaign-warmed',camp:'Healthcare · Patient access',lead:86,eng:79,
+   sdr:'Patricia Shostak',v:'Healthcare',src:'Signal-sourced',hook:'Lookalike of past wins',fit:8,
+   own:'Eric Chanh',next:'Discovery 28 Nov',role:'AVP Access Centre Ops',sz:'32,000',
+   touch:'1 email',first:'10 Nov',
+   tl:[['10 Nov','Signal','Sourced by Signal — net new'],['12 Nov','Signal','4 contacts, 4 verified'],
+       ['14 Nov','SDR','Email 1 sent'],['18 Nov','Account','Replied'],
+       ['20 Nov','SDR','Fit call booked'],['21 Nov','AE','Scored 8 of 10 → SAL']]},
+  {c:'Huntington Bancshares',route:'Campaign-warmed',camp:'Banking · Contact centre modernisation',lead:89,eng:70,
+   sdr:'Patricia Shostak',v:'Banking',src:'Salesforce',hook:'Branch consolidation',fit:7,
+   own:'Mike Scott',next:'Discovery 01 Dec',role:'SVP Customer Experience',sz:'20,000',
+   touch:'3 emails',first:'06 Nov',
+   tl:[['06 Nov','Signal','Sourced from Salesforce'],['08 Nov','Signal','6 contacts, 5 verified'],
+       ['10 Nov','SDR','Email 1 sent'],['15 Nov','SDR','Email 2 sent'],['18 Nov','Account','Replied'],
+       ['20 Nov','SDR','Fit call booked'],['21 Nov','AE','Scored 7 of 10 → SAL']]}
+];
+var ACCT_EXTRA=[
+  {c:'SECU',stage:'Fit call held',route:'Campaign-warmed',camp:'Contact centre modernisation',
+   lead:71,eng:52,sdr:'Dylan Reyes',v:'Banking & financial services',src:'Salesforce',
+   hook:'Avaya estate past end-of-support',fit:null,own:'John Galluzzo',next:'AE score not logged',
+   role:'Collaboration Principal Engineer',sz:'2,400',touch:'1 email',first:'28 Oct',
+   tl:[['28 Oct','Signal','Sourced from Salesforce'],['30 Oct','Signal','3 contacts, 2 verified'],
+       ['01 Nov','SDR','Email 1 sent'],['05 Nov','Account','Replied, lukewarm'],
+       ['07 Nov','AE','Fit call held — no score logged since']]},
+  {c:'Velera',stage:'Fit call held',route:'Direct to SDR',camp:'Voice AI & automation',
+   lead:74,eng:58,sdr:'Nadia Haddad',v:'Banking & financial services',src:'Signal-sourced',
+   hook:'Speech analytics and Gen AI programme',fit:null,own:'Tony Janusky',next:'AE score not logged',
+   role:'VP Member Experience',sz:'3,100',touch:'1 email',first:'27 Oct',
+   tl:[['27 Oct','Signal','Sourced by Signal — not in the CRM'],['29 Oct','Signal','2 contacts, 2 verified'],
+       ['01 Nov','SDR','Email 1 sent'],['06 Nov','Account','Replied'],
+       ['07 Nov','AE','Fit call held — no score logged since']]},
+  {c:'Alterna Savings',stage:'Nurture',route:'Campaign-warmed',camp:'Cloud migration',
+   lead:44,eng:39,sdr:'Owen Tsai',v:'Banking & financial services',src:'ZoomInfo',
+   hook:'No dated modernisation driver',fit:3,own:'Mike Scott',next:'Revisit in 6 months',
+   role:'Director, Contact Centre Operations',sz:'2,900',touch:'2 emails · 1 call',first:'22 Oct',
+   tl:[['22 Oct','Signal','Sourced from ZoomInfo list'],['25 Oct','Signal','2 contacts, 1 verified'],
+       ['28 Oct','SDR','Email 1 sent'],['04 Nov','SDR','Email 2 sent'],
+       ['10 Nov','Account','Replied, not now'],['16 Nov','AE','Held · scored 3 of 10 → nurture']]}
+];
+ACCT_EXTRA.forEach(function(a){SALS.push(a);});
+var LSV=[{b:'Q4 · top',n:795,reached:34.2,replied:29.1,hot:8.6,sal:3.1},
+  {b:'Q3',n:795,reached:22.0,replied:19.4,hot:5.2,sal:1.4},
+  {b:'Q2',n:795,reached:15.1,replied:12.8,hot:3.0,sal:0.6},
+  {b:'Q1 · bottom',n:795,reached:9.8,replied:7.1,hot:1.5,sal:0.3}];
+
+var P='month',MCUT='vertical',PCUT='ae',QT='all',OPEN=null,MORE=false,QALL=false;
+var CH={email:false,call:false,li:false};
+function anyCh(){return CH.email||CH.call||CH.li;}
+function chOn(k){return !anyCh()||CH[k];}
+function F(){return FN[P];}
+function days(){return PER[P].days;}
+function chT(){var t={email:0,call:0,li:0,rep:0};
+  days().forEach(function(d){t.email+=d.email;t.call+=d.call;t.li+=d.li;t.rep+=d.rep;});return t;}
+function rowBy(cut,name){var r=F().cuts[cut],i;
+  for(i=0;i<r.length;i++) if(r[i][0]===name) return r[i]; return null;}
+/* selects are built from the data, so new verticals/regions appear on their own */
+function buildSelects(){
+  var m=FN.month.cuts;
+  function fill(id,all,rows){
+    var s=document.getElementById(id);
+    s.innerHTML='<option>'+all+'</option>'+rows.map(function(r){
+      return '<option>'+esc(r[0])+'</option>';}).join('');
+  }
+  fill('fSdr','All SDRs',m.sdr);
+  fill('fVert','All verticals',m.vertical);
+  fill('fReg','All regions',m.region);
+  fill('fPlat','All platforms',m.platform);
+  document.getElementById('fCamp').innerHTML='<option>All campaigns</option>'+
+    CAMPAIGNS.map(function(c){return '<option>'+esc(c.n)+'</option>';}).join('');
+}
+function selScale(){
+  var s=1,f=F(),i;
+  var defs=[['fSdr','sdr'],['fVert','vertical'],['fReg','region'],['fPlat','platform']];
+  for(i=0;i<defs.length;i++){
+    var e=document.getElementById(defs[i][0]);
+    if(e.selectedIndex>0){var r=rowBy(defs[i][1],e.value); if(r) s*=r[2]/f.worked;}
+  }
+  /* a campaign narrows to its vertical */
+  var camp=document.getElementById('fCamp');
+  if(camp.selectedIndex>0){
+    var cv=CAMPAIGNS.filter(function(c){return c.n===camp.value;})[0];
+    if(cv) s*=cv.share;
+  }
+  return s;
+}
+function chScale(){if(!anyCh())return 1;var t=chT(),tot=t.email+t.call+t.li,s=0;
+  if(CH.email)s+=t.email;if(CH.call)s+=t.call;if(CH.li)s+=t.li;return tot?s/tot:0;}
+function SCL(){return selScale()*chScale();}
+function sc(n){return Math.round(n*SCL());}
+function filtered(){return SCL()<0.999;}
+function diary7(){return [2,1,3,1,2].reduce(function(a,b){return a+Math.round(b*SCL());},0);}
+
+/* ---------- verdict ---------- */
+function drawVerdict(){
+  var f=F(),p=PER[P],sal=sc(f.sal),s=SCL();
+  var tgt=filtered()?null:p.target,fore=Math.round(p.fore*s),proj=sal+fore;
+  var blocked=['score','assign','reply'].reduce(function(a,k){
+    return a+Math.round((Q.filter(function(q){return q.k===k;})[0]||{n:0}).n*s);},0);
+  var total=Q.reduce(function(a,q){return a+Math.round(q.n*s);},0);
+  var dir=filtered()?null:(sal-p.prev);
+  var state,msg;
+  if(!tgt){
+    state = (dir===null||dir>=0)?'ok':'risk';
+    msg = dir===null ? 'Filtered slice' : (dir>0?'Up on last '+p.unit:(dir<0?'Down on last '+p.unit:'Level'));
+  }
+  else if(proj>=tgt){state='ok';msg='On track';}
+  else if(proj>=tgt*0.85){state='risk';msg='At risk';}
+  else {state='bad';msg='Behind';}
+  var sub=tgt
+    ? 'Forecast <b>'+proj+'</b> against a target of <b>'+tgt+'</b> · <b>'+sal+'</b> booked so far'
+    : '<b>'+sal+'</b> SALs '+(filtered()?'in this slice':'this '+p.unit)+
+      (dir!==null?' · '+(dir>=0?'+':'')+dir+' vs last '+p.unit:'');
+  var warn=blocked
+    ? '<span class="ex">!</span><div><b>'+blocked+' need a person today</b> — scores, owners and replies</div>'
+    : '<span class="ex" style="background:var(--green-l);color:var(--green-d)">✓</span><div>Nothing urgent outstanding</div>';
+  document.getElementById('verdict').innerHTML=
+    '<div class="vseg"><div class="vstate '+state+'"><span class="d"></span>'+msg+'</div></div>'+
+    '<div class="vseg"><div class="vsub">'+sub+'</div></div>'+
+    '<div class="vseg vblock"><div class="vwarn">'+warn+'</div></div>'+
+    '<div class="vseg"><button class="vgo" id="vgo">Review '+total+' items →</button></div>';
+  var g=document.getElementById('vgo');
+  if(g) g.addEventListener('click',function(){
+    QT='all';QALL=false;drawQ();
+    document.getElementById('needs').scrollIntoView({behavior:'smooth',block:'start'});});
+}
+
+/* ---------- mosaic ---------- */
+function spark(vals,labs,cur){
+  var all=vals.slice(); all[all.length-1]=cur;
+  var mx=Math.max.apply(null,all),mn=Math.min.apply(null,all);
+  var lo=Math.max(0,mn-(mx-mn)*0.5),span=(mx-lo)||1;
+  return '<div class="spk">'+all.map(function(v,i){
+    return '<i class="'+(i===all.length-1?'now':'')+'" style="height:'+
+      Math.max(8,(v-lo)/span*100).toFixed(1)+'%"></i>';}).join('')+'</div>'+
+    '<div class="spkl"><span>'+(labs[0]||'')+'</span><span>'+(labs[1]||'')+'</span></div>';
+}
+function pop(now,prev,unit,dp){
+  if(prev===null||prev===undefined) return '';
+  var d=now-prev,cls=Math.abs(d)<(dp?0.05:0.5)?'fl':(d>0?'up':'dn');
+  var v=dp?Math.abs(d).toFixed(1):Math.abs(Math.round(d));
+  return '<span class="pop '+cls+'">'+(cls==='fl'?'level':((d>0?'▲ +':'▼ ')+v+(unit||'')))+'</span>';
+}
+function drawPerf(){
+  var f=F(),p=PER[P],S=SERIES[P],s=SCL();
+  var sal=sc(f.sal),held=sc(f.held),worked=sc(f.worked);
+  document.getElementById('pLab').textContent=p.lab+' · '+ELAPSED[P];
+
+  /* the headline number carries the weight; the other two sit beneath it */
+  document.getElementById('perfHero').innerHTML=
+    '<div class="tk"><span class="def" data-tipk="sal">Sales-accepted leads</span></div>'+
+    '<div class="hn"><span class="big">'+sal+'</span>'+
+      pop(sal,filtered()?null:p.prev,'')+'</div>'+
+    '<div class="hsub">'+(filtered()
+      ? 'Filtered slice of '+esc(p.lab)+'.'
+      : '<b>'+diary7()+'</b> fit calls are already booked for the next 7 days.')+'</div>'+
+    '<div class="hsec">'+
+      '<div><div class="k"><span class="def" data-tipk="held">Fit calls held</span></div><div class="v">'+held+
+        '</div><div class="s">the AE held and scored them</div></div>'+
+      '<div><div class="k"><span class="def" data-tipk="salrate">SAL rate</span></div><div class="v">'+pc(sal,held)+
+        '</div><div class="s">'+sal+' of '+held+' converted</div></div>'+
+    '</div>';
+
+  /* one chart: bar height = fit calls held, nested green = SALs, % = SAL rate */
+  var svg=document.getElementById('perf');
+  var H=[],SL=[];
+  S.held.forEach(function(v,i){H.push(Math.round(v*s));SL.push(Math.round(S.sal[i]*s));});
+  var W=1000,Ht=210,pl=32,pr=18,pt=26,pb=26,iw=W-pl-pr,ih=Ht-pt-pb;
+  var mx=Math.max.apply(null,H)||1,bw=iw/H.length,bar=Math.min(52,bw*0.56),g='',i;
+  for(i=0;i<=2;i++){var gy=pt+ih-ih*i/2;
+    g+='<line x1="'+pl+'" y1="'+gy+'" x2="'+(W-pr)+'" y2="'+gy+'" stroke="#eef0f3"/>'+
+      '<text x="'+(pl-7)+'" y="'+(gy+3.5)+'" font-size="10" fill="#89919d" text-anchor="end">'+
+      Math.round(mx*i/2)+'</text>';}
+  H.forEach(function(v,k){
+    var x=pl+bw*k+(bw-bar)/2,hh=v/mx*ih,sh=SL[k]/mx*ih,last=(k===H.length-1);
+    var tp=esc('<div class="th">'+S.x[k]+'</div>'+
+      '<div class="tr"><span>Fit calls held</span><b>'+v+'</b></div>'+
+      '<div class="tr"><span>SALs converted</span><b>'+SL[k]+'</b></div>'+
+      '<div class="tr"><span>SAL rate</span><b>'+(v?Math.round(SL[k]/v*100)+'%':'—')+'</b></div>'+
+      '<div class="tr"><span>To nurture or unscored</span><b>'+(v-SL[k])+'</b></div>');
+    g+='<rect data-tip="'+tp+'" x="'+x.toFixed(1)+'" y="'+(pt+ih-hh).toFixed(1)+'" width="'+bar.toFixed(1)+
+        '" height="'+hh.toFixed(1)+'" rx="2" fill="#bfd0f0"'+(last?' stroke="#8fb0e8"':'')+'/>'+
+       (SL[k]?'<rect data-tip="'+tp+'" x="'+x.toFixed(1)+'" y="'+(pt+ih-sh).toFixed(1)+'" width="'+bar.toFixed(1)+
+        '" height="'+sh.toFixed(1)+'" rx="2" fill="#12a05e"/>':'')+
+       '<text x="'+(x+bar/2).toFixed(1)+'" y="'+(pt+ih-hh-7).toFixed(1)+
+        '" font-size="10" font-weight="650" fill="'+(last?'#0a6e40':'#89919d')+
+        '" text-anchor="middle">'+(v?Math.round(SL[k]/v*100)+'%':'')+'</text>'+
+       '<text x="'+(x+bar/2).toFixed(1)+'" y="'+(Ht-8)+'" font-size="9.5" fill="'+
+        (last?'#525a66':'#b3b9c2')+'" text-anchor="middle">'+esc(S.x[k])+'</text>';});
+  svg.setAttribute('viewBox','0 0 '+W+' '+Ht); svg.innerHTML=g;
+
+  var t=S.tail, lastH=H.slice(-t).reduce(function(a,b){return a+b;},0),
+      lastS=SL.slice(-t).reduce(function(a,b){return a+b;},0);
+  var prevH=H.slice(-2*t,-t).reduce(function(a,b){return a+b;},0),
+      prevS=SL.slice(-2*t,-t).reduce(function(a,b){return a+b;},0);
+  document.getElementById('perfNote').innerHTML='Buckets are the '+S.lab+
+    '; the highlighted bucket'+(t>1?'s make':' makes')+' up '+esc(p.lab)+'. '+
+    (prevS?'<b>'+lastS+'</b> SALs from <b>'+lastH+'</b> calls held, against <b>'+prevS+
+      '</b> from <b>'+prevH+'</b> in the comparable window before — '+
+      (lastS>prevS?'accelerating':(lastS<prevS?'slowing':'flat'))+'.'
+     :'Not enough history in this view for a comparison.');
+}
+
+/* ---------- funnel ---------- */
+function drawFnl(){
+  var f=F(),v={};
+  STG.forEach(function(s){v[s.k]=sc(f[s.k]);});
+  var top=v.worked||1;
+  document.getElementById('lg1').style.background=STG[0].col;
+  document.getElementById('fnl').innerHTML=STG.map(function(s,i){
+    var n=v[s.k],nx=(i<STG.length-1)?v[STG[i+1].k]:n,lost=Math.max(0,n-nx);
+    var w=Math.max(1.6,n/top*100),go=n?nx/n*100:0;
+    var bar=(i===STG.length-1)
+      ? '<div class="ftr" style="width:'+w.toFixed(2)+'%"><div class="fgo" data-tip="'+
+        esc('<div class="th">'+s.lab+'</div><div class="tr"><span>Accounts</span><b>'+nf(n)+
+        '</b></div><div class="tb">End of Signal\'s scope. Discovery sits with the AE.</div>')+
+        '" style="width:100%;background:'+s.col+'"></div></div>'
+      : '<div class="ftr" style="width:'+w.toFixed(2)+'%">'+
+        (nx>0?'<div class="fgo" data-tip="'+esc('<div class="th">'+s.lab+' → '+STG[i+1].lab+
+          '</div><div class="tr"><span>Moved on</span><b>'+nf(nx)+'</b></div>'+
+          '<div class="tr"><span>Conversion</span><b>'+pc(nx,n)+'</b></div>'+
+          '<div class="tb">Owned by the '+(s.who||'')+'.</div>')+
+          '" style="width:'+go.toFixed(2)+'%;background:'+s.col+'"></div>':'')+
+        (lost>0?'<div class="fstop" data-tip="'+esc('<div class="th">Stopped at '+s.lab+
+          '</div><div class="tr"><span>Accounts</span><b>'+nf(lost)+'</b></div>'+
+          '<div class="tr"><span>Share of stage</span><b>'+pc(lost,n)+'</b></div>')+
+          '" style="width:'+(100-go).toFixed(2)+'%"></div>':'')+'</div>';
+    var st=Math.max(0,Math.round(s.stall*SCL()));
+    return '<div class="frow"><div class="fst">'+s.lab+
+      '<span class="fwho">'+(s.who||'')+'</span></div>'+
+      '<div class="ftw">'+bar+'</div><div class="num">'+nf(n)+'</div>'+
+      '<div class="cv'+(i===0?' dim':'')+'">'+(i===0?'—':pc(n,v[STG[i-1].k]))+'</div>'+
+      '<div class="fstk">'+(st?'<button data-tipk="stuck" data-q="'+s.q+'">'+st+
+        '</button>':'<span class="z">0</span>')+
+      '</div></div>';
+  }).join('');
+  /* outcomes of the fit calls that were held */
+  var held=v.held,sal=v.sal,nur=sc(f.nurture);
+  var uns=f.ae.reduce(function(a,r){return a+Math.round(r[4]*SCL());},0);
+  document.getElementById('fout').innerHTML=
+    '<div class="fo"><div class="k">Accepted — SAL</div><div class="v" style="color:var(--green-d)">'+
+      sal+'</div><div class="s">'+pc(sal,held)+' of calls held</div></div>'+
+    '<div class="fo"><div class="k">To nurture</div><div class="v" style="color:var(--amber-d)">'+
+      nur+'</div><div class="s">scored below 7</div></div>'+
+    '<div class="fo"><div class="k">Not yet scored</div><div class="v" style="color:var(--rose-d)">'+
+      uns+'</div><div class="s">waiting on the AE</div></div>'+
+    '<div class="fo"><div class="k">Booked, not held</div><div class="v">'+
+      Math.max(0,v.booked-held)+'</div><div class="s">rescheduled or no-show</div></div>';
+}
+
+/* ---------- needs action ---------- */
+function qRows(){
+  var out=[],s=SCL();
+  Q.forEach(function(q){
+    var rows=QR[q.k]||[],keep=Math.max(rows.length?1:0,Math.round(rows.length*Math.max(s,0.2)));
+    rows.slice(0,keep).forEach(function(r){
+      out.push({c:r.c,s:r.s,own:r.own,d:r.d,eng:r.eng,need:r.need,cls:q.cls,sev:q.sev,k:q.k});});
+  });
+  return out;
+}
+function drawQ(){
+  var s=SCL();
+  var tabs='<button data-q="all" aria-selected="'+(QT==='all')+'"><b>'+
+    Q.reduce(function(a,q){return a+Math.max(0,Math.round(q.n*s));},0)+'</b>All</button>';
+  tabs+=Q.map(function(q){
+    return '<button class="'+q.cls+'" data-q="'+q.k+'" aria-selected="'+(QT===q.k)+'"><b>'+
+      Math.max(0,Math.round(q.n*s))+'</b><span class="qtl">'+q.lab+
+      '<em>stuck at '+q.at+'</em></span></button>';}).join('');
+  document.getElementById('qTabs').innerHTML=tabs;
+
+  var rows=qRows();
+  if(QT!=='all') rows=rows.filter(function(r){return r.k===QT;});
+  /* priority: what blocks a SAL first, then longest waiting, then most engaged */
+  rows.sort(function(a,b){
+    if(a.sev!==b.sev) return a.sev-b.sev;
+    if(b.d!==a.d) return b.d-a.d;
+    return (b.eng||0)-(a.eng||0);});
+  var cap=8, show=(QALL||QT!=='all')?rows:rows.slice(0,cap);
+  document.getElementById('qBody').innerHTML=show.length?show.map(function(r){
+    return '<tr><td><div class="rn">'+r.c+'<span>'+esc(r.s)+'</span></div></td>'+
+      '<td><span class="dotk" style="background:'+(r.cls==='r'?'var(--rose)':'var(--amber)')+
+        '"></span>'+esc(r.need)+'</td>'+
+      '<td class="r"'+(r.eng?' data-tip="'+esc('<div class="th">'+r.c+'</div>'+
+        '<div class="tr"><span>Engagement score</span><b>'+r.eng+' of 100</b></div>'+
+        '<div class="tb">From campaign activity, separate from the lead score. A high score '+
+        'here means the account is reacting — answer it first.</div>')+'"':'')+
+        '>'+(r.eng?'<span class="cell"><span class="t"><i class="v" style="width:'+
+        r.eng+'%"></i></span><b>'+r.eng+'</b></span>':'<span style="color:var(--ink-4)">—</span>')+'</td>'+
+      '<td>'+(r.own?esc(r.own):'<span class="noown">Unassigned</span>')+'</td>'+
+      '<td class="r"><span class="wt '+(r.d>=10?'r':'a')+'">'+r.d+'d</span></td>'+
+      '<td class="r"><button class="act">Open</button></td></tr>';
+  }).join('') : '<tr><td colspan="6" style="padding:16px;color:var(--ink-3)">Nothing here.</td></tr>';
+
+  var tot=(QT==='all')
+    ? Q.reduce(function(a,q){return a+Math.max(0,Math.round(q.n*s));},0)
+    : Math.max(0,Math.round((Q.filter(function(q){return q.k===QT;})[0]||{n:0}).n*s));
+  var mb=document.getElementById('qMore');
+  if(QT==='all'&&!QALL&&rows.length>cap){
+    mb.textContent='Show all '+tot+' items'; mb.style.display='';
+  } else if(tot>show.length){
+    mb.textContent=(tot-show.length)+' more not named in this sample'; mb.style.display='';
+  } else if(QT==='all'&&QALL){
+    mb.textContent='Show top 8 only'; mb.style.display='';
+  } else { mb.style.display='none'; }
+  document.getElementById('recPill').textContent=Math.max(0,Math.round(4*s))+' SALs recovered';
+}
+
+/* ---------- by market ---------- */
+var MLAB={vertical:'Sector',region:'Region',platform:'Incumbent platform',source:'Source'};
+function drawMarket(){
+  var f=F(),rows=f.cuts[MCUT],s=SCL(),T=[0,0,0,0];
+  var isVert=(MCUT==='vertical');
+  document.getElementById('mHead').innerHTML='<tr><th>'+MLAB[MCUT]+'</th>'+
+    '<th class="r"><span class="def" data-tipk="worked">Accounts worked</span></th>'+
+    (isVert?'<th class="r"><span class="def" data-tipk="mix">Mix vs target</span></th>':'')+
+    '<th class="r">Replies</th><th class="r"><span class="def" data-tipk="replyrate">Reply rate</span></th>'+
+    '<th class="r">Fit calls held</th><th class="r">SALs</th><th class="r">SAL rate</th></tr>';
+  var tot=rows.reduce(function(a,r){return a+Math.round(r[2]*s);},0)||1;
+  document.getElementById('mBody').innerHTML=rows.map(function(r){
+    var wk=Math.round(r[2]*s),rp=Math.round(r[3]*s),hd=Math.round(r[4]*s),sl=Math.round(r[5]*s);
+    T[0]+=wk;T[1]+=rp;T[2]+=hd;T[3]+=sl;
+    var rr=wk?rp/wk*100:0,sr=hd?sl/hd*100:0;
+    var share='';
+    if(isVert){
+      var act=wk/tot*100, tgt=MIXTGT[r[0]]||0, drift=act-tgt;
+      share='<td class="r" data-tip="'+esc('<div class="th">'+r[0]+'</div>'+
+        '<div class="tr"><span>Share of working list</span><b>'+act.toFixed(1)+'%</b></div>'+
+        '<div class="tr"><span>Intended balance</span><b>'+tgt+'%</b></div>'+
+        '<div class="tr"><span>Drift</span><b class="'+(drift>0?'neg':'pos')+'">'+
+        (drift>0?'+':'')+drift.toFixed(1)+'pp</b></div>')+
+        '"><span class="mix">'+act.toFixed(0)+'%<span class="tg"> / '+tgt+'%</span>'+
+        (Math.abs(drift)>=3?'<b class="'+(drift>0?'over':'under')+'">'+
+          (drift>0?'+':'')+drift.toFixed(0)+'</b>':'')+'</span></td>';
+    }
+    return '<tr><td><div class="rn">'+esc(r[0])+(r[1]?'<span>'+esc(r[1])+'</span>':'')+'</div></td>'+
+      '<td class="r">'+nf(wk)+'</td>'+share+'<td class="r">'+nf(rp)+'</td>'+
+      '<td class="r" data-tip="'+esc('<div class="th">'+r[0]+' · reply rate</div>'+
+        '<div class="tr"><span>Replied</span><b>'+nf(rp)+'</b></div>'+
+        '<div class="tr"><span>Accounts worked</span><b>'+nf(wk)+'</b></div>')+
+        '"><span class="cell"><span class="t"><i class="'+(rr<20?'a':'')+
+        '" style="width:'+Math.min(100,rr*2.6)+'%"></i></span><b>'+rr.toFixed(1)+'%</b></span></td>'+
+      '<td class="r">'+hd+'</td><td class="r"><b style="font-size:14px">'+sl+'</b></td>'+
+      '<td class="r" data-tip="'+esc('<div class="th">'+r[0]+' · SAL rate</div>'+
+        '<div class="tr"><span>SALs</span><b>'+sl+'</b></div>'+
+        '<div class="tr"><span>Fit calls held</span><b>'+hd+'</b></div>')+
+        '">'+(hd?'<span class="cell"><span class="t"><i class="'+(sr<65?'a':'g')+
+        '" style="width:'+sr+'%"></i></span><b>'+Math.round(sr)+'%</b></span>':
+        '<span style="color:var(--ink-3)">—</span>')+'</td></tr>';
+  }).join('');
+  document.getElementById('mFoot').innerHTML='<tr><td>Total</td><td class="r">'+nf(T[0])+'</td>'+
+    (isVert?'<td class="r">100%</td>':'')+'<td class="r">'+nf(T[1])+'</td><td class="r">'+
+    pc(T[1],T[0],1)+'</td><td class="r">'+T[2]+'</td><td class="r">'+T[3]+'</td><td class="r">'+
+    pc(T[3],T[2])+'</td></tr>';
+  var N={vertical:'Insurance and healthcare convert best. <b>Mix vs target</b> is this sector\'s share of the working '+
+      'list against the intended portfolio balance — it is there to catch drift into banking.',
+    region:'US and Canada are the scored geography; Canada carries an 80 region score against the '+
+      'US 100, and the taxonomy extends as coverage widens.',
+    platform:'Genesys and Cisco estates convert best. The lead score already boosts a confirmed '+
+      'Genesys, Cisco, Avaya or NICE estate, so this is the cut that shows whether that holds.',
+    source:'ZoomInfo trails on both reply rate and SAL rate.'};
+  document.getElementById('mNote').innerHTML='<b>'+N[MCUT]+'</b>';
+}
+
+/* ---------- by people: same encoding as Performance, x-axis = person ---------- */
+function drawPeople(){
+  var f=F(),s=SCL(),host=document.getElementById('peopleBody');
+  if(PCUT==='ae'){
+    var rows=f.ae.map(function(r){
+      return {n:r[0],held:Math.round(r[1]*s),sal:Math.round(r[2]*s),
+              avg:r[3],uns:Math.round(r[4]*s)};})
+      .filter(function(r){return r.held>0||r.uns>0;});
+    var mx=Math.max.apply(null,rows.map(function(r){return r.held;}))||1;
+    var tH=0,tS=0,tU=0;
+    rows.forEach(function(r){tH+=r.held;tS+=r.sal;tU+=r.uns;});
+    host.innerHTML='<div class="pchart">'+rows.map(function(r){
+      return '<div class="pr">'+
+        '<div class="pn">'+esc(r.n)+
+          '<span>'+(r.avg!==null?'avg score '+r.avg.toFixed(1):'not scored yet')+
+          (r.uns?' · <b class="warnx">'+r.uns+' unscored</b>':'')+'</span></div>'+
+        '<div class="pb">'+
+          '<i class="h" data-tip="'+esc('<div class="th">'+r.n+'</div>'+
+            '<div class="tr"><span>Fit calls held</span><b>'+r.held+'</b></div>'+
+            '<div class="tr"><span>SALs converted</span><b>'+r.sal+'</b></div>'+
+            '<div class="tr"><span>SAL rate</span><b>'+(r.held?Math.round(r.sal/r.held*100)+'%':'—')+'</b></div>'+
+            (r.avg!==null?'<div class="tr"><span>Average score</span><b>'+r.avg.toFixed(1)+'</b></div>':'')+
+            (r.uns?'<div class="tb">'+r.uns+' held calls still unscored.</div>':''))+
+            '" style="width:'+(r.held/mx*100).toFixed(1)+'%"></i>'+
+          (r.sal?'<i class="s" style="width:'+(r.sal/mx*100).toFixed(1)+'%"></i>':'')+'</div>'+
+        '<div class="pv">'+r.held+' / <b>'+r.sal+'</b></div>'+
+        '<div class="pp">'+(r.held?Math.round(r.sal/r.held*100)+'%':'—')+'</div></div>';
+    }).join('')+'</div>'+
+    '<div class="clg" style="padding:10px 16px 12px">'+
+      '<span><i style="background:#bfd0f0"></i>Fit calls held</span>'+
+      '<span><i style="background:var(--green)"></i>SALs converted</span>'+
+      '<span style="color:var(--ink-4)">held / SALs · SAL rate</span>'+
+      '<span style="margin-left:auto;color:var(--ink-3)">Top 2 hold <b>'+
+        pc(rows.map(function(r){return r.sal;}).sort(function(a,b){return b-a;})
+          .slice(0,2).reduce(function(a,b){return a+b;},0),tS)+'</b> of SALs</span></div>';
+    document.getElementById('pNote').innerHTML='<b>The AE sets every score — Signal reads it, '+
+      'never writes it.</b> '+tU+' calls held are still unscored, so they cannot count as SALs.';
+  } else {
+    var rows=f.cuts.sdr.map(function(r){
+      return {n:r[0],wk:Math.round(r[2]*s),rp:Math.round(r[3]*s),
+              bk:Math.round((r[6]||0)*s),sal:Math.round(r[5]*s)};});
+    var mx=Math.max.apply(null,rows.map(function(r){return r.bk;}))||1;
+    var tW=0,tB=0,tS=0;
+    rows.forEach(function(r){tW+=r.wk;tB+=r.bk;tS+=r.sal;});
+    host.innerHTML='<div class="pchart">'+rows.map(function(r){
+      return '<div class="pr">'+
+        '<div class="pn">'+esc(r.n)+
+          '<span>'+nf(r.wk)+' worked · '+pc(r.rp,r.wk,1)+' reply rate</span></div>'+
+        '<div class="pb">'+
+          '<i class="h" data-tip="'+esc('<div class="th">'+r.n+'</div>'+
+            '<div class="tr"><span>Accounts worked</span><b>'+nf(r.wk)+'</b></div>'+
+            '<div class="tr"><span>Replies</span><b>'+nf(r.rp)+'</b></div>'+
+            '<div class="tr"><span>Reply rate</span><b>'+pc(r.rp,r.wk,1)+'</b></div>'+
+            '<div class="tr"><span>Fit calls booked</span><b>'+r.bk+'</b></div>'+
+            '<div class="tr"><span>SALs from them</span><b>'+r.sal+'</b></div>')+
+            '" style="width:'+(r.bk/mx*100).toFixed(1)+'%"></i>'+
+          (r.sal?'<i class="s" style="width:'+(r.sal/mx*100).toFixed(1)+'%"></i>':'')+'</div>'+
+        '<div class="pv">'+r.bk+' / <b>'+r.sal+'</b></div>'+
+        '<div class="pp">'+(r.bk?Math.round(r.sal/r.bk*100)+'%':'—')+'</div></div>';
+    }).join('')+'</div>'+
+    '<div class="clg" style="padding:10px 16px 12px">'+
+      '<span><i style="background:#bfd0f0"></i>Fit calls booked</span>'+
+      '<span><i style="background:var(--green)"></i>SALs converted</span>'+
+      '<span style="color:var(--ink-4)">booked / SALs · conversion</span>'+
+      '<span style="margin-left:auto;color:var(--ink-3)">Top 2 book <b>'+
+        pc(rows.map(function(r){return r.bk;}).sort(function(a,b){return b-a;})
+          .slice(0,2).reduce(function(a,b){return a+b;},0),tB)+'</b> of calls</span></div>';
+    document.getElementById('pNote').innerHTML='<b>The SDR works the account and books the call; '+
+      'the AE holds and scores it.</b> Bars are calls booked, with the share that converted to a '+
+      'SAL nested inside — so a tall bar with little green is volume without quality.';
+  }
+}
+
+/* ---------- channels ---------- */
+function drawChn(){
+  var t=chT(),f=F();
+  var rows=[{k:'Email',n:t.email,r:6.2,c:'var(--blue)',on:chOn('email')},
+    {k:'Calls',n:t.call,r:58.3,c:'var(--green)',on:chOn('call')},
+    {k:'LinkedIn',n:t.li,r:5.7,c:'var(--violet)',on:chOn('li')}].filter(function(r){return r.on;});
+  var mx=Math.max.apply(null,rows.map(function(r){return r.n;}))||1;
+  document.getElementById('chn').innerHTML=rows.map(function(r){
+    return '<div class="chnr"><span class="cn"><span class="dotk" style="background:'+r.c+
+      ';margin:0"></span>'+r.k+'</span><span class="ct"><i data-tip="'+
+      esc('<div class="th">'+r.k+'</div>'+
+      '<div class="tr"><span>Actions out</span><b>'+nf(r.n)+'</b></div>'+
+      '<div class="tr"><span>Response rate</span><b>'+r.r+'%</b></div>'+
+      '<div class="tb">A response is a reply for email and LinkedIn, an answered dial for calls '+
+      '— the two are not comparable.</div>')+'" style="width:'+(r.n/mx*100)+
+      '%;background:'+r.c+'"></i></span>'+
+      '<span class="cv"><b>'+nf(r.n)+'</b> <span>· '+r.r+'%</span></span></div>';}).join('');
+  var pr=PER[P],con=Math.round(pr.con*SCL()),att=Math.round(pr.att*SCL());
+  document.getElementById('connx').innerHTML='<b data-tipk="connect">'+pc(con,att,1)+'</b>'+
+    '<span>connect rate · '+nf(con)+' of '+nf(att)+' contacts reached in live conversation</span>';
+  /* route = how the account reached the SDR: warmed by the campaign, or worked direct */
+  var rt=f.cuts.route,mxr=Math.max.apply(null,rt.map(function(r){return Math.round(r[2]*SCL());}))||1;
+  document.getElementById('routex').innerHTML=rt.map(function(r){
+    var wk=Math.round(r[2]*SCL()),rp2=Math.round(r[3]*SCL()),sl=Math.round(r[5]*SCL());
+    return '<div class="rtr"><span class="rtn def" data-tipk="route">'+esc(r[0])+'</span>'+
+      '<span class="rtb"><i style="width:'+(wk/mxr*100).toFixed(1)+'%;background:'+
+        (r[0].indexOf('Campaign')===0?'var(--violet)':'var(--blue)')+'"></i></span>'+
+      '<span class="rtv">'+nf(wk)+'<span> · '+pc(rp2,wk,1)+' reply · '+sl+' SAL</span></span></div>';
+  }).join('');
+  var rep=sc(f.replied);
+  document.getElementById('rqN').textContent=nf(rep);
+  var cs=MIX.map(function(m){return Math.round(rep*m.s);});
+  var sum=cs.reduce(function(a,b){return a+b;},0);
+  if(sum!==rep) cs[2]+=rep-sum;
+  document.getElementById('rqbar').innerHTML=MIX.map(function(m,i){
+    return '<i data-tip="'+esc('<div class="th">'+m.k+'</div>'+
+      '<div class="tr"><span>Accounts</span><b>'+cs[i]+'</b></div>'+
+      '<div class="tr"><span>Share of replies</span><b>'+pc(cs[i],rep)+'</b></div>')+
+      '" style="width:'+(rep?cs[i]/rep*100:0)+'%;background:'+m.c+'">'+
+      (rep&&cs[i]/rep>0.1?cs[i]:'')+'</i>';}).join('');
+  document.getElementById('rqrows').innerHTML=MIX.map(function(m,i){
+    return '<div class="rqr"><span class="sw" style="background:'+m.c+'"></span>'+
+      '<span>'+m.k+'</span><span class="n">'+cs[i]+'</span>'+
+      '<span class="p">'+pc(cs[i],rep)+'</span></div>';}).join('');
+}
+function drawChart(){
+  var dd=days(),svg=document.getElementById('chart');
+  var W=1000,H=168,pl=28,pr=32,pt=10,pb=20,iw=W-pl-pr,ih=H-pt-pb;
+  var vis={email:chOn('email'),call:chOn('call'),li:chOn('li')};
+  var stack=dd.map(function(d){return (vis.email?d.email:0)+(vis.call?d.call:0)+(vis.li?d.li:0);});
+  var mv=Math.max.apply(null,stack)||1,mr=Math.max.apply(null,dd.map(function(d){return d.rep;}))||1;
+  var bw=iw/dd.length,bar=Math.max(2,Math.min(17,bw*0.64)),g='',i;
+  for(i=0;i<=3;i++){var gy=pt+ih-ih*i/3;
+    g+='<line x1="'+pl+'" y1="'+gy+'" x2="'+(W-pr)+'" y2="'+gy+'" stroke="#eef0f3"/>'+
+      '<text x="'+(pl-6)+'" y="'+(gy+3.5)+'" font-size="9" fill="#89919d" text-anchor="end">'+
+      Math.round(mv*i/3)+'</text>';}
+  dd.forEach(function(d,k){
+    var x=pl+bw*k+(bw-bar)/2,y=pt+ih;
+    [[vis.li?d.li:0,'#7c5cf0'],[vis.call?d.call:0,'#12a05e'],[vis.email?d.email:0,'#2f6fed']]
+      .forEach(function(sg){if(!sg[0])return;var h=sg[0]/mv*ih;y-=h;
+        g+='<rect data-tip="'+esc('<div class="th">Day '+(k+1)+'</div>'+
+          '<div class="tr"><span>Emails</span><b>'+d.email+'</b></div>'+
+          '<div class="tr"><span>Calls</span><b>'+d.call+'</b></div>'+
+          '<div class="tr"><span>LinkedIn</span><b>'+d.li+'</b></div>'+
+          '<div class="tr"><span>Replies</span><b>'+d.rep+'</b></div>')+
+          '" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bar.toFixed(1)+
+          '" height="'+h.toFixed(1)+'" fill="'+sg[1]+'" rx="1"/>';});});
+  var pts=dd.map(function(d,k){
+    return [(pl+bw*k+bw/2).toFixed(1),(pt+ih-d.rep/mr*ih*0.8).toFixed(1)];});
+  g+='<polyline fill="none" stroke="#d63c48" stroke-width="1.7" points="'+
+    pts.map(function(p){return p.join(',');}).join(' ')+'"/>';
+  for(i=0;i<=2;i++){var ry=pt+ih-ih*0.8*i/2;
+    g+='<text x="'+(W-pr+6)+'" y="'+(ry+3.5)+'" font-size="9" fill="#d63c48">'+
+      Math.round(mr*i/2)+'</text>';}
+  var step=Math.ceil(dd.length/7);
+  dd.forEach(function(d,k){if(k%step)return;
+    g+='<text x="'+(pl+bw*k+bw/2).toFixed(1)+'" y="'+(H-5)+
+      '" font-size="9" fill="#89919d" text-anchor="middle">'+(k+1)+'</text>';});
+  svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.innerHTML=g;
+
+  var t=chT(),f=F(),out=(vis.email?t.email:0)+(vis.call?t.call:0)+(vis.li?t.li:0);
+  var opt=Math.round(sc(f.replied)*MIX[3].s);
+  var K=[{a:'Outbound',b:nf(out),c:'actions'},
+    {a:'Accounts worked',b:nf(sc(f.worked)),c:'at least one action'},
+    {a:'Email reply',b:'6.2%',c:nf(Math.round(t.email*0.062))+' of '+nf(t.email)},
+    {a:'Call answer',b:'58.3%',c:nf(Math.round(t.call*0.583))+' of '+nf(t.call)},
+    {a:'Opted out',b:pc(opt,sc(f.worked),1),c:opt+' accounts',w:1}];
+  document.getElementById('kpis').innerHTML=K.map(function(x){
+    return '<div class="kp'+(x.w?' warn':'')+'"><div class="a">'+x.a+'</div>'+
+      '<div class="b">'+x.b+'</div><div class="c">'+x.c+'</div></div>';}).join('');
+}
+
+/* ---------- SAL leads ---------- */
+function drawSals(){
+  var f=F(),sdr=document.getElementById('fSdr'),v=document.getElementById('fVert'),
+      cp=document.getElementById('fCamp');
+  var list=SALS.filter(function(a){
+    if(sdr.selectedIndex>0&&a.sdr!==sdr.value) return false;
+    if(v.selectedIndex>0&&a.v!==v.value) return false;
+    if(cp.selectedIndex>0&&a.camp!==cp.value) return false;
+    return true;});
+    /* surface whatever needs a person first — that is what this table is read for */
+  list.sort(function(a,b){
+    var an=(a.fit===null||!a.own)?0:1, bn=(b.fit===null||!b.own)?0:1;
+    if(an!==bn) return an-bn;
+    return (b.fit||0)-(a.fit||0);});
+  var shown=MORE?list:list.slice(0,6),total=sc(f.held);
+  document.getElementById('salPill').textContent=nf(total);
+  document.getElementById('salBody').innerHTML=shown.length?shown.map(function(a,i){
+    var cls=a.fit>=9?'s5':(a.fit>=8?'s4':'s3');
+    var sk=a.src==='Signal-sourced'?'sig':(a.src==='Salesforce'?'sf':'');
+    var st=a.stage||'SAL';
+    var stc=st==='SAL'?'c-sal':(st==='Nurture'?'c-nur':'c-fch');
+    var row='<tr class="click" data-i="'+i+'"><td><div class="rn">'+a.c+
+      '<span>'+esc(a.role)+'</span></div></td>'+
+      '<td><span class="chip2 '+stc+'">'+esc(st)+'</span></td>'+
+      '<td>'+esc(a.sdr)+'</td><td>'+esc(a.v)+'</td>'+
+      '<td><span class="tag '+sk+'">'+esc(a.src)+'</span></td><td>'+esc(a.hook)+'</td>'+
+      '<td class="r">'+(a.fit===null?'<span class="nosc">not logged</span>':
+        '<span class="sbox '+cls+'">'+a.fit+'</span>')+'</td>'+
+      '<td>'+(a.own?esc(a.own):'<span class="noown">Unassigned</span>')+'</td>'+
+      '<td'+(a.own?'':' class="noown"')+'>'+esc(a.next)+'</td></tr>';
+    if(OPEN===i){
+      row+='<tr class="det"><td colspan="9"><div class="detin"><div class="dg">'+
+        [['Employees',a.sz],['Source',a.src],['Route to SDR',a.route],['Campaign',a.camp],
+         ['Lead score',a.lead+' of 100'],['Engagement',a.eng+' of 100'],['Outreach',a.touch],
+         ['First touch',a.first],['AE score',a.fit+' of 10'],['Owner',a.own||'Unassigned']]
+        .map(function(p){return '<div><div class="dk">'+esc(p[0])+'</div><div class="dv">'+
+          esc(p[1])+'</div></div>';}).join('')+
+        '</div><div class="tlk">History</div><ul class="tl">'+a.tl.map(function(e){
+          var c=e[1]==='AE'?'ae':((e[1]==='SDR'||e[1]==='Nooks')?'sdr':(e[1]==='Signal'?'sig':''));
+          return '<li><span class="dd">'+esc(e[0])+'</span><span class="ww '+c+'">'+esc(e[1])+
+            '</span><span class="xx">'+esc(e[2])+'</span></li>';}).join('')+'</ul></div></td></tr>';
+    }
+    return row;
+  }).join('') : '<tr><td colspan="9" style="padding:16px;color:var(--ink-3)">No accounts match.</td></tr>';
+  var rem=Math.max(0,total-shown.length),mb=document.getElementById('salMore');
+  if(!MORE&&list.length>6){mb.textContent='Show '+nf(rem)+' more';mb.style.display='';}
+  else if(rem>0){mb.textContent=nf(rem)+' more not named in this sample';mb.style.display='';}
+  else if(MORE&&list.length>6){mb.textContent='Show fewer';mb.style.display='';}
+  else {mb.style.display='none';}
+}
+var SCUT='lead';
+function drawLsv(){
+  var rows=(SCUT==='lead')?LSV:ESV, mx=rows[0].reached;
+  document.getElementById('sCol').textContent=(SCUT==='lead')?'Lead score bucket':'Engagement score bucket';
+  document.getElementById('lsvBody').innerHTML=rows.map(function(r){
+    function c(v,s2,cl,lb){return '<td class="r" data-tip="'+esc('<div class="th">'+r.b+
+      '</div><div class="tr"><span>'+lb+'</span><b>'+v.toFixed(1)+'%</b></div>'+
+      '<div class="tr"><span>Accounts in bucket</span><b>'+nf(r.n)+'</b></div>'+
+      '<div class="tr"><span>Implied count</span><b>'+Math.round(r.n*v/100)+'</b></div>')+
+      '"><span class="cell"><span class="t"><i class="'+cl+
+      '" style="width:'+Math.min(100,v/s2*100)+'%"></i></span><b>'+v.toFixed(1)+'%</b></span></td>';}
+    return '<tr><td><div class="rn">'+esc(r.b)+'</div></td><td class="r">'+nf(r.n)+'</td>'+
+      c(r.reached,mx,'','Reached')+c(r.replied,mx,'v','Replied')+c(r.hot,10,'a','Hot')+
+      c(r.sal,(SCUT==='lead')?3.5:7,'g','SAL')+'</tr>';}).join('');
+  var top=rows[0],bot=rows[rows.length-1];
+  document.getElementById('lsvNote').innerHTML=(SCUT==='lead')
+    ? '<b>The lead score ranks correctly — '+(top.sal/bot.sal).toFixed(0)+
+      '× more SALs from the top bucket than the bottom.</b> It covers every ranked account and is '+
+      'set before any contact, so it can be used to decide who to work first.'
+    : '<b>Engagement rises with outcome as expected — '+(top.sal/bot.sal).toFixed(0)+
+      '× more SALs from the hot bucket.</b> But it only exists once an account has been contacted, '+
+      'so its pool is the '+nf(rows.reduce(function(a,r){return a+r.n;},0))+
+      ' accounts worked, not the ranked pool. It confirms interest; it cannot prioritise.';
+}
+
+/* ---------- wiring ---------- */
+function redraw(){drawVerdict();drawPerf();drawFnl();drawQ();drawMarket();drawPeople();
+  drawSals();drawChn();drawChart();drawLsv();}
+function refresh(){
+  var ids=['fSdr','fCamp','fVert','fReg','fPlat'];
+  var els=ids.map(function(i){return document.getElementById(i);});
+  els.forEach(function(e){e.classList.toggle('on',e.selectedIndex>0);});
+  var n=els.filter(function(e){return e.selectedIndex>0;}).length+
+    (CH.email?1:0)+(CH.call?1:0)+(CH.li?1:0);
+  document.getElementById('fCount').textContent=n?n+' filter'+(n>1?'s':''):'No filters';
+  document.getElementById('fClear').disabled=n===0;
+  OPEN=null;QALL=false;redraw();
+}
+document.getElementById('segP').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#segP button').forEach(function(x){
+    x.setAttribute('aria-pressed',x===b);});
+  P=b.dataset.p;MORE=false;refresh();});
+document.getElementById('advBtn').addEventListener('click',function(){
+  document.getElementById('adv').classList.toggle('on');});
+/* every select must redraw — without this the filters look live but do nothing */
+['fSdr','fCamp','fVert','fReg','fPlat'].forEach(function(i){
+  document.getElementById(i).addEventListener('change',refresh);});
+document.getElementById('fClear').addEventListener('click',function(){
+  ['fSdr','fCamp','fVert','fReg','fPlat'].forEach(function(i){document.getElementById(i).selectedIndex=0;});
+  CH={email:false,call:false,li:false};
+  document.querySelectorAll('.chk').forEach(function(b){b.setAttribute('aria-pressed','false');});
+  refresh();});
+document.querySelectorAll('.chk').forEach(function(b){
+  b.addEventListener('click',function(){CH[b.dataset.ch]=!CH[b.dataset.ch];
+    b.setAttribute('aria-pressed',CH[b.dataset.ch]);refresh();});});
+document.getElementById('qTabs').addEventListener('click',function(e){
+  var b=e.target.closest('[data-q]'); if(!b) return; QT=b.dataset.q;QALL=false;drawQ();});
+document.getElementById('qMore').addEventListener('click',function(){
+  if(QT==='all'){QALL=!QALL;drawQ();}});
+document.getElementById('fnl').addEventListener('click',function(e){
+  var b=e.target.closest('[data-q]'); if(!b) return;
+  QT=b.dataset.q;QALL=false;drawQ();
+  document.getElementById('needs').scrollIntoView({behavior:'smooth',block:'start'});});
+document.getElementById('mTabs').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#mTabs button').forEach(function(x){
+    x.setAttribute('aria-selected',x===b);});
+  MCUT=b.dataset.k;drawMarket();});
+document.getElementById('pTabs').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#pTabs button').forEach(function(x){
+    x.setAttribute('aria-selected',x===b);});
+  PCUT=b.dataset.k;drawPeople();});
+document.getElementById('salBody').addEventListener('click',function(e){
+  var tr=e.target.closest('tr.click'); if(!tr) return;
+  var i=+tr.dataset.i;OPEN=(OPEN===i?null:i);drawSals();});
+document.getElementById('salMore').addEventListener('click',function(){
+  MORE=!MORE;OPEN=null;drawSals();});
+document.getElementById('sTabs').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#sTabs button').forEach(function(x){
+    x.setAttribute('aria-selected',x===b);});
+  SCUT=b.dataset.k; drawLsv();});
+document.getElementById('bx').addEventListener('click',function(){
+  document.getElementById('banner').style.display='none';});
+document.querySelectorAll('.lang button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.lang button').forEach(function(x){x.classList.toggle('on',x===b);});});});
+(function(){
+  var sd=document.getElementById('side'),sm=document.getElementById('scrim'),
+      mb=document.getElementById('menu');
+  function set(o){sd.classList.toggle('open',o);sm.classList.toggle('on',o);
+    mb.setAttribute('aria-expanded',o?'true':'false');}
+  mb.addEventListener('click',function(){set(!sd.classList.contains('open'));});
+  sm.addEventListener('click',function(){set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});
+})();
+/* ================= tooltips =================
+   Anything with data-tip shows it on hover AND on keyboard focus, so the
+   numbers behind a bar are reachable without a mouse. */
+var TIPS={
+  sal:{h:'SAL — sales-accepted lead',b:'A fit call the AE scored 7 or above. Below 7 goes to nurture. The AE sets the score; Signal only reads it.'},
+  salrate:{h:'SAL rate',b:'SALs as a share of fit calls held. It measures the quality of what the SDR handed over, not the volume.'},
+  worked:{h:'Accounts worked',b:'At least one action out — email, call or LinkedIn. The SDR owns this stage.'},
+  replyrate:{h:'Reply rate',b:'Accounts that replied as a share of accounts worked. Counted on accounts, never on messages.'},
+  connect:{h:'Connect rate',b:'Contacts reached in live conversation, against contacts attempted. The one measure counted on contacts rather than accounts, so it never sums with the others.'},
+  booked:{h:'Fit call booked',b:'The SDR has a call in an AE diary. Booked by a person, never automatically.'},
+  held:{h:'Fit call held',b:'The AE held the call and scores it 1 to 10. Signal reads that score back to tune the ranking.'},
+  mix:{h:'Mix vs target',b:'This sector as a share of the working list, against the intended portfolio balance. A pure score sort concentrates in banking, so this column is there to catch that drift.'},
+  lead:{h:'Lead score',b:'0 to 100 from seven weighted dimensions — contact-centre intensity, sector, buying trigger, modernisation signal, revenue, size and region. Set before any contact.'},
+  eng:{h:'Engagement score',b:'Comes from marketing campaign activity, separate from the lead score. Where an account has engagement it moves up the queue; with none it still ranks on fit.'},
+  route:{h:'Route to the SDR',b:'Every ranked account goes to the campaign; the top-ranked also go straight to the SDR. This is which path the account actually arrived by.'},
+  nurture:{h:'Nurture',b:'Fit calls the AE scored below 7. Held for a later run rather than discarded.'},
+  stuck:{h:'Stuck here',b:'Accounts that have sat at this stage longer than they should. Click to open them in Needs action.'},
+  elapsed:{h:'Period elapsed',b:'How much of the current period has passed — so a part-period number can be read fairly.'}
+};
+(function(){
+  var tip=document.getElementById('tip');
+  function html(d){
+    if(typeof d==='string') return d;
+    var o=d.h?'<div class="th">'+d.h+'</div>':'';
+    if(d.rows) o+=d.rows.map(function(r){
+      return '<div class="tr"><span>'+r[0]+'</span><b>'+r[1]+'</b></div>';}).join('');
+    if(d.b) o+='<div class="tb">'+d.b+'</div>';
+    return o;
+  }
+  function place(x,y){
+    var pad=14,w=tip.offsetWidth,h=tip.offsetHeight;
+    var L=x+pad,T=y+pad;
+    if(L+w>window.innerWidth-8) L=x-w-pad;
+    if(T+h>window.innerHeight-8) T=y-h-pad;
+    tip.style.left=Math.max(8,L)+'px'; tip.style.top=Math.max(8,T)+'px';
+  }
+  function payload(el){
+    var k=el.getAttribute('data-tipk');
+    if(k&&TIPS[k]) return html(TIPS[k]);
+    return el.getAttribute('data-tip')||'';
+  }
+  function show(el,x,y){
+    var p=payload(el); if(!p) return;
+    tip.innerHTML=p; tip.classList.add('on'); tip.setAttribute('aria-hidden','false'); place(x,y);
+  }
+  function hide(){ tip.classList.remove('on'); tip.setAttribute('aria-hidden','true'); }
+  document.addEventListener('mouseover',function(e){
+    var el=e.target.closest('[data-tip],[data-tipk]'); if(!el) return; show(el,e.clientX,e.clientY);});
+  document.addEventListener('mousemove',function(e){
+    if(!tip.classList.contains('on')) return;
+    var el=e.target.closest('[data-tip],[data-tipk]');
+    if(!el){ hide(); return; } place(e.clientX,e.clientY);});
+  document.addEventListener('focusin',function(e){
+    var el=e.target.closest('[data-tip],[data-tipk]'); if(!el) return;
+    var r=el.getBoundingClientRect(); show(el,r.left,r.bottom);});
+  document.addEventListener('focusout',hide);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') hide(); });
+  window.addEventListener('scroll',hide,{passive:true});
+})();
+
+buildSelects(); refresh();
+})();
+</script>
+</body>
+</html>
