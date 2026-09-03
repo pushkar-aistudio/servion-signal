@@ -111,10 +111,6 @@
     border:1px solid var(--line);border-radius:var(--r);padding:8px 10px;margin-top:9px}
   .adv.on{display:flex}
   .flab{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
-  .chk{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:6px;
-    padding:5px 9px;font-size:12px;color:var(--ink-2);cursor:pointer;background:var(--card)}
-  .chk[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-l);color:var(--blue-d);font-weight:580}
-  .chk i{width:8px;height:8px;border-radius:2px}
   select{font:inherit;font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;
     background:var(--card);color:var(--ink-2);max-width:220px}
   select.on{border-color:var(--blue);color:var(--blue-d);font-weight:560}
@@ -227,6 +223,10 @@
   table.d td.r{text-align:right}
   table.d tbody tr:last-child td{border-bottom:0}
   table.d tfoot td{border-bottom:0;border-top:1px solid var(--line);font-weight:660;color:var(--ink-2)}
+  .colink{font-weight:600;color:var(--blue-d);text-decoration:none}
+  .colink:hover{text-decoration:underline}
+  .muted2{font-size:10.5px;color:var(--ink-3);margin-top:1px}
+  a.act{text-decoration:none;display:inline-block}
   .rn{font-weight:600}
   .rn span{display:block;font-size:10.5px;color:var(--ink-3);font-weight:450;margin-top:1px}
   .noown{color:var(--rose);font-weight:600}
@@ -270,7 +270,7 @@
   .rqr .sw{width:9px;height:9px;border-radius:2px}
   .rqr .n{text-align:right;font-weight:660}
   .rqr .p{text-align:right;color:var(--ink-3);font-size:11px}
-  .chart{width:100%;height:168px;display:block;padding:13px 16px 2px}
+  .chart{width:100%;height:250px;display:block;padding:14px 16px 4px}
   .clg{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:11px;color:var(--ink-2);padding:2px 0 10px}
   .clg span{display:inline-flex;align-items:center;gap:6px}
   .clg i{width:9px;height:9px;border-radius:2px} .clg i.ln{width:13px;height:2px}
@@ -402,6 +402,18 @@
   table.d th .car{opacity:0;font-size:8px;margin-left:4px}
   table.d th[data-on] .car{opacity:1}
   table.d th[data-on]{color:var(--ink)}
+  .prewrap{padding:16px 20px 4px}
+  .prow{display:grid;grid-template-columns:150px 1fr 76px 62px;gap:14px;align-items:center;padding:9px 0}
+  .prow .pk{font-size:13px;font-weight:580}
+  .prow.last .pk{color:var(--blue-d)}
+  .ptr2{height:26px;background:var(--line-2);border-radius:5px;overflow:hidden}
+  .ptr2 i{display:block;height:100%;border-radius:5px;cursor:pointer}
+  .ptr2 i:hover{filter:brightness(1.06)}
+  .pv2{text-align:right;font-size:17px;font-weight:680}
+  .pc2{text-align:right;font-size:12.5px;color:var(--ink-2);font-weight:600}
+  .prow.last .ptr2{box-shadow:inset 0 0 0 1px var(--blue-dim)}
+  @media(max-width:680px){ .prow{grid-template-columns:1fr 62px 52px;row-gap:3px}
+    .prow .ptr2{grid-column:1/-1;order:9} }
   .menu{display:none}
   .scrim{display:none;position:fixed;inset:0;background:rgba(10,12,15,.45);z-index:55}
   .scrim.on{display:block}
@@ -496,29 +508,20 @@
           <button class="bx" id="bx">×</button></div>
       </div>
 
-      <div class="verdict" id="verdict"></div>
-
       <div class="ctl">
+        <span class="flab">Time</span>
         <div class="seg" id="segP">
-          <button data-p="day" aria-pressed="false">Day</button><button data-p="week" aria-pressed="false">Week</button><button data-p="month" aria-pressed="true">Month</button><button data-p="quarter" aria-pressed="false">Quarter</button>
+          <button data-p="day" aria-pressed="false">Day</button><button data-p="week" aria-pressed="false">Week</button><button data-p="month" aria-pressed="true">Month</button><button data-p="quarter" aria-pressed="false">Quarter</button><button data-p="custom" aria-pressed="false">Custom</button>
         </div>
-        <div class="cright">
-          <span style="font-size:11.5px;color:var(--ink-3)" id="fCount">No filters</span>
-          <button class="lnk" id="advBtn">Filters</button>
-          <button class="lnk" id="fClear" disabled>Clear</button>
-        </div>
-      </div>
-      <div class="adv" id="adv">
-        <span class="flab">Channel</span>
-        <button class="chk" data-ch="email" aria-pressed="false"><i style="background:var(--blue)"></i>Email</button>
-        <button class="chk" data-ch="call" aria-pressed="false"><i style="background:var(--green)"></i>Calls</button>
-        <button class="chk" data-ch="li" aria-pressed="false"><i style="background:var(--violet)"></i>LinkedIn</button>
         <div class="fdiv"></div>
-        <select id="fSdr"></select>
+        <select id="fAe"></select>
         <select id="fCamp"></select>
         <select id="fVert"></select>
         <select id="fReg"></select>
-        <select id="fPlat"></select>
+        <div class="cright">
+          <span style="font-size:11.5px;color:var(--ink-3)" id="fCount">No filters</span>
+          <button class="lnk" id="fClear" disabled>Clear</button>
+        </div>
       </div>
 
       <!-- PERFORMANCE -->
@@ -539,6 +542,16 @@
             </div>
           </div>
           <div class="note" id="perfNote"></div>
+        </div>
+      </div>
+
+      <!-- BEFORE THE FUNNEL -->
+      <div class="blk">
+        <div class="bh"><h2>Before the funnel</h2>
+          <span class="r"><span class="pill">Accounts</span></span></div>
+        <div class="card">
+          <div class="prewrap" id="pre"></div>
+          <div class="note" id="preNote"></div>
         </div>
       </div>
 
@@ -598,7 +611,7 @@
         <div class="card">
           <div class="tabs" id="qTabs"></div>
           <div class="tw"><table class="d">
-            <thead><tr><th>Account</th><th>To do</th><th class="r">Engagement</th><th>Owner</th>
+            <thead><tr><th>Account</th><th>To do</th><th class="r">Lead score</th><th>Owner</th>
               <th class="r">Waiting</th><th class="r"></th></tr></thead>
             <tbody id="qBody"></tbody>
           </table></div>
@@ -608,7 +621,7 @@
 
       <!-- SAL LEADS -->
       <div class="blk">
-        <div class="bh"><h2>Accounts at fit call and beyond</h2>
+        <div class="bh"><h2>Hot leads</h2>
           <span class="r"><span class="pill" id="salPill">14</span>
             <button class="lnk">Export CSV</button></span></div>
         <div class="card">
@@ -669,7 +682,7 @@
       </div>
 
       <footer>
-        <b>SAL</b> — fit call the AE scored 7 or above; below 7 goes to nurture.
+        <b>SAL</b> is a fit call the AE scored 7 or above; below 7 goes to nurture.
         <b>Accounts worked</b> — at least one action out. <b>Reply rate</b> — accounts replied ÷ accounts worked.
         <b>Connect rate</b> — contacts reached in live conversation ÷ contacts attempted, the only
         contact-level measure here. Accounts and actions are never mixed. Sample build — figures illustrative.
@@ -713,6 +726,14 @@ var SERIES={
   quarter:{lab:'last 6 months', x:['Jun','Jul','Aug','Sep','Oct','Nov'],
            held:[12,14,15,17,19,20], sal:[8,10,11,13,14,14], tail:3}
 };
+/* The chain before the funnel. The last step is the same number the funnel
+   starts from, so the two read as one flow. */
+var PRE={
+  day:    {enriched:320, campaign:118, reached:26},
+  week:   {enriched:780, campaign:640, reached:168},
+  month:  {enriched:3180,campaign:2410,reached:520},
+  quarter:{enriched:8400,campaign:6900,reached:1480}
+};
 var ELAPSED={day:'62% elapsed',week:'80% elapsed',month:'70% elapsed',quarter:'78% elapsed'};
 /* engagement score exists only once an account has been contacted, so its pool is
    the worked accounts — not the whole ranked pool the lead score covers */
@@ -748,56 +769,56 @@ var FN={
   day:{worked:26,replied:6,booked:2,held:1,sal:1,nurture:0,
     cuts:{sdr:[['Patricia Shostak','',9,2,1,1,1],['Dylan Reyes','',7,2,0,0,1],
                ['Nadia Haddad','',6,1,0,0,0],['Owen Tsai','',4,1,0,0,0]],
-      source:[['Signal-sourced','',11,3,1,1],['Salesforce','',9,2,0,0],['ZoomInfo','',6,1,0,0]],
+      source:[['ZoomInfo','bought list',6,1,0,0],['Salesforce','already in the CRM',9,2,0,0],['Signal-sourced','found for us',11,3,1,1]],
       route:[['Campaign-warmed','reached after the campaign',16,4,1,1],
              ['Direct to SDR','top-ranked, worked straight away',10,2,0,0]],
       vertical:[['Banking & financial services','',6,1,0,0],['Insurance & payers','',5,2,1,1],
                 ['Healthcare','',3,1,0,0],['Telecom & media','',3,1,0,0],
                 ['Retail & e-commerce','',3,1,0,0],['Utilities & energy','',2,0,0,0],
                 ['Travel & logistics','',2,0,0,0],['BPO','',1,0,0,0],['Technology','',1,0,0,0]],
-      region:[['United States','',23,5,1,1],['Canada','',3,1,0,0]],
+      region:[['North America','',16,4,1,1],['APAC','',5,1,0,0],['Middle East','',3,1,0,0],['Europe','',2,0,0,0],['Global & other','',0,0,0,0]],
       platform:[['Genesys','',7,2,1,1],['Cisco','',5,1,0,0],['Avaya','',5,1,0,0],
                 ['NICE','',4,1,0,0],['Amazon Connect','',2,1,0,0],['Not identified','',3,0,0,0]]},
     ae:[['Joe Klosterman',1,1,9.0,0],['Mike Scott',0,0,null,0],['Eric Chanh',0,0,null,0],['John Galluzzo',0,0,null,0],['Tony Janusky',0,0,null,0],['Not yet scored',0,0,null,0]]},
   week:{worked:168,replied:39,booked:8,held:6,sal:4,nurture:1,
     cuts:{sdr:[['Patricia Shostak','',54,13,2,2,3],['Dylan Reyes','',46,11,2,1,2],
                ['Nadia Haddad','',38,9,1,1,2],['Owen Tsai','',30,6,1,0,1]],
-      source:[['Signal-sourced','',70,19,3,2],['Salesforce','',56,12,2,1],['ZoomInfo','',42,8,1,1]],
+      source:[['ZoomInfo','bought list',42,8,1,1],['Salesforce','already in the CRM',56,12,2,1],['Signal-sourced','found for us',70,19,3,2]],
       route:[['Campaign-warmed','reached after the campaign',101,26,4,2],
              ['Direct to SDR','top-ranked, worked straight away',67,13,2,2]],
       vertical:[['Banking & financial services','',39,8,1,1],['Insurance & payers','',34,9,2,1],
                 ['Healthcare','',20,6,1,1],['Telecom & media','',17,4,1,1],
                 ['Retail & e-commerce','',17,4,1,0],['Utilities & energy','',14,3,0,0],
                 ['Travel & logistics','',12,3,0,0],['BPO','',8,1,0,0],['Technology','',7,1,0,0]],
-      region:[['United States','',146,34,5,4],['Canada','',22,5,1,0]],
+      region:[['North America','',102,24,4,3],['APAC','',30,7,1,1],['Middle East','',19,5,1,0],['Europe','',12,2,0,0],['Global & other','',5,1,0,0]],
       platform:[['Genesys','',43,10,2,2],['Cisco','',34,8,1,1],['Avaya','',31,7,1,1],
                 ['NICE','',25,6,1,0],['Amazon Connect','',17,4,1,0],['Not identified','',18,4,0,0]]},
     ae:[['Joe Klosterman',2,1,8.0,0],['Mike Scott',1,1,7.5,0],['Eric Chanh',1,1,9.0,0],['John Galluzzo',1,1,7.0,0],['Tony Janusky',0,0,null,0],['Not yet scored',1,0,null,1]]},
   month:{worked:520,replied:118,booked:24,held:19,sal:14,nurture:3,
     cuts:{sdr:[['Patricia Shostak','',168,42,7,5,8],['Dylan Reyes','',142,33,5,4,7],
                ['Nadia Haddad','',118,26,4,3,5],['Owen Tsai','',92,17,3,2,4]],
-      source:[['Signal-sourced','',212,54,8,6],['Salesforce','',178,39,6,5],['ZoomInfo','',130,25,5,3]],
+      source:[['ZoomInfo','bought list',130,25,5,3],['Salesforce','already in the CRM',178,39,6,5],['Signal-sourced','found for us',212,54,8,6]],
       route:[['Campaign-warmed','reached after the campaign',312,79,11,8],
              ['Direct to SDR','top-ranked, worked straight away',208,39,8,6]],
       vertical:[['Banking & financial services','',148,24,4,3],['Insurance & payers','',96,26,5,4],
                 ['Healthcare','',57,18,4,3],['Telecom & media','',47,12,2,2],
                 ['Retail & e-commerce','',47,11,2,1],['Utilities & energy','',40,9,1,1],
                 ['Travel & logistics','',34,8,1,0],['BPO','',26,5,0,0],['Technology','',25,5,0,0]],
-      region:[['United States','',452,103,17,13],['Canada','',68,15,2,1]],
+      region:[['North America','',317,74,11,8],['APAC','',94,20,4,3],['Middle East','',57,14,2,2],['Europe','',36,7,1,1],['Global & other','',16,3,1,0]],
       platform:[['Genesys','',132,32,6,5],['Cisco','',104,24,4,3],['Avaya','',96,22,4,3],
                 ['NICE','',78,17,3,2],['Amazon Connect','',52,12,1,1],['Not identified','',58,11,1,0]]},
     ae:[['Joe Klosterman',5,4,8.5,0],['Mike Scott',4,3,7.8,0],['Eric Chanh',4,4,8.8,0],['John Galluzzo',3,2,7.3,0],['Tony Janusky',1,1,7.0,0],['Not yet scored',2,0,null,2]]},
   quarter:{worked:1480,replied:337,booked:71,held:56,sal:41,nurture:10,
     cuts:{sdr:[['Patricia Shostak','',478,109,18,13,23],['Dylan Reyes','',404,92,15,11,19],
                ['Nadia Haddad','',336,76,13,10,16],['Owen Tsai','',262,60,10,7,13]],
-      source:[['Signal-sourced','',604,154,24,18],['Salesforce','',506,111,18,14],['ZoomInfo','',370,72,14,9]],
+      source:[['ZoomInfo','bought list',370,72,14,9],['Salesforce','already in the CRM',506,111,18,14],['Signal-sourced','found for us',604,154,24,18]],
       route:[['Campaign-warmed','reached after the campaign',888,226,32,24],
              ['Direct to SDR','top-ranked, worked straight away',592,111,24,17]],
       vertical:[['Banking & financial services','',421,71,12,9],['Insurance & payers','',274,74,14,11],
                 ['Healthcare','',163,51,11,8],['Telecom & media','',133,34,7,5],
                 ['Retail & e-commerce','',133,32,5,4],['Utilities & energy','',114,26,4,3],
                 ['Travel & logistics','',96,23,3,1],['BPO','',74,14,0,0],['Technology','',72,12,0,0]],
-      region:[['United States','',1287,293,50,37],['Canada','',193,44,6,4]],
+      region:[['North America','',903,206,34,25],['APAC','',266,61,10,7],['Middle East','',163,37,6,5],['Europe','',104,23,4,3],['Global & other','',44,10,2,1]],
       platform:[['Genesys','',376,91,18,14],['Cisco','',296,68,12,9],['Avaya','',273,62,11,8],
                 ['NICE','',222,49,8,6],['Amazon Connect','',148,34,4,3],['Not identified','',165,33,3,1]]},
     ae:[['Joe Klosterman',15,12,8.3,0],['Mike Scott',12,10,7.7,0],['Eric Chanh',12,11,8.6,0],['John Galluzzo',9,6,7.2,0],['Tony Janusky',3,2,7.0,0],['Not yet scored',5,0,null,5]]}
@@ -805,47 +826,53 @@ var FN={
 /* campaigns cover a share of the worked accounts */
 var CAMPAIGNS=[{n:'Contact centre modernisation',share:0.42},
                {n:'Patient & member access',share:0.22},
-               {n:'Voice AI & automation',share:0.21},
+               {n:'Voice self-service',share:0.21},
                {n:'Cloud migration',share:0.15}];
 var MIX=[{k:'Wants to talk',s:0.288,c:'var(--green)'},{k:'Wants pricing',s:0.144,c:'var(--blue)'},
   {k:'Not now',s:0.441,c:'var(--amber)'},{k:'Opted out',s:0.127,c:'var(--rose)'}];
 var STG=[
-  {k:'worked',lab:'Accounts worked',who:'SDR',col:'var(--blue)',stall:47,q:'followup'},
+  {k:'worked',lab:'SDR reached out',who:'SDR',col:'var(--blue)',stall:47,q:'followup'},
   {k:'replied',lab:'Replied',who:'SDR',col:'var(--violet)',stall:12,q:'reply'},
   {k:'booked',lab:'Fit call booked',who:'SDR',col:'var(--amber)',stall:3,q:'followup'},
   {k:'held',lab:'Fit call held',who:'AE',col:'#b06f0c',stall:2,q:'score'},
   {k:'sal',lab:'SAL converted',who:'AE',col:'var(--green)',stall:1,q:'assign'}
 ];
-/* queues named for the step in Servion's process that owes the action */
+/* Stages in journey order. Each one is a transition zone: accounts sitting
+   between one step and the next. The last is the final bottleneck. */
 var Q=[
-  {k:'score',   lab:'To be scored',       at:'Fit call held',    n:2, cls:'r', sev:0},
-  {k:'assign',  lab:'To be given an owner',at:'SAL converted',  n:1, cls:'r', sev:0},
-  {k:'reply',   lab:'To be answered',     at:'Replied',          n:12,cls:'r', sev:0},
-  {k:'approve', lab:'To be approved',     at:'Signal-sourced',   n:2, cls:'a', sev:1},
-  {k:'sent',    lab:'To be sent',         at:'Draft ready',      n:7, cls:'a', sev:1},
-  {k:'followup',lab:'To be chased',       at:'Approached',       n:50,cls:'a', sev:2}
+  {k:'reachout',lab:'Ready to reach out',   at:'Scored 50+, not yet contacted',   n:186,cls:'a',sev:3},
+  {k:'calllist',lab:'On the call list',     at:'Emailed, needs a call',           n:64, cls:'a',sev:2},
+  {k:'noreply', lab:'Reached, no reply',    at:'Follow-up due',                   n:47, cls:'a',sev:2},
+  {k:'answer',  lab:'Replied, not answered',at:'Waiting on us',                   n:12, cls:'r',sev:0},
+  {k:'noae',    lab:'No AE assigned',       at:'Call booked, no AE',              n:3,  cls:'r',sev:0},
+  {k:'noscore', lab:'Call held, not scored',at:'Last step before SAL',            n:2,  cls:'r',sev:1}
 ];
 var QR={
-  score:[{c:'SECU',s:'Banking · N. Carolina',need:'Log the AE score',own:'John Galluzzo',d:14,eng:52},
-         {c:'Velera',s:'Banking · Michigan',need:'Log the AE score',own:'Tony Janusky',d:14,eng:58}],
-  assign:[{c:'LPL Financial',s:'Banking · California',need:'Assign an owner',own:null,d:6,eng:68}],
-  reply:[{c:'Regions Bank',s:'Banking · Alabama',need:'Reply to the account',own:'Patricia Shostak',d:2,eng:88},
-         {c:'Sanford Health',s:'Healthcare · S. Dakota',need:'Reply to the account',own:'Patricia Shostak',d:1,eng:84},
-         {c:'Novant Health',s:'Healthcare · N. Carolina',need:'Reply to the account',own:'Patricia Shostak',d:5,eng:74},
-         {c:'Atrium Health',s:'Healthcare · N. Carolina',need:'Reply to the account',own:'Patricia Shostak',d:4,eng:71},
-         {c:'Zions Bancorporation',s:'Banking · Utah',need:'Reply to the account',own:'Patricia Shostak',d:3,eng:66}],
-  approve:[{c:'Nordic Health Partners',s:'Healthcare · Minnesota',need:'Approve as a new account',own:'Sales ops',d:4,eng:0},
-           {c:'Piedmont Healthcare',s:'Healthcare · Georgia',need:'Approve as a new account',own:'Sales ops',d:3,eng:0}],
-  sent:[{c:'AdventHealth',s:'Healthcare · Florida',need:'Send the draft',own:'Patricia Shostak',d:9,eng:0},
-        {c:'M&T Bank',s:'Banking · New York',need:'Send the draft',own:'Patricia Shostak',d:8,eng:0}],
-  followup:[{c:'Truist Financial',s:'Banking · N. Carolina',need:'Send a follow-up',own:'Patricia Shostak',d:19,eng:24},
-            {c:'BankUnited',s:'Banking · Florida',need:'Rebook the call',own:'Patricia Shostak',d:18,eng:61},
-            {c:'Intermountain Health',s:'Healthcare · Utah',need:'Send a follow-up',own:'Patricia Shostak',d:16,eng:31},
-            {c:'Prisma Health',s:'Healthcare · S. Carolina',need:'Rebook the call',own:'Patricia Shostak',d:16,eng:57},
-            {c:'Old National Bank',s:'Banking · Indiana',need:'Rebook the call',own:'Patricia Shostak',d:15,eng:54},
-            {c:'Desjardins Group',s:'Banking · Quebec',need:'Send a follow-up',own:'Patricia Shostak',d:13,eng:28},
-            {c:'Fulton Financial',s:'Banking · Pennsylvania',need:'Send a follow-up',own:'Patricia Shostak',d:12,eng:19},
-            {c:'Tampa General Hospital',s:'Healthcare · Florida',need:'Send a follow-up',own:'Patricia Shostak',d:11,eng:22}]
+  reachout:[
+    {c:'Fifth Third Bank',s:'Banking · Ohio',need:'Reach out',own:'Patricia Shostak',d:9,eng:0,sc:89},
+    {c:'Sanford Health',s:'Healthcare · South Dakota',need:'Reach out',own:'Dylan Reyes',d:7,eng:0,sc:87},
+    {c:'Zions Bancorporation',s:'Banking · Utah',need:'Reach out',own:'Nadia Haddad',d:6,eng:0,sc:81},
+    {c:'AdventHealth',s:'Healthcare · Florida',need:'Reach out',own:'Owen Tsai',d:5,eng:0,sc:78},
+    {c:'Old National Bank',s:'Banking · Indiana',need:'Reach out',own:'Patricia Shostak',d:4,eng:0,sc:72}],
+  calllist:[
+    {c:'Regions Bank',s:'Banking · Alabama',need:'Call',own:'Patricia Shostak',d:4,eng:74,sc:83},
+    {c:'Novant Health',s:'Healthcare · North Carolina',need:'Call',own:'Dylan Reyes',d:3,eng:68,sc:80},
+    {c:'Prisma Health',s:'Healthcare · South Carolina',need:'Call',own:'Nadia Haddad',d:3,eng:61,sc:76},
+    {c:'Fulton Financial',s:'Banking · Pennsylvania',need:'Call',own:'Owen Tsai',d:2,eng:54,sc:70}],
+  noreply:[
+    {c:'Truist Financial',s:'Banking · North Carolina',need:'Follow up',own:'Patricia Shostak',d:19,eng:24,sc:78},
+    {c:'Intermountain Health',s:'Healthcare · Utah',need:'Follow up',own:'Dylan Reyes',d:16,eng:31,sc:85},
+    {c:'Desjardins Group',s:'Banking · Quebec',need:'Follow up',own:'Nadia Haddad',d:13,eng:28,sc:72},
+    {c:'Tampa General Hospital',s:'Healthcare · Florida',need:'Follow up',own:'Owen Tsai',d:11,eng:22,sc:69}],
+  answer:[
+    {c:'Atrium Health',s:'Healthcare · North Carolina',need:'Answer the reply',own:'Dylan Reyes',d:5,eng:71,sc:84},
+    {c:'M&T Bank',s:'Banking · New York',need:'Answer the reply',own:'Patricia Shostak',d:4,eng:66,sc:77},
+    {c:'BankUnited',s:'Banking · Florida',need:'Answer the reply',own:'Nadia Haddad',d:2,eng:88,sc:80}],
+  noae:[
+    {c:'LPL Financial',s:'Banking · California',need:'Assign an AE',own:null,d:6,eng:68,sc:79}],
+  noscore:[
+    {c:'SECU',s:'Banking · North Carolina',need:'Add the call score',own:'John Galluzzo',d:14,eng:52,sc:71},
+    {c:'Velera',s:'Banking · Michigan',need:'Add the call score',own:'Tony Janusky',d:14,eng:58,sc:74}]
 };
 var SALS=[
   {c:'Carle Health',route:'Campaign-warmed',camp:'Healthcare · Patient access',lead:91,eng:86,
@@ -918,9 +945,9 @@ var ACCT_EXTRA=[
    tl:[['28 Oct','Signal','Sourced from Salesforce'],['30 Oct','Signal','3 contacts, 2 verified'],
        ['01 Nov','SDR','Email 1 sent'],['05 Nov','Account','Replied, lukewarm'],
        ['07 Nov','AE','Fit call held — no score logged since']]},
-  {c:'Velera',stage:'Fit call held',route:'Direct to SDR',camp:'Voice AI & automation',
+  {c:'Velera',stage:'Fit call held',route:'Direct to SDR',camp:'Voice self-service',
    lead:74,eng:58,sdr:'Nadia Haddad',v:'Banking & financial services',src:'Signal-sourced',
-   hook:'Speech analytics and Gen AI programme',fit:null,own:'Tony Janusky',next:'AE score not logged',
+   hook:'Speech analytics programme',fit:null,own:'Tony Janusky',next:'AE score not logged',
    role:'VP Member Experience',sz:'3,100',touch:'1 email',first:'27 Oct',
    tl:[['27 Oct','Signal','Sourced by Signal — not in the CRM'],['29 Oct','Signal','2 contacts, 2 verified'],
        ['01 Nov','SDR','Email 1 sent'],['06 Nov','Account','Replied'],
@@ -939,7 +966,7 @@ var LSV=[{b:'Q4 · top',n:795,reached:34.2,replied:29.1,hot:8.6,sal:3.1},
   {b:'Q2',n:795,reached:15.1,replied:12.8,hot:3.0,sal:0.6},
   {b:'Q1 · bottom',n:795,reached:9.8,replied:7.1,hot:1.5,sal:0.3}];
 
-var P='month',MCUT='vertical',PCUT='ae',QT='all',OPEN=null,MORE=false,QALL=false;
+var P='month',CUSTOM=false,MCUT='vertical',PCUT='ae',QT='all',OPEN=null,MORE=false,QALL=false;
 var CH={email:false,call:false,li:false};
 function anyCh(){return CH.email||CH.call||CH.li;}
 function chOn(k){return !anyCh()||CH[k];}
@@ -957,21 +984,27 @@ function buildSelects(){
     s.innerHTML='<option>'+all+'</option>'+rows.map(function(r){
       return '<option>'+esc(r[0])+'</option>';}).join('');
   }
-  fill('fSdr','All SDRs',m.sdr);
+  var aeRows=FN.month.ae.filter(function(r){return r[0]!=='Not yet scored';});
+  fill('fAe','All AEs',aeRows);
   fill('fVert','All verticals',m.vertical);
   fill('fReg','All regions',m.region);
-  fill('fPlat','All platforms',m.platform);
   document.getElementById('fCamp').innerHTML='<option>All campaigns</option>'+
     CAMPAIGNS.map(function(c){return '<option>'+esc(c.n)+'</option>';}).join('');
 }
 function selScale(){
   var s=1,f=F(),i;
-  var defs=[['fSdr','sdr'],['fVert','vertical'],['fReg','region'],['fPlat','platform']];
+  var defs=[['fVert','vertical'],['fReg','region']];
   for(i=0;i<defs.length;i++){
     var e=document.getElementById(defs[i][0]);
     if(e.selectedIndex>0){var r=rowBy(defs[i][1],e.value); if(r) s*=r[2]/f.worked;}
   }
   /* a campaign narrows to its vertical */
+  var ae=document.getElementById('fAe');
+  if(ae.selectedIndex>0){
+    var arow=null,tot=0;
+    f.ae.forEach(function(r){ tot+=r[1]; if(r[0]===ae.value) arow=r; });
+    if(arow&&tot) s*=arow[1]/tot;
+  }
   var camp=document.getElementById('fCamp');
   if(camp.selectedIndex>0){
     var cv=CAMPAIGNS.filter(function(c){return c.n===camp.value;})[0];
@@ -986,39 +1019,6 @@ function sc(n){return Math.round(n*SCL());}
 function filtered(){return SCL()<0.999;}
 function diary7(){return [2,1,3,1,2].reduce(function(a,b){return a+Math.round(b*SCL());},0);}
 
-/* ---------- verdict ---------- */
-function drawVerdict(){
-  var f=F(),p=PER[P],sal=sc(f.sal),s=SCL();
-  var tgt=filtered()?null:p.target,fore=Math.round(p.fore*s),proj=sal+fore;
-  var blocked=['score','assign','reply'].reduce(function(a,k){
-    return a+Math.round((Q.filter(function(q){return q.k===k;})[0]||{n:0}).n*s);},0);
-  var total=Q.reduce(function(a,q){return a+Math.round(q.n*s);},0);
-  var dir=filtered()?null:(sal-p.prev);
-  var state,msg;
-  if(!tgt){
-    state = (dir===null||dir>=0)?'ok':'risk';
-    msg = dir===null ? 'Filtered slice' : (dir>0?'Up on last '+p.unit:(dir<0?'Down on last '+p.unit:'Level'));
-  }
-  else if(proj>=tgt){state='ok';msg='On track';}
-  else if(proj>=tgt*0.85){state='risk';msg='At risk';}
-  else {state='bad';msg='Behind';}
-  var sub=tgt
-    ? 'Forecast <b>'+proj+'</b> against a target of <b>'+tgt+'</b> · <b>'+sal+'</b> booked so far'
-    : '<b>'+sal+'</b> SALs '+(filtered()?'in this slice':'this '+p.unit)+
-      (dir!==null?' · '+(dir>=0?'+':'')+dir+' vs last '+p.unit:'');
-  var warn=blocked
-    ? '<span class="ex">!</span><div><b>'+blocked+' need a person today</b> — scores, owners and replies</div>'
-    : '<span class="ex" style="background:var(--green-l);color:var(--green-d)">✓</span><div>Nothing urgent outstanding</div>';
-  document.getElementById('verdict').innerHTML=
-    '<div class="vseg"><div class="vstate '+state+'"><span class="d"></span>'+msg+'</div></div>'+
-    '<div class="vseg"><div class="vsub">'+sub+'</div></div>'+
-    '<div class="vseg vblock"><div class="vwarn">'+warn+'</div></div>'+
-    '<div class="vseg"><button class="vgo" id="vgo">Review '+total+' items →</button></div>';
-  var g=document.getElementById('vgo');
-  if(g) g.addEventListener('click',function(){
-    QT='all';QALL=false;drawQ();
-    document.getElementById('needs').scrollIntoView({behavior:'smooth',block:'start'});});
-}
 
 /* ---------- mosaic ---------- */
 function spark(vals,labs,cur){
@@ -1039,7 +1039,9 @@ function pop(now,prev,unit,dp){
 function drawPerf(){
   var f=F(),p=PER[P],S=SERIES[P],s=SCL();
   var sal=sc(f.sal),held=sc(f.held),worked=sc(f.worked);
-  document.getElementById('pLab').textContent=p.lab+' · '+ELAPSED[P];
+  document.getElementById('pLab').textContent=CUSTOM
+    ? 'Custom range · showing this month'
+    : p.lab+' · '+ELAPSED[P];
 
   /* the headline number carries the weight; the other two sit beneath it */
   document.getElementById('perfHero').innerHTML=
@@ -1088,12 +1090,36 @@ function drawPerf(){
       lastS=SL.slice(-t).reduce(function(a,b){return a+b;},0);
   var prevH=H.slice(-2*t,-t).reduce(function(a,b){return a+b;},0),
       prevS=SL.slice(-2*t,-t).reduce(function(a,b){return a+b;},0);
-  document.getElementById('perfNote').innerHTML='Buckets are the '+S.lab+
-    '; the highlighted bucket'+(t>1?'s make':' makes')+' up '+esc(p.lab)+'. '+
-    (prevS?'<b>'+lastS+'</b> SALs from <b>'+lastH+'</b> calls held, against <b>'+prevS+
-      '</b> from <b>'+prevH+'</b> in the comparable window before — '+
-      (lastS>prevS?'accelerating':(lastS<prevS?'slowing':'flat'))+'.'
-     :'Not enough history in this view for a comparison.');
+  document.getElementById('perfNote').innerHTML='Buckets are the '+S.lab+'. '+
+    (prevS?'<b>'+lastS+'</b> SALs from <b>'+lastH+'</b> calls held in '+esc(p.lab)+
+      ', against <b>'+prevS+'</b> from <b>'+prevH+'</b> in the period before.'
+     :'Not enough history here to compare.');
+}
+
+/* ---------- before the funnel ---------- */
+function drawPre(){
+  var pr=PRE[P],s=SCL();
+  var st=[{k:'Enriched',v:Math.round(pr.enriched*s),c:'#c8ccd3',
+           t:'Scored and enriched, ready to be worked.'},
+          {k:'In a campaign',v:Math.round(pr.campaign*s),c:'var(--violet)',
+           t:'Sent a Phave campaign email.'},
+          {k:'SDR reached out',v:Math.round(pr.reached*s),c:'var(--blue)',
+           t:'Contacted directly by an SDR. The funnel below starts here.'}];
+  var mx=st[0].v||1;
+  document.getElementById('pre').innerHTML=st.map(function(x,i){
+    return '<div class="prow'+(i===st.length-1?' last':'')+'">'+
+      '<div class="pk">'+x.k+'</div>'+
+      '<div class="ptr2"><i data-tip="'+esc('<div class="th">'+x.k+'</div>'+
+        '<div class="tr"><span>Accounts</span><b>'+nf(x.v)+'</b></div>'+
+        (i?'<div class="tr"><span>Of the step before</span><b>'+pc(x.v,st[i-1].v)+'</b></div>':'')+
+        '<div class="tb">'+x.t+'</div>')+
+        '" style="width:'+Math.max(0.6,x.v/mx*100).toFixed(2)+'%;background:'+x.c+'"></i></div>'+
+      '<div class="pv2">'+nf(x.v)+'</div>'+
+      '<div class="pc2">'+(i?pc(x.v,st[i-1].v):'—')+'</div></div>';
+  }).join('');
+  document.getElementById('preNote').innerHTML='Everyone on the list gets a campaign email, so that step tracks the enriched total. '+
+    'The funnel below starts from <b>SDR reached out</b>.'+
+    (CUSTOM?' Date selection arrives with the Salesforce connection.':'');
 }
 
 /* ---------- funnel ---------- */
@@ -1160,7 +1186,7 @@ function drawQ(){
   tabs+=Q.map(function(q){
     return '<button class="'+q.cls+'" data-q="'+q.k+'" aria-selected="'+(QT===q.k)+'"><b>'+
       Math.max(0,Math.round(q.n*s))+'</b><span class="qtl">'+q.lab+
-      '<em>stuck at '+q.at+'</em></span></button>';}).join('');
+      '<em>'+q.at+'</em></span></button>';}).join('');
   document.getElementById('qTabs').innerHTML=tabs;
 
   var rows=qRows();
@@ -1172,18 +1198,19 @@ function drawQ(){
     return (b.eng||0)-(a.eng||0);});
   var cap=8, show=(QALL||QT!=='all')?rows:rows.slice(0,cap);
   document.getElementById('qBody').innerHTML=show.length?show.map(function(r){
-    return '<tr><td><div class="rn">'+r.c+'<span>'+esc(r.s)+'</span></div></td>'+
+    return '<tr><td><a class="colink" href="account.html" target="_blank">'+r.c+
+      '</a><div class="muted2">'+esc(r.s)+'</div></td>'+
       '<td><span class="dotk" style="background:'+(r.cls==='r'?'var(--rose)':'var(--amber)')+
         '"></span>'+esc(r.need)+'</td>'+
-      '<td class="r"'+(r.eng?' data-tip="'+esc('<div class="th">'+r.c+'</div>'+
-        '<div class="tr"><span>Engagement score</span><b>'+r.eng+' of 100</b></div>'+
-        '<div class="tb">From campaign activity, separate from the lead score. A high score '+
-        'here means the account is reacting — answer it first.</div>')+'"':'')+
-        '>'+(r.eng?'<span class="cell"><span class="t"><i class="v" style="width:'+
-        r.eng+'%"></i></span><b>'+r.eng+'</b></span>':'<span style="color:var(--ink-4)">—</span>')+'</td>'+
+      '<td class="r" data-tip="'+esc('<div class="th">'+r.c+'</div>'+
+        '<div class="tr"><span>Lead score</span><b>'+r.sc+' of 100</b></div>'+
+        (r.eng?'<div class="tr"><span>Engagement score</span><b>'+r.eng+' of 100</b></div>':'')+
+        '<div class="tb">Lead score is set before contact. Engagement comes from the campaign.</div>')+
+        '"><span class="cell"><span class="t"><i style="width:'+r.sc+
+        '%"></i></span><b>'+r.sc+'</b></span></td>'+
       '<td>'+(r.own?esc(r.own):'<span class="noown">Unassigned</span>')+'</td>'+
       '<td class="r"><span class="wt '+(r.d>=10?'r':'a')+'">'+r.d+'d</span></td>'+
-      '<td class="r"><button class="act">Open</button></td></tr>';
+      '<td class="r"><a class="act" href="account.html" target="_blank">Open</a></td></tr>';
   }).join('') : '<tr><td colspan="6" style="padding:16px;color:var(--ink-3)">Nothing here.</td></tr>';
 
   var tot=(QT==='all')
@@ -1248,11 +1275,10 @@ function drawMarket(){
     pc(T[3],T[2])+'</td></tr>';
   var N={vertical:'Insurance and healthcare convert best. <b>Mix vs target</b> is this sector\'s share of the working '+
       'list against the intended portfolio balance — it is there to catch drift into banking.',
-    region:'US and Canada are the scored geography; Canada carries an 80 region score against the '+
-      'US 100, and the taxonomy extends as coverage widens.',
-    platform:'Genesys and Cisco estates convert best. The lead score already boosts a confirmed '+
-      'Genesys, Cisco, Avaya or NICE estate, so this is the cut that shows whether that holds.',
-    source:'ZoomInfo trails on both reply rate and SAL rate.'};
+    region:'Regions follow the split in the account study. More are added as coverage widens.',
+    platform:'Genesys and Cisco estates convert best. The lead score adds points for a confirmed '+
+      'Genesys, Cisco, Avaya or NICE estate.',
+    source:'ZoomInfo trails on both reply rate and SAL rate. Signal-sourced accounts are new to the CRM.'};
   document.getElementById('mNote').innerHTML='<b>'+N[MCUT]+'</b>';
 }
 
@@ -1291,8 +1317,7 @@ function drawPeople(){
       '<span style="margin-left:auto;color:var(--ink-3)">Top 2 hold <b>'+
         pc(rows.map(function(r){return r.sal;}).sort(function(a,b){return b-a;})
           .slice(0,2).reduce(function(a,b){return a+b;},0),tS)+'</b> of SALs</span></div>';
-    document.getElementById('pNote').innerHTML='<b>The AE sets every score — Signal reads it, '+
-      'never writes it.</b> '+tU+' calls held are still unscored, so they cannot count as SALs.';
+    document.getElementById('pNote').innerHTML='<b>The AE sets every call score.</b> '+tU+' calls held are not yet scored, so they cannot count as SALs.';
   } else {
     var rows=f.cuts.sdr.map(function(r){
       return {n:r[0],wk:Math.round(r[2]*s),rp:Math.round(r[3]*s),
@@ -1323,9 +1348,8 @@ function drawPeople(){
       '<span style="margin-left:auto;color:var(--ink-3)">Top 2 book <b>'+
         pc(rows.map(function(r){return r.bk;}).sort(function(a,b){return b-a;})
           .slice(0,2).reduce(function(a,b){return a+b;},0),tB)+'</b> of calls</span></div>';
-    document.getElementById('pNote').innerHTML='<b>The SDR works the account and books the call; '+
-      'the AE holds and scores it.</b> Bars are calls booked, with the share that converted to a '+
-      'SAL nested inside — so a tall bar with little green is volume without quality.';
+    document.getElementById('pNote').innerHTML='<b>The SDR books the call, the AE holds and scores it.</b> Bars are calls booked, '+
+      'with the share that became a SAL shown inside.';
   }
 }
 
@@ -1423,10 +1447,10 @@ function drawChart(){
 
 /* ---------- SAL leads ---------- */
 function drawSals(){
-  var f=F(),sdr=document.getElementById('fSdr'),v=document.getElementById('fVert'),
+  var f=F(),sdr=document.getElementById('fAe'),v=document.getElementById('fVert'),
       cp=document.getElementById('fCamp');
   var list=SALS.filter(function(a){
-    if(sdr.selectedIndex>0&&a.sdr!==sdr.value) return false;
+    if(sdr.selectedIndex>0&&a.own!==sdr.value) return false;
     if(v.selectedIndex>0&&a.v!==v.value) return false;
     if(cp.selectedIndex>0&&a.camp!==cp.value) return false;
     return true;});
@@ -1442,8 +1466,9 @@ function drawSals(){
     var sk=a.src==='Signal-sourced'?'sig':(a.src==='Salesforce'?'sf':'');
     var st=a.stage||'SAL';
     var stc=st==='SAL'?'c-sal':(st==='Nurture'?'c-nur':'c-fch');
-    var row='<tr class="click" data-i="'+i+'"><td><div class="rn">'+a.c+
-      '<span>'+esc(a.role)+'</span></div></td>'+
+    var row='<tr class="click" data-i="'+i+'"><td>'+
+      '<a class="colink" href="account.html" target="_blank">'+a.c+'</a>'+
+      '<div class="muted2">'+esc(a.role)+'</div></td>'+
       '<td><span class="chip2 '+stc+'">'+esc(st)+'</span></td>'+
       '<td>'+esc(a.sdr)+'</td><td>'+esc(a.v)+'</td>'+
       '<td><span class="tag '+sk+'">'+esc(a.src)+'</span></td><td>'+esc(a.hook)+'</td>'+
@@ -1487,24 +1512,21 @@ function drawLsv(){
       c(r.sal,(SCUT==='lead')?3.5:7,'g','SAL')+'</tr>';}).join('');
   var top=rows[0],bot=rows[rows.length-1];
   document.getElementById('lsvNote').innerHTML=(SCUT==='lead')
-    ? '<b>The lead score ranks correctly — '+(top.sal/bot.sal).toFixed(0)+
-      '× more SALs from the top bucket than the bottom.</b> It covers every ranked account and is '+
-      'set before any contact, so it can be used to decide who to work first.'
-    : '<b>Engagement rises with outcome as expected — '+(top.sal/bot.sal).toFixed(0)+
-      '× more SALs from the hot bucket.</b> But it only exists once an account has been contacted, '+
-      'so its pool is the '+nf(rows.reduce(function(a,r){return a+r.n;},0))+
-      ' accounts worked, not the ranked pool. It confirms interest; it cannot prioritise.';
+    ? '<b>'+(top.sal/bot.sal).toFixed(0)+'× more SALs from the top bucket than the bottom.</b> '+
+      'The lead score covers every ranked account and is set before contact, so it can order the work.'
+    : '<b>'+(top.sal/bot.sal).toFixed(0)+'× more SALs from the hot bucket.</b> '+
+      'Engagement only exists once an account has been contacted, so its pool is the '+
+      nf(rows.reduce(function(a,r){return a+r.n;},0))+' accounts worked.';
 }
 
 /* ---------- wiring ---------- */
-function redraw(){drawVerdict();drawPerf();drawFnl();drawQ();drawMarket();drawPeople();
+function redraw(){drawPerf();drawPre();drawFnl();drawQ();drawMarket();drawPeople();
   drawSals();drawChn();drawChart();drawLsv();}
 function refresh(){
-  var ids=['fSdr','fCamp','fVert','fReg','fPlat'];
+  var ids=['fAe','fCamp','fVert','fReg'];
   var els=ids.map(function(i){return document.getElementById(i);});
   els.forEach(function(e){e.classList.toggle('on',e.selectedIndex>0);});
-  var n=els.filter(function(e){return e.selectedIndex>0;}).length+
-    (CH.email?1:0)+(CH.call?1:0)+(CH.li?1:0);
+  var n=els.filter(function(e){return e.selectedIndex>0;}).length;
   document.getElementById('fCount').textContent=n?n+' filter'+(n>1?'s':''):'No filters';
   document.getElementById('fClear').disabled=n===0;
   OPEN=null;QALL=false;redraw();
@@ -1513,20 +1535,15 @@ document.getElementById('segP').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
   document.querySelectorAll('#segP button').forEach(function(x){
     x.setAttribute('aria-pressed',x===b);});
-  P=b.dataset.p;MORE=false;refresh();});
-document.getElementById('advBtn').addEventListener('click',function(){
-  document.getElementById('adv').classList.toggle('on');});
+  if(b.dataset.p==='custom'){ CUSTOM=true; P='month'; }
+  else { CUSTOM=false; P=b.dataset.p; }
+  MORE=false;refresh();});
 /* every select must redraw — without this the filters look live but do nothing */
-['fSdr','fCamp','fVert','fReg','fPlat'].forEach(function(i){
+['fAe','fCamp','fVert','fReg'].forEach(function(i){
   document.getElementById(i).addEventListener('change',refresh);});
 document.getElementById('fClear').addEventListener('click',function(){
-  ['fSdr','fCamp','fVert','fReg','fPlat'].forEach(function(i){document.getElementById(i).selectedIndex=0;});
-  CH={email:false,call:false,li:false};
-  document.querySelectorAll('.chk').forEach(function(b){b.setAttribute('aria-pressed','false');});
+  ['fAe','fCamp','fVert','fReg'].forEach(function(i){document.getElementById(i).selectedIndex=0;});
   refresh();});
-document.querySelectorAll('.chk').forEach(function(b){
-  b.addEventListener('click',function(){CH[b.dataset.ch]=!CH[b.dataset.ch];
-    b.setAttribute('aria-pressed',CH[b.dataset.ch]);refresh();});});
 document.getElementById('qTabs').addEventListener('click',function(e){
   var b=e.target.closest('[data-q]'); if(!b) return; QT=b.dataset.q;QALL=false;drawQ();});
 document.getElementById('qMore').addEventListener('click',function(){
