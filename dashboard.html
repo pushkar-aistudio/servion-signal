@@ -252,6 +252,8 @@
   .s5{background:var(--green-l);color:var(--green-d)} .s4{background:#e6f5ec;color:#12854f}
   .s3{background:var(--amber-l);color:var(--amber-d)}
   .showmore{text-align:center;padding:11px;border-top:1px solid var(--line-2)}
+  .arw{font-size:8px;vertical-align:1px;margin-left:2px}
+  .mnote{font-size:11px;color:var(--ink-4);margin-top:5px}
 
   .split{display:grid;grid-template-columns:minmax(220px,1fr) minmax(240px,1.1fr)}
   .spL{padding:15px;border-right:1px solid var(--line)} .spR{padding:15px}
@@ -632,7 +634,7 @@
               <th class="r">Waiting</th><th class="r"></th></tr></thead>
             <tbody id="qBody"></tbody>
           </table></div>
-          <div class="showmore"><button class="lnk" id="qMore"></button></div>
+          <div class="showmore"><button class="lnk" id="qMore"></button><div class="mnote" id="qMoreNote"></div></div>
         </div>
       </div>
 
@@ -1219,7 +1221,7 @@ function drawQ(){
     if(a.sev!==b.sev) return a.sev-b.sev;
     if(b.d!==a.d) return b.d-a.d;
     return (b.eng||0)-(a.eng||0);});
-  var cap=8, show=(QALL||QT!=='all')?rows:rows.slice(0,cap);
+  var cap=8, show=QALL?rows:rows.slice(0,cap);
   document.getElementById('qBody').innerHTML=show.length?show.map(function(r){
     return '<tr><td><a class="colink" href="account.html" target="_blank">'+r.c+
       '</a><div class="muted2">'+esc(r.s)+'</div></td>'+
@@ -1239,14 +1241,16 @@ function drawQ(){
   var tot=(QT==='all')
     ? Q.reduce(function(a,q){return a+Math.max(0,Math.round(q.n*s));},0)
     : Math.max(0,Math.round((Q.filter(function(q){return q.k===QT;})[0]||{n:0}).n*s));
-  var mb=document.getElementById('qMore');
-  if(QT==='all'&&!QALL&&rows.length>cap){
-    mb.textContent='Show all '+tot+' items'; mb.style.display='';
-  } else if(tot>show.length){
-    mb.textContent=(tot-show.length)+' more not named in this sample'; mb.style.display='';
-  } else if(QT==='all'&&QALL){
-    mb.textContent='Show top 8 only'; mb.style.display='';
-  } else { mb.style.display='none'; }
+  var mb=document.getElementById('qMore'), mn=document.getElementById('qMoreNote');
+  if(rows.length>cap){
+    mb.innerHTML=QALL
+      ? 'Show fewer <span class="arw">&#9650;</span>'
+      : 'Show '+(rows.length-cap)+' more <span class="arw">&#9660;</span>';
+    mb.style.display='';
+  } else { mb.innerHTML=''; mb.style.display='none'; }
+  mn.textContent = tot>rows.length
+    ? nf(tot-rows.length)+' further accounts in this group are not named in this sample'
+    : '';
   document.getElementById('recPill').textContent=Math.max(0,Math.round(4*s))+' SALs recovered';
 }
 
@@ -1585,7 +1589,7 @@ document.getElementById('fClear').addEventListener('click',function(){
 document.getElementById('qTabs').addEventListener('click',function(e){
   var b=e.target.closest('[data-q]'); if(!b) return; QT=b.dataset.q;QALL=false;drawQ();});
 document.getElementById('qMore').addEventListener('click',function(){
-  if(QT==='all'){QALL=!QALL;drawQ();}});
+  QALL=!QALL; drawQ();});
 document.getElementById('fnl').addEventListener('click',function(e){
   var b=e.target.closest('[data-q]'); if(!b) return;
   QT=b.dataset.q;QALL=false;drawQ();
