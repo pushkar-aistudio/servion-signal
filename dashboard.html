@@ -177,7 +177,9 @@
   .ftr{display:flex;height:34px;border-radius:5px;overflow:hidden;background:var(--line-2);min-width:6px}
   .fgo{height:100%;cursor:pointer;transition:filter .12s}
   .fgo:hover{filter:brightness(1.08)}
-  .fstop{height:100%;background:repeating-linear-gradient(45deg,#f1f2f5,#f1f2f5 5px,#e4e6ea 5px,#e4e6ea 10px)}
+  .fstop{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:9px;
+    font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden;
+    background:repeating-linear-gradient(45deg,#f1f2f5,#f1f2f5 5px,#e4e6ea 5px,#e4e6ea 10px)}
   .fn .num{text-align:right;font-size:19px;font-weight:690;letter-spacing:-.02em}
   .fn .cv{text-align:right;font-size:13px;color:var(--ink-2);font-weight:620}
   .fn .cv.dim{color:var(--ink-4);font-weight:450}
@@ -366,6 +368,9 @@
   .chip2.c-fch{background:var(--blue-l);color:var(--blue-d)}
   .chip2.c-nur{background:var(--amber-l);color:var(--amber-d)}
   .nosc{color:var(--rose);font-weight:620;font-size:11.5px}
+  .grouprow td{background:var(--card-2);border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);font-weight:600;color:var(--ink-2)}
+  .grouprow .rn span{color:var(--ink-4)}
   .mix{font-variant-numeric:tabular-nums;font-weight:650}
   .mix .tg{color:var(--ink-3);font-weight:450}
   .mix b{margin-left:6px;font-size:11px;padding:1px 5px;border-radius:3px}
@@ -402,7 +407,19 @@
   table.d th .car{opacity:0;font-size:8px;margin-left:4px}
   table.d th[data-on] .car{opacity:1}
   table.d th[data-on]{color:var(--ink)}
-  .prewrap{padding:16px 20px 4px}
+  .prewrap{padding:18px 20px 6px}
+  .cvtot{font-size:12.5px;color:var(--ink-3);margin-bottom:10px}
+  .cvtot b{font-size:19px;font-weight:690;color:var(--ink);letter-spacing:-.02em}
+  .cvbar{display:flex;height:38px;border-radius:6px;overflow:hidden;background:var(--line-2)}
+  .cvbar i{height:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:660;color:#fff;min-width:3px}
+  .cvbar i:hover{filter:brightness(1.07)}
+  .cvbar i:last-child{color:var(--ink-2)}
+  .cvlg{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--ink-3)}
+  .cvlg span{display:inline-flex;align-items:center;gap:6px}
+  .cvlg i{width:10px;height:10px;border-radius:2px;display:inline-block}
+  .cvlg b{color:var(--ink);font-weight:660}
+  .cvlg em{font-style:normal;color:var(--ink-4)}
   .prow{display:grid;grid-template-columns:150px 1fr 76px 62px;gap:14px;align-items:center;padding:9px 0}
   .prow .pk{font-size:13px;font-weight:580}
   .prow.last .pk{color:var(--blue-d)}
@@ -547,7 +564,7 @@
 
       <!-- BEFORE THE FUNNEL -->
       <div class="blk">
-        <div class="bh"><h2>Before the funnel</h2>
+        <div class="bh"><h2>Account coverage</h2>
           <span class="r"><span class="pill">Accounts</span></span></div>
         <div class="card">
           <div class="prewrap" id="pre"></div>
@@ -568,7 +585,7 @@
           <div class="fout" id="fout"></div>
           <div class="flg">
             <span><i id="lg1" style="background:var(--blue)"></i>Moved on</span>
-            <span><i class="stop"></i>Stopped here</span>
+            <span><i class="stop"></i>No next step yet</span>
             <span style="color:var(--ink-4)">Bar width = share of accounts worked</span>
           </div>
         </div>
@@ -831,21 +848,21 @@ var CAMPAIGNS=[{n:'Contact centre modernisation',share:0.42},
 var MIX=[{k:'Wants to talk',s:0.288,c:'var(--green)'},{k:'Wants pricing',s:0.144,c:'var(--blue)'},
   {k:'Not now',s:0.441,c:'var(--amber)'},{k:'Opted out',s:0.127,c:'var(--rose)'}];
 var STG=[
-  {k:'worked',lab:'SDR reached out',who:'SDR',col:'var(--blue)',stall:47,q:'followup'},
-  {k:'replied',lab:'Replied',who:'SDR',col:'var(--violet)',stall:12,q:'reply'},
-  {k:'booked',lab:'Fit call booked',who:'SDR',col:'var(--amber)',stall:3,q:'followup'},
-  {k:'held',lab:'Fit call held',who:'AE',col:'#b06f0c',stall:2,q:'score'},
-  {k:'sal',lab:'SAL converted',who:'AE',col:'var(--green)',stall:1,q:'assign'}
+  {k:'worked',lab:'SDR reached out',who:'SDR',col:'var(--blue)',stall:47,q:'noreply',lostLab:'no reply yet'},
+  {k:'replied',lab:'Replied',who:'SDR',col:'var(--violet)',stall:12,q:'answer',lostLab:'no call agreed'},
+  {k:'booked',lab:'Fit call booked',who:'SDR',col:'var(--amber)',stall:3,q:'noae',lostLab:'not held yet'},
+  {k:'held',lab:'Fit call held',who:'AE',col:'#b06f0c',stall:2,q:'noscore',lostLab:'below 7 or unscored'},
+  {k:'sal',lab:'SAL converted',who:'AE',col:'var(--green)',stall:1,q:'noae'}
 ];
-/* Stages in journey order. Each one is a transition zone: accounts sitting
-   between one step and the next. The last is the final bottleneck. */
+/* Highest priority first, left to right. The first three block an outcome that
+   has already been earned; the last is the working backlog, not a fault. */
 var Q=[
-  {k:'reachout',lab:'Ready to reach out',   at:'Scored 50+, not yet contacted',   n:186,cls:'a',sev:3},
-  {k:'calllist',lab:'On the call list',     at:'Emailed, needs a call',           n:64, cls:'a',sev:2},
-  {k:'noreply', lab:'Reached, no reply',    at:'Follow-up due',                   n:47, cls:'a',sev:2},
-  {k:'answer',  lab:'Replied, not answered',at:'Waiting on us',                   n:12, cls:'r',sev:0},
-  {k:'noae',    lab:'No AE assigned',       at:'Call booked, no AE',              n:3,  cls:'r',sev:0},
-  {k:'noscore', lab:'Call held, not scored',at:'Last step before SAL',            n:2,  cls:'r',sev:1}
+  {k:'noscore', lab:'Call held, not scored',at:'Blocks a SAL already earned', n:2,  cls:'r',sev:0},
+  {k:'noae',    lab:'No AE assigned',       at:'Call booked, nobody to hold it',n:3, cls:'r',sev:1},
+  {k:'answer',  lab:'Replied, not answered',at:'The account is waiting on us',n:12, cls:'r',sev:2},
+  {k:'noreply', lab:'Reached, no reply',    at:'Follow-up overdue',           n:47, cls:'a',sev:3},
+  {k:'calllist',lab:'On the call list',     at:'Emailed, next step is a call',n:64, cls:'a',sev:4},
+  {k:'reachout',lab:'Ready to reach out',   at:'Scored 50+, working backlog', n:186,cls:'a',sev:5}
 ];
 var QR={
   reachout:[
@@ -1096,29 +1113,34 @@ function drawPerf(){
      :'Not enough history here to compare.');
 }
 
-/* ---------- before the funnel ---------- */
+/* ---------- account coverage: one bar, mutually exclusive segments ---------- */
 function drawPre(){
   var pr=PRE[P],s=SCL();
-  var st=[{k:'Enriched',v:Math.round(pr.enriched*s),c:'#c8ccd3',
-           t:'Scored and enriched, ready to be worked.'},
-          {k:'In a campaign',v:Math.round(pr.campaign*s),c:'var(--violet)',
-           t:'Sent a Phave campaign email.'},
-          {k:'SDR reached out',v:Math.round(pr.reached*s),c:'var(--blue)',
-           t:'Contacted directly by an SDR. The funnel below starts here.'}];
-  var mx=st[0].v||1;
-  document.getElementById('pre').innerHTML=st.map(function(x,i){
-    return '<div class="prow'+(i===st.length-1?' last':'')+'">'+
-      '<div class="pk">'+x.k+'</div>'+
-      '<div class="ptr2"><i data-tip="'+esc('<div class="th">'+x.k+'</div>'+
+  var enr=Math.round(pr.enriched*s), camp=Math.round(pr.campaign*s), rch=Math.round(pr.reached*s);
+  var seg=[
+    {k:'SDR reached out',v:rch,c:'var(--blue)',
+     t:'Contacted directly by an SDR. The funnel below starts here.'},
+    {k:'In a campaign only',v:camp-rch,c:'var(--violet)',
+     t:'Sent a campaign email, no SDR contact yet.'},
+    {k:'Enriched, not yet in a campaign',v:enr-camp,c:'#c8ccd3',
+     t:'Scored and enriched, waiting to enter a campaign.'}
+  ];
+  var tot=enr||1;
+  document.getElementById('pre').innerHTML=
+    '<div class="cvtot"><b>'+nf(enr)+'</b> accounts enriched</div>'+
+    '<div class="cvbar">'+seg.map(function(x){
+      var w=x.v/tot*100;
+      return '<i data-tip="'+esc('<div class="th">'+x.k+'</div>'+
         '<div class="tr"><span>Accounts</span><b>'+nf(x.v)+'</b></div>'+
-        (i?'<div class="tr"><span>Of the step before</span><b>'+pc(x.v,st[i-1].v)+'</b></div>':'')+
-        '<div class="tb">'+x.t+'</div>')+
-        '" style="width:'+Math.max(0.6,x.v/mx*100).toFixed(2)+'%;background:'+x.c+'"></i></div>'+
-      '<div class="pv2">'+nf(x.v)+'</div>'+
-      '<div class="pc2">'+(i?pc(x.v,st[i-1].v):'—')+'</div></div>';
-  }).join('');
-  document.getElementById('preNote').innerHTML='Everyone on the list gets a campaign email, so that step tracks the enriched total. '+
-    'The funnel below starts from <b>SDR reached out</b>.'+
+        '<div class="tr"><span>Share of enriched</span><b>'+pc(x.v,tot,1)+'</b></div>'+
+        '<div class="tb">'+x.t+'</div>')+'" style="width:'+w.toFixed(2)+
+        '%;background:'+x.c+'">'+(w>13?nf(x.v):'')+'</i>';}).join('')+'</div>'+
+    '<div class="cvlg">'+seg.map(function(x){
+      return '<span><i style="background:'+x.c+'"></i>'+x.k+
+        ' <b>'+nf(x.v)+'</b> <em>'+pc(x.v,tot,0)+'</em></span>';}).join('')+'</div>';
+  document.getElementById('preNote').innerHTML='Segments do not overlap, so they add to the '+
+    nf(enr)+' enriched. <b>'+nf(camp)+'</b> have had a campaign email and <b>'+nf(rch)+
+    '</b> have had SDR contact, which is where the funnel below starts.'+
     (CUSTOM?' Date selection arrives with the Salesforce connection.':'');
 }
 
@@ -1142,10 +1164,11 @@ function drawFnl(){
           '<div class="tr"><span>Conversion</span><b>'+pc(nx,n)+'</b></div>'+
           '<div class="tb">Owned by the '+(s.who||'')+'.</div>')+
           '" style="width:'+go.toFixed(2)+'%;background:'+s.col+'"></div>':'')+
-        (lost>0?'<div class="fstop" data-tip="'+esc('<div class="th">Stopped at '+s.lab+
+        (lost>0?'<div class="fstop" data-tip="'+esc('<div class="th">'+(s.lostLab||'No next step')+' · '+s.lab+
           '</div><div class="tr"><span>Accounts</span><b>'+nf(lost)+'</b></div>'+
           '<div class="tr"><span>Share of stage</span><b>'+pc(lost,n)+'</b></div>')+
-          '" style="width:'+(100-go).toFixed(2)+'%"></div>':'')+'</div>';
+          '" style="width:'+(100-go).toFixed(2)+'%">'+
+          ((100-go)>26?nf(lost)+' '+(s.lostLab||'no next step'):'')+'</div>':'')+'</div>';
     var st=Math.max(0,Math.round(s.stall*SCL()));
     return '<div class="frow"><div class="fst">'+s.lab+
       '<span class="fwho">'+(s.who||'')+'</span></div>'+
@@ -1269,6 +1292,21 @@ function drawMarket(){
         '" style="width:'+sr+'%"></i></span><b>'+Math.round(sr)+'%</b></span>':
         '<span style="color:var(--ink-3)">—</span>')+'</td></tr>';
   }).join('');
+  if(MCUT==='source'){
+    var g=[0,0,0,0];
+    rows.slice(0,2).forEach(function(r){
+      g[0]+=Math.round(r[2]*s);g[1]+=Math.round(r[3]*s);
+      g[2]+=Math.round(r[4]*s);g[3]+=Math.round(r[5]*s);});
+    var grr=g[0]?g[1]/g[0]*100:0, gsr=g[2]?g[3]/g[2]*100:0;
+    var body=document.getElementById('mBody');
+    var tr=document.createElement('tr');
+    tr.className='grouprow';
+    tr.innerHTML='<td><div class="rn">Existing lists combined<span>Salesforce + ZoomInfo</span></div></td>'+
+      '<td class="r">'+nf(g[0])+'</td><td class="r">'+nf(g[1])+'</td>'+
+      '<td class="r"><b>'+grr.toFixed(1)+'%</b></td><td class="r">'+g[2]+
+      '</td><td class="r"><b>'+g[3]+'</b></td><td class="r"><b>'+Math.round(gsr)+'%</b></td>';
+    body.insertBefore(tr, body.children[2]);
+  }
   document.getElementById('mFoot').innerHTML='<tr><td>Total</td><td class="r">'+nf(T[0])+'</td>'+
     (isVert?'<td class="r">100%</td>':'')+'<td class="r">'+nf(T[1])+'</td><td class="r">'+
     pc(T[1],T[0],1)+'</td><td class="r">'+T[2]+'</td><td class="r">'+T[3]+'</td><td class="r">'+
