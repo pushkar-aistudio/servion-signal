@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carle Health · Servion Signal</title>
+<title>Velera · Signal Company Details</title>
 <style>
   :root{
     color-scheme: light;
@@ -11,426 +11,533 @@
     --line:#e5e7ec; --line-2:#eef0f3;
     --ink:#13151a; --ink-2:#525a66; --ink-3:#89919d; --ink-4:#b3b9c2;
     --nav:#16191e; --nav-2:#22262d; --nav-ink:#c9cfd8;
-    --blue:#2f6fed; --blue-l:#e7effd; --blue-d:#1b4fb5; --blue-dim:#2a4a68;
+    --blue:#2f6fed; --blue-l:#e7effd; --blue-d:#1b4fb5;
     --green:#12a05e; --green-l:#dcf3e7; --green-d:#0a6e40;
     --violet:#7c5cf0; --violet-l:#ece6fd;
     --amber:#d98510; --amber-l:#fdf1dc; --amber-d:#8a5a0d;
     --rose:#d63c48; --rose-l:#fce3e5; --rose-d:#a52832;
-    --r:10px;
+    --r:9px;
   }
   *{box-sizing:border-box}
   html,body{background:var(--bg)}
   body{margin:0;color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
-    font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
-  h1,h2{margin:0;letter-spacing:-.015em}
+    font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  h1,h2,h3{margin:0;letter-spacing:-.015em}
+  a{color:var(--blue-d)}
 
+  /* ============ shell ============ */
   .shell{display:flex;min-height:100vh}
-  .side{width:208px;flex:none;background:var(--nav);color:var(--nav-ink);
+  .side{width:196px;flex:none;background:var(--card);border-right:1px solid var(--line);
     display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
-  .brand{display:flex;align-items:center;gap:9px;padding:15px 14px 16px}
-  .mark{width:25px;height:25px;border-radius:6px;background:var(--rose);flex:none;
-    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px}
-  .brand .bt{font-size:12.5px;font-weight:640;color:#fff;line-height:1.25}
-  .brand .bt span{display:block;font-size:10.5px;color:#7e8794;font-weight:450}
-  .navsec{font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:#6b737f;
-    font-weight:680;padding:13px 16px 5px}
+  .logo{display:flex;align-items:center;gap:8px;padding:15px 13px 6px}
+  .mark{width:24px;height:24px;border-radius:5px;background:var(--rose);flex:none;
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:11px}
+  .logo .lt{font-size:13px;font-weight:700;line-height:1.1}
+  .logo .lt span{display:block;font-size:9px;color:var(--ink-3);font-weight:500;letter-spacing:.02em}
+  .collapse{margin-left:auto;color:var(--ink-4);cursor:pointer;font-size:12px}
+  .bl{margin:8px 11px 10px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;
+    font-size:11.5px;color:var(--ink-2);display:flex;align-items:center;gap:7px;cursor:pointer;
+    background:var(--card-2)}
+  .bl .ca{margin-left:auto;color:var(--ink-4);font-size:9px}
   .nav{padding:0 8px;display:flex;flex-direction:column;gap:1px}
-  .nav a{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:7px;
-    color:var(--nav-ink);text-decoration:none;font-size:12.5px}
-  .nav a:hover{background:var(--nav-2);color:#fff}
-  .nav a.on{background:#fff;color:var(--nav);font-weight:600}
-  .nav a i{width:13px;flex:none;opacity:.8;font-style:normal}
-  .sideft{margin-top:auto;padding:10px;border-top:1px solid #262a31}
-  .who{display:flex;align-items:center;gap:9px;padding:6px 8px;font-size:12px}
-  .av{width:24px;height:24px;border-radius:50%;background:#343a43;flex:none;
-    display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:650;color:#fff}
-  .who b{display:block;color:#fff;font-weight:600}
-  .who span{color:#7e8794;font-size:10.5px}
+  .nav a{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:6px;
+    color:var(--ink-2);text-decoration:none;font-size:12.5px}
+  .nav a:hover{background:var(--card-2);color:var(--ink)}
+  .nav a.on{background:var(--nav);color:#fff;font-weight:600}
+  .nav a i{width:13px;flex:none;opacity:.75;font-style:normal;font-size:11px}
+  .nav a .ch{margin-left:auto;color:var(--ink-4);font-size:9px}
+  .sideft{margin-top:auto;padding:10px}
+  .who{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--line);
+    border-radius:7px;font-size:11.5px;background:var(--card-2)}
+  .av{width:22px;height:22px;border-radius:50%;background:var(--line);flex:none;
+    display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:650;color:var(--ink-2)}
+  .who b{display:block;font-weight:600}
+  .who span{color:var(--ink-3);font-size:10px}
+  .who .ca{margin-left:auto;color:var(--ink-4);font-size:9px}
 
   .main{flex:1;min-width:0}
   .topbar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
-  .topin{padding:0 20px;display:flex;align-items:center;gap:12px;height:48px}
-  .crumb{font-size:13px;color:var(--ink-3)}
-  .crumb a{color:var(--blue-d);text-decoration:none}
-  .crumb a:hover{text-decoration:underline}
+  .topin{padding:0 18px;display:flex;align-items:center;gap:14px;height:46px}
+  .back{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-2);
+    text-decoration:none}
+  .back:hover{color:var(--ink)}
+  .ttl{font-size:15px;font-weight:680}
+  .ttl span{color:var(--ink-3);font-weight:450}
   .tright{margin-left:auto;display:flex;align-items:center;gap:7px}
-  .ico{width:29px;height:29px;border-radius:7px;border:1px solid var(--line);background:var(--card);
-    display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);font-size:12.5px}
-  .body{padding:0 20px 70px;max-width:1200px}
+  .ico{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);background:var(--card);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;
+    color:var(--ink-2);font-size:12px}
+  .badge{position:absolute;top:-5px;right:-5px;background:var(--rose);color:#fff;font-size:8.5px;
+    font-weight:700;border-radius:9px;padding:1px 4px;line-height:1.4}
+  .lang{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:6px;
+    padding:5px 8px;font-size:11px;font-weight:600;color:var(--ink-2)}
+  .tour{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:5px 11px;
+    font:inherit;font-size:12px;color:var(--ink-2);cursor:pointer}
 
-  /* header */
-  .head{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-    margin-top:14px;padding:20px 22px}
-  .htop{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
-  .hname{font-size:26px;font-weight:690;letter-spacing:-.024em}
-  .hsub{font-size:13px;color:var(--ink-3);margin-top:4px}
-  .chip{display:inline-block;font-size:11px;font-weight:620;padding:3px 10px;border-radius:20px;white-space:nowrap}
-  .chip.sal{background:var(--green-l);color:var(--green-d)}
-  .chip.src{background:var(--violet-l);color:#5b3fd0}
-  .hact{margin-left:auto;display:flex;gap:8px}
-  .btn{border:1px solid var(--line);background:var(--card);border-radius:7px;padding:7px 13px;
-    font:inherit;font-size:12.5px;font-weight:560;color:var(--ink-2);cursor:pointer;text-decoration:none}
-  .btn:hover{background:var(--card-2)}
-  .btn.pri{background:var(--nav);border-color:var(--nav);color:#fff}
-  .scores{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:20px;
-    border-top:1px solid var(--line);padding-top:0}
-  .sc{padding:15px 18px 0;border-right:1px solid var(--line)}
-  .sc:first-child{padding-left:0}
-  .sc:last-child{border-right:0}
-  .sk{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
-  .sv{font-size:27px;font-weight:690;letter-spacing:-.025em;margin-top:6px}
-  .sv small{font-size:13px;color:var(--ink-3);font-weight:500}
-  .sbar{height:6px;background:var(--line-2);border-radius:3px;margin-top:8px;overflow:hidden}
-  .sbar i{display:block;height:100%;border-radius:3px}
-  .sn{font-size:11px;color:var(--ink-3);margin-top:6px}
+  /* banner */
+  .banner{display:flex;align-items:center;gap:9px;margin:0;padding:9px 18px;
+    background:var(--amber-l);border-bottom:1px solid #f0dcb4;font-size:12px;color:#7a5410}
+  .banner .bsp{margin-left:auto;display:flex;gap:8px;align-items:center}
+  .bbtn{border:1px solid #d9b871;background:#fff;color:#7a5410;border-radius:5px;padding:3px 10px;
+    font:inherit;font-size:11.5px;font-weight:600;cursor:pointer}
+  .bx{border:0;background:none;color:#a8834a;cursor:pointer;font-size:14px;padding:0 3px}
 
-  .grid{display:grid;grid-template-columns:minmax(300px,1.25fr) minmax(280px,1fr);gap:14px;margin-top:14px}
+  .body{padding:0 18px 60px}
+  /* action row */
+  .arow{display:flex;align-items:center;gap:14px;padding:14px 0 12px;flex-wrap:wrap}
+  .acts{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}
+  .act{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-2);
+    cursor:pointer;text-decoration:none}
+  .act:hover{color:var(--ink)}
+  .act.ok{color:var(--green-d)} .act.del{color:var(--rose-d)}
+
+  .cols{display:grid;grid-template-columns:minmax(420px,1fr) 232px;gap:14px;align-items:start}
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
-  .ch{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
-    font-weight:680;padding:13px 18px;border-bottom:1px solid var(--line)}
-  .cb{padding:16px 18px}
+  .cpad{padding:16px 18px}
 
-  /* fact list */
-  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:15px}
-  .fk{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
-  .fv{font-size:13px;margin-top:4px;font-weight:540}
-  .fv.dim{color:var(--ink-3);font-weight:450}
+  /* company header card */
+  .chead{display:flex;gap:15px;align-items:flex-start}
+  .logotile{width:64px;height:52px;flex:none;border:1px solid var(--line);border-radius:6px;
+    display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;
+    letter-spacing:.04em;color:var(--ink-2);text-align:center;padding:4px;line-height:1.15}
+  .cname{font-size:19px;font-weight:690;letter-spacing:-.02em}
+  .cmeta{font-size:12px;color:var(--ink-3);margin-top:2px}
+  .clinks{display:flex;gap:14px;margin-top:7px;flex-wrap:wrap;font-size:12px}
+  .clinks a{text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+  .clinks a:hover{text-decoration:underline}
+  .chips{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center}
+  .chip{font-size:10.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);
+    color:var(--ink-2);background:var(--card-2);white-space:nowrap}
+  .chip.cat{border-color:transparent;background:transparent;color:var(--ink-3);padding-left:0}
+  .chip.a{background:var(--amber-l);color:var(--amber-d);border-color:#f0dcb4}
+  .chip.v{background:var(--violet-l);color:#5b3fd0;border-color:#ddd2fb}
+  .chip.g{background:var(--green-l);color:var(--green-d);border-color:#bde5cf}
+  .chip.b{background:var(--blue-l);color:var(--blue-d);border-color:#cfe0fb}
+  .desc{font-size:12.5px;color:var(--ink-2);line-height:1.6;margin-top:12px}
+  .desc .more{color:var(--blue-d);cursor:pointer;font-weight:600}
+  .seg{margin-left:auto;flex:none;text-align:right}
+  .seg .sl{font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .segbox{margin-top:5px;border:1px solid var(--line);border-radius:6px;padding:6px 10px;
+    font-size:11.5px;font-weight:640;display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+  .segbox .ca{color:var(--ink-4);font-size:9px}
 
-  /* score dimensions */
-  .dim{display:grid;grid-template-columns:1fr 44px 62px;gap:10px;align-items:center;
-    padding:7px 0;border-top:1px solid var(--line-2);font-size:12.5px}
-  .dim:first-child{border-top:0}
-  .dim .dn{color:var(--ink-2)}
-  .dim .dw{text-align:right;color:var(--ink-3);font-size:11px}
-  .dim .db{height:7px;background:var(--line-2);border-radius:4px;overflow:hidden}
-  .dim .db i{display:block;height:100%;background:var(--blue);border-radius:4px}
-  .boost{margin-top:12px;padding-top:11px;border-top:1px solid var(--line);
-    display:flex;flex-wrap:wrap;gap:6px}
-  .bch{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
-  .bch.up{background:var(--green-l);color:var(--green-d)}
-  .bch.dn{background:var(--rose-l);color:var(--rose-d)}
+  /* firmographic strip */
+  .fstrip{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:16px}
+  .fs{border:1px solid var(--line);border-radius:7px;padding:10px 6px;text-align:center;
+    background:var(--card-2)}
+  .fs .v{font-size:14px;font-weight:660}
+  .fs .k{font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+    font-weight:680;margin-top:3px}
+  .qual{display:flex;gap:6px;margin-top:11px;flex-wrap:wrap}
+
+  /* research card */
+  .rtop{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid var(--line);
+    flex-wrap:wrap}
+  .tg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+  .tg button{border:0;background:var(--card);padding:6px 12px;font:inherit;font-size:12px;
+    color:var(--ink-2);cursor:pointer;border-right:1px solid var(--line)}
+  .tg button:last-child{border-right:0}
+  .tg button[aria-pressed="true"]{background:var(--nav);color:#fff;font-weight:600}
+  .rmeta{margin-left:auto;display:flex;gap:16px;align-items:center;font-size:11px;color:var(--ink-3)}
+  .rmeta b{color:var(--ink-2);font-weight:600}
+  .rerun{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:5px 11px;
+    font:inherit;font-size:11.5px;color:var(--ink-2);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+  .tabs{display:flex;gap:0;overflow-x:auto;padding:0 18px;border-bottom:1px solid var(--line)}
+  .tabs button{border:0;background:none;font:inherit;font-size:12.5px;color:var(--ink-3);
+    padding:11px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+  .tabs button:hover{color:var(--ink-2)}
+  .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--nav);font-weight:620}
+  .rbody{padding:16px 18px}
+  .rbody p{margin:0 0 11px;font-size:12.5px;color:var(--ink-2);line-height:1.65}
+  .rbody p:last-child{margin-bottom:0}
+  .angle{border:1px solid var(--line);border-radius:8px;background:var(--card-2);padding:13px 15px;margin-top:14px}
+  .angle .al{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .angle .ac{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .angle p{font-size:12px;margin-top:10px;color:var(--ink-2)}
+  .personas{font-size:11.5px;color:var(--ink-3);margin-top:9px;line-height:1.6}
+
+  /* outreach */
+  .ohead{display:flex;align-items:center;gap:9px;padding:13px 18px;border-bottom:1px solid var(--line)}
+  .ohead h3{font-size:13px;font-weight:660;display:inline-flex;align-items:center;gap:7px}
+  .ostat{margin-left:auto;display:flex;gap:14px;align-items:center;font-size:11.5px;color:var(--ink-3)}
+  .ostat .pill{padding:2px 9px;border-radius:20px;font-weight:620;font-size:10.5px}
+  .ostat .pill.h{background:var(--blue-l);color:var(--blue-d)}
+  .otl{list-style:none;margin:0;padding:0}
+  .otl li{display:grid;grid-template-columns:62px 70px 1fr;gap:11px;padding:9px 0;
+    border-top:1px solid var(--line-2);font-size:12px;align-items:baseline}
+  .otl li:first-child{border-top:0}
+  .otl .d{color:var(--ink-3)}
+  .otl .w{font-weight:640;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em}
+  .otl .w.sig{color:var(--violet)} .otl .w.sdr{color:var(--blue-d)}
+  .otl .w.ae{color:var(--green-d)} .otl .w.ac{color:var(--amber-d)} .otl .w.sy{color:var(--ink-3)}
+  .otl .x{color:var(--ink-2)}
 
   /* contacts */
-  table{width:100%;border-collapse:collapse;font-size:12.5px}
-  th{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680;
-    text-align:left;padding:0 12px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:680;
+    text-align:left;padding:0 10px 8px 0;border-bottom:1px solid var(--line);white-space:nowrap}
   th.r{text-align:right}
-  td{padding:10px 12px 10px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+  td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
   td.r{text-align:right}
   tr:last-child td{border-bottom:0}
   .cn{font-weight:600}
-  .cr{font-size:11px;color:var(--ink-3);margin-top:1px}
-  .ver{font-size:10.5px;font-weight:620;padding:2px 7px;border-radius:20px}
-  .ver.y{background:var(--green-l);color:var(--green-d)}
-  .ver.n{background:var(--line-2);color:var(--ink-3)}
-  .tier{font-size:10.5px;color:var(--ink-3)}
+  .cr{font-size:10.5px;color:var(--ink-3);margin-top:1px}
 
-  /* timeline */
-  .tl{list-style:none;margin:0;padding:0}
-  .tl li{display:grid;grid-template-columns:66px 78px 1fr;gap:12px;padding:9px 0;
-    border-top:1px solid var(--line-2);font-size:12.5px;align-items:baseline}
-  .tl li:first-child{border-top:0}
-  .tl .d{color:var(--ink-3)}
-  .tl .w{font-weight:620;font-size:11px;letter-spacing:.03em;text-transform:uppercase}
-  .tl .w.sig{color:var(--violet)} .tl .w.sdr{color:var(--blue-d)}
-  .tl .w.ae{color:var(--green-d)} .tl .w.acct{color:var(--amber-d)}
-  .tl .w.sys{color:var(--ink-3)}
-  .tl .x{color:var(--ink-2)}
+  /* sidebar cards */
+  .sc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:13px 14px;margin-bottom:12px}
+  .sch{font-size:11.5px;font-weight:660;display:flex;align-items:center;gap:7px;margin-bottom:9px}
+  .sch .pen{margin-left:auto;color:var(--ink-4);cursor:pointer;font-size:11px}
+  .srow{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2)}
+  .srow.un{color:var(--ink-3)}
+  .notes{width:100%;min-height:58px;border:1px solid var(--line);border-radius:6px;padding:8px;
+    font:inherit;font-size:12px;resize:vertical;background:var(--card-2)}
+  .savebtn{margin-top:8px;float:right;border:0;background:var(--line);color:var(--ink-3);
+    border-radius:6px;padding:5px 14px;font:inherit;font-size:11.5px;font-weight:600;cursor:not-allowed}
+  .crm{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .crmb{border:1px solid var(--line);border-radius:6px;padding:8px 9px}
+  .crmb .k{font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .crmb .v{font-size:13px;font-weight:660;margin-top:3px}
+  .openx{display:block;text-align:right;font-size:11.5px;margin-top:10px;text-decoration:none}
+  .openx:hover{text-decoration:underline}
+  .actv{border-top:1px solid var(--line-2);padding-top:9px;margin-top:2px;font-size:11.5px}
+  .actv:first-child{border-top:0;padding-top:0}
+  .actv .r1{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .actv .tag{font-size:9.5px;padding:1px 6px;border-radius:4px;background:var(--card-2);
+    border:1px solid var(--line);color:var(--ink-3)}
+  .actv .dt{margin-left:auto;color:var(--ink-4);font-size:10px}
+  .actv .t{font-weight:600;margin-top:3px}
+  .actv .o{color:var(--ink-3);font-size:10.5px}
+  .scores{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+  .sbx{border:1px solid var(--line);border-radius:6px;padding:8px 9px}
+  .sbx .k{font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
+  .sbx .v{font-size:17px;font-weight:680;margin-top:2px}
+  .sbx .bar{height:4px;background:var(--line-2);border-radius:2px;margin-top:6px;overflow:hidden}
+  .sbx .bar i{display:block;height:100%;border-radius:2px}
+  .warnbx{background:var(--rose-l);border:1px solid #f3ccd0;border-radius:7px;padding:10px 11px;
+    font-size:11.5px;color:var(--rose-d);line-height:1.5}
+  .warnbx b{font-weight:660}
 
-  /* research pack */
-  .pack p{margin:0 0 11px;font-size:12.5px;color:var(--ink-2);line-height:1.6}
-  .pack p:last-child{margin-bottom:0}
-  .pack b{color:var(--ink)}
-  .srcline{font-size:11px;color:var(--ink-3);margin-top:12px;padding-top:11px;
-    border-top:1px solid var(--line-2)}
-  .srcline a{color:var(--blue-d);text-decoration:none}
-  .srcline a:hover{text-decoration:underline}
-
-  /* draft */
-  .draft{background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:14px}
-  .dsub{font-size:12.5px;font-weight:620;margin-bottom:8px}
-  .dbody{font-size:12.5px;color:var(--ink-2);line-height:1.65;white-space:pre-line}
-  .dmeta{font-size:11px;color:var(--ink-3);margin-top:11px;display:flex;gap:12px;flex-wrap:wrap}
-
-  .note{font-size:11.5px;color:var(--ink-3);padding:11px 18px;border-top:1px solid var(--line-2)}
-  .note b{color:var(--ink-2);font-weight:620}
-  footer{margin-top:24px;padding-top:13px;border-top:1px solid var(--line);
-    font-size:11px;color:var(--ink-3);line-height:1.65}
-  footer b{color:var(--ink-2)}
+  .fab{position:fixed;right:16px;bottom:16px;width:34px;height:34px;border-radius:50%;
+    background:var(--nav);color:#fff;border:0;cursor:pointer;display:flex;align-items:center;
+    justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:40}
   :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-  @media(max-width:980px){
-    .grid{grid-template-columns:1fr}
-    .scores{grid-template-columns:1fr 1fr}
-    .sc:nth-child(2){border-right:0}
-    .sc:nth-child(3){padding-left:0}
-  }
-  @media(max-width:800px){ .side{display:none} }
+  @media(max-width:1120px){ .cols{grid-template-columns:1fr} .fstrip{grid-template-columns:repeat(3,1fr)} }
+  @media(max-width:860px){ .side{display:none} }
   @media(max-width:680px){
-    .body{padding:0 12px 60px} .topin{padding:0 12px}
-    .scores{grid-template-columns:1fr} .sc{border-right:0;padding-left:0}
-    .hname{font-size:22px}
+    .body{padding:0 12px 50px} .topin{padding:0 12px}
+    .fstrip{grid-template-columns:1fr 1fr} .chead{flex-wrap:wrap} .seg{margin-left:0}
+    .ttl span{display:none}
   }
 </style>
 </head>
 <body>
 <div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
   <aside class="side">
-    <div class="brand"><div class="mark">S</div>
-      <div class="bt">Servion<span>Global Solutions</span></div></div>
-    <div class="navsec">Workspace</div>
+    <div class="logo">
+      <div class="mark">S</div>
+      <div class="lt">Servion<span>Signal</span></div>
+      <span class="collapse">&laquo;</span>
+    </div>
+    <div class="bl"><span>&#9707;</span>All sectors<span class="ca">&#9662;</span></div>
     <nav class="nav">
-      <a href="#"><i>▤</i>Company</a>
-      <a href="dashboard.html"><i>◧</i>Dashboard</a>
-      <a href="#"><i>≡</i>Activity Logs</a>
-      <a href="#" class="on"><i>◈</i>Leads</a>
-      <a href="#"><i>➤</i>Actions</a>
-      <a href="#"><i>▦</i>Contracts</a>
+      <a href="#"><i>&#9638;</i>Company</a>
+      <a href="dashboard.html"><i>&#9635;</i>Dashboard</a>
+      <a href="#"><i>&#9741;</i>Salesforce<span class="ch">&#8250;</span></a>
+      <a href="#"><i>&#8801;</i>Activity Logs</a>
+      <a href="#" class="on"><i>&#9673;</i>Leads</a>
+      <a href="#"><i>&#10148;</i>Actions</a>
+      <a href="#"><i>&#9636;</i>Config<span class="ch">&#8250;</span></a>
+      <a href="#"><i>&#9881;</i>Enrichment</a>
+      <a href="#"><i>&#9786;</i>Users</a>
+      <a href="#"><i>&#9707;</i>Feedback</a>
     </nav>
-    <div class="navsec">Settings</div>
-    <nav class="nav">
-      <a href="#"><i>◔</i>Feedback</a>
-      <a href="#"><i>⚙</i>Config</a>
-    </nav>
-    <div class="sideft"><div class="who"><div class="av">KB</div>
-      <div><b>Katie Bjornson</b><span>Servion</span></div></div></div>
+    <div class="sideft">
+      <div class="who"><div class="av">P</div>
+        <div><b>pushkar</b><span>pushkar@aistudio.ae</span></div>
+        <span class="ca">&#9652;</span></div>
+    </div>
   </aside>
 
   <div class="main">
+    <!-- ============ TOP BAR ============ -->
     <div class="topbar"><div class="topin">
-      <div class="crumb"><a href="dashboard.html">Dashboard</a> · <a href="dashboard.html">Hot leads</a> · Carle Health</div>
+      <a class="back" href="dashboard.html">&#8249; Back to dashboard</a>
+      <div class="ttl">Signal <span>· Company Details</span></div>
       <div class="tright">
-        <button class="ico" title="Notifications">◔</button>
-        <button class="ico" title="Theme">◐</button>
+        <button class="ico" title="Notifications">&#9737;<span class="badge">1</span></button>
+        <span class="lang">&#9788; EN</span>
+        <button class="ico" title="Theme">&#9789;</button>
+        <button class="tour">&#9655; Start Tour</button>
       </div>
     </div></div>
 
+    <div class="banner" id="banner">
+      <span>&#9432;</span>
+      <div>Nooks call logging is 3 hours behind — today's call outcomes may be understated.</div>
+      <div class="bsp"><button class="bbtn">Check connection</button>
+        <button class="bx" onclick="document.getElementById('banner').style.display='none'">&times;</button></div>
+    </div>
+
     <div class="body">
 
-      <!-- ============ HEADER ============ -->
-      <div class="head">
-        <div class="htop">
-          <div>
-            <div class="hname">Carle Health</div>
-            <div class="hsub">Healthcare · Urbana, Illinois · 11,400 employees · carle.org</div>
-            <div style="margin-top:10px;display:flex;gap:7px;flex-wrap:wrap">
-              <span class="chip sal">SAL · scored 9 of 10</span>
-              <span class="chip src">Salesforce</span>
-              <span class="chip" style="background:var(--card-2);border:1px solid var(--line);color:var(--ink-2)">Campaign-warmed</span>
-              <span class="chip" style="background:var(--card-2);border:1px solid var(--line);color:var(--ink-2)">Genesys estate</span>
-            </div>
-          </div>
-          <div class="hact">
-            <a class="btn" href="#history">History</a>
-            <a class="btn" href="#draft">Draft</a>
-            <a class="btn pri" href="#" onclick="return false">Open in Salesforce</a>
-          </div>
-        </div>
-
-        <div class="scores">
-          <div class="sc">
-            <div class="sk">Lead score</div>
-            <div class="sv">91<small> / 100</small></div>
-            <div class="sbar"><i style="width:91%;background:var(--blue)"></i></div>
-            <div class="sn">Set before any contact</div>
-          </div>
-          <div class="sc">
-            <div class="sk">Engagement score</div>
-            <div class="sv">86<small> / 100</small></div>
-            <div class="sbar"><i style="width:86%;background:var(--violet)"></i></div>
-            <div class="sn">From campaign activity</div>
-          </div>
-          <div class="sc">
-            <div class="sk">AE call score</div>
-            <div class="sv" style="color:var(--green-d)">9<small> / 10</small></div>
-            <div class="sbar"><i style="width:90%;background:var(--green)"></i></div>
-            <div class="sn">Joe Klosterman · 20 Nov</div>
-          </div>
-          <div class="sc">
-            <div class="sk">Stage</div>
-            <div class="sv" style="font-size:20px;color:var(--green-d);margin-top:11px">SAL</div>
-            <div class="sn" style="margin-top:12px">Discovery booked 24 Nov. Signal's scope ends here.</div>
-          </div>
+      <!-- action row -->
+      <div class="arow">
+        <a class="back" href="dashboard.html">&#8249; Back to dashboard</a>
+        <div class="acts">
+          <span class="act">&#9786; Find people</span>
+          <span class="act ok">&#10003; Enriched</span>
+          <span class="act">&#9998; Edit lead</span>
+          <span class="act del">&#9003; Delete lead</span>
         </div>
       </div>
 
-      <!-- ============ MAIN GRID ============ -->
-      <div class="grid">
-
-        <!-- LEFT COLUMN -->
+      <div class="cols">
+        <!-- ============ LEFT ============ -->
         <div>
-          <div class="card">
-            <div class="ch">Account facts</div>
-            <div class="cb">
-              <div class="facts">
-                <div><div class="fk">Sector</div><div class="fv">Healthcare</div></div>
-                <div><div class="fk">Region</div><div class="fv">North America</div></div>
-                <div><div class="fk">Revenue band</div><div class="fv">$3.4B</div></div>
-                <div><div class="fk">Contact-centre seats</div><div class="fv">~640</div></div>
-                <div><div class="fk">Incumbent platform</div><div class="fv">Genesys · on-prem</div></div>
-                <div><div class="fk">Source</div><div class="fv">Salesforce</div></div>
-                <div><div class="fk">Campaign</div><div class="fv">Patient &amp; member access</div></div>
-                <div><div class="fk">Route to SDR</div><div class="fv">Campaign-warmed</div></div>
-                <div><div class="fk">SDR</div><div class="fv">Patricia Shostak</div></div>
-                <div><div class="fk">AE</div><div class="fv">Joe Klosterman</div></div>
-                <div><div class="fk">First touch</div><div class="fv">01 Nov 2026</div></div>
-                <div><div class="fk">Outreach to date</div><div class="fv">1 email · 1 call</div></div>
+          <!-- company header -->
+          <div class="card cpad">
+            <div class="chead">
+              <div class="logotile">VELERA</div>
+              <div style="min-width:0">
+                <div class="cname">Velera</div>
+                <div class="cmeta">Credit union service organisation · St. Petersburg, Florida</div>
+                <div class="clinks">
+                  <a href="#" onclick="return false">&#9741; velera.com</a>
+                  <a href="#" onclick="return false">&#8599; linkedin.com/company/velera</a>
+                </div>
+                <div class="chips">
+                  <span class="chip cat">Category: Payments &amp; member services</span>
+                  <span class="chip a">Tier A</span>
+                  <span class="chip v">From Salesforce</span>
+                  <span class="chip g">4 contacts</span>
+                  <span class="chip b">2 with phone</span>
+                  <span class="chip">Genesys estate</span>
+                </div>
+                <div class="desc">Velera is the largest credit union service organisation in the
+                  United States, providing payment processing, fraud and member-support services to
+                  more than 4,000 credit unions. It runs a multi-site member contact operation
+                  handling card, fraud and digital-banking enquiries around the clock.
+                  <span class="more" onclick="return false">… See more</span></div>
+              </div>
+              <div class="seg">
+                <div class="sl">Sector</div>
+                <div class="segbox">BANKING &amp; FINANCIAL SERVICES <span class="ca">&#9662;</span></div>
+              </div>
+            </div>
+
+            <div class="fstrip">
+              <div class="fs"><div class="v">3,100</div><div class="k">Total emp</div></div>
+              <div class="fs"><div class="v">1,001&ndash;5,000</div><div class="k">Size</div></div>
+              <div class="fs"><div class="v">$2.1B</div><div class="k">Revenue</div></div>
+              <div class="fs"><div class="v">1977</div><div class="k">Founded</div></div>
+              <div class="fs"><div class="v">St. Petersburg</div><div class="k">Location</div></div>
+              <div class="fs"><div class="v">US</div><div class="k">Country</div></div>
+            </div>
+
+            <div class="qual">
+              <span class="chip">Contact-centre intensity: high</span>
+              <span class="chip">Geography Tier 1</span>
+              <span class="chip">Not a customer</span>
+              <span class="chip">On-prem estate</span>
+              <span class="chip">Active trading</span>
+            </div>
+          </div>
+
+          <!-- research -->
+          <div class="card" style="margin-top:14px">
+            <div class="rtop">
+              <div class="tg">
+                <button aria-pressed="true">Deep research</button><button aria-pressed="false">Buying signals</button>
+              </div>
+              <div class="rmeta">
+                <span>Researched <b>18 Nov 2026</b></span>
+                <span>Research confidence: <b>High</b></span>
+                <button class="rerun">&#8635; Re-run</button>
+              </div>
+            </div>
+            <div class="tabs">
+              <button aria-selected="true">Overview</button><button aria-selected="false">Recent signals</button><button aria-selected="false">Headquarters</button><button aria-selected="false">Firmographics</button><button aria-selected="false">Offices</button><button aria-selected="false">Corporate structure</button><button aria-selected="false">Products</button><button aria-selected="false">Customers</button>
+            </div>
+            <div class="rbody">
+              <p>Velera operates member-facing contact centres across St. Petersburg, Detroit and
+                Phoenix, handling card servicing, fraud alerts and digital-banking support for its
+                credit union clients. The estate runs on-prem Genesys with a speech layer that has a
+                published end-of-support date, and the company has publicly described a multi-year
+                programme to consolidate member servicing onto fewer platforms.</p>
+              <p>Two roles posted in the last quarter ask for contact-centre engineers with cloud
+                migration experience, and a VP of Member Experience covering speech analytics was
+                appointed in September.</p>
+
+              <div class="angle">
+                <div class="al">Servion angle</div>
+                <div class="ac">
+                  <span class="chip v">BANKING</span>
+                  <span class="chip">Member servicing · card, fraud, digital banking</span>
+                  <span class="chip a">Genesys</span>
+                  <span class="chip a">Cisco</span>
+                  <span class="chip a">NICE</span>
+                </div>
+                <p>Velera runs the pattern Servion has delivered repeatedly: a multi-site on-prem
+                  Genesys member-servicing estate with a dated end-of-support and an existing WFM
+                  investment to preserve. Approach through member experience and telephony
+                  engineering rather than procurement.</p>
+                <div class="personas">Head of Member Experience · VP Member Experience (speech
+                  analytics) · Director of Telephony Engineering · Manager, Member Contact Centre ·
+                  Head of Fraud Operations</div>
               </div>
             </div>
           </div>
 
-          <div class="card" style="margin-top:14px" id="history">
-            <div class="ch">History</div>
-            <div class="cb">
-              <ul class="tl">
-                <li><span class="d">01 Nov</span><span class="w sig">Signal</span>
-                  <span class="x">Pulled from Salesforce. Dormant account, no open opportunity.</span></li>
-                <li><span class="d">01 Nov</span><span class="w sig">Signal</span>
-                  <span class="x">Lead score 91. Speech platform end-of-support recorded as the trigger.</span></li>
-                <li><span class="d">03 Nov</span><span class="w sig">Signal</span>
-                  <span class="x">Enriched. 6 contacts found, 5 with a verified email.</span></li>
-                <li><span class="d">04 Nov</span><span class="w sys">Phave</span>
-                  <span class="x">Added to the Patient &amp; member access campaign.</span></li>
-                <li><span class="d">05 Nov</span><span class="w sdr">SDR</span>
-                  <span class="x">Email 1 sent to Scott Hargus from the drafted template.</span></li>
-                <li><span class="d">08 Nov</span><span class="w acct">Account</span>
-                  <span class="x">Replied. Asked what a migration timeline would look like.</span></li>
-                <li><span class="d">08 Nov</span><span class="w sig">Signal</span>
-                  <span class="x">Engagement score 86. Moved up the queue.</span></li>
-                <li><span class="d">12 Nov</span><span class="w sdr">Nooks</span>
-                  <span class="x">Call connected, 11 minutes. Notes logged.</span></li>
-                <li><span class="d">17 Nov</span><span class="w sdr">SDR</span>
-                  <span class="x">Fit call booked with Joe Klosterman for 20 Nov.</span></li>
-                <li><span class="d">20 Nov</span><span class="w ae">AE</span>
-                  <span class="x">Fit call held. Scored 9 of 10, so the account became a SAL.</span></li>
-                <li><span class="d">20 Nov</span><span class="w sig">Signal</span>
-                  <span class="x">Score, activity and source tag written back to Salesforce.</span></li>
-                <li><span class="d">21 Nov</span><span class="w ae">AE</span>
-                  <span class="x">Discovery booked for 24 Nov. Handed to the AE.</span></li>
+          <!-- outreach status -->
+          <div class="card" style="margin-top:14px">
+            <div class="ohead">
+              <h3>&#8767; Outreach status</h3>
+              <div class="ostat">
+                <span class="pill h">Fit call held</span>
+                <span>Score not logged &mdash; 14 days</span>
+              </div>
+            </div>
+            <div class="cpad" style="padding-top:14px">
+              <ul class="otl">
+                <li><span class="d">27 Oct</span><span class="w sig">Signal</span>
+                  <span class="x">Pulled from Salesforce. No open opportunity on the record.</span></li>
+                <li><span class="d">27 Oct</span><span class="w sig">Signal</span>
+                  <span class="x">Lead score 74. Speech platform end-of-support recorded as the trigger.</span></li>
+                <li><span class="d">29 Oct</span><span class="w sig">Signal</span>
+                  <span class="x">Enriched. 4 contacts found, 2 with a verified email.</span></li>
+                <li><span class="d">30 Oct</span><span class="w sy">Phave</span>
+                  <span class="x">Added to the Voice self-service campaign.</span></li>
+                <li><span class="d">01 Nov</span><span class="w sdr">SDR</span>
+                  <span class="x">Email 1 sent to Marvin York by Nadia Haddad.</span></li>
+                <li><span class="d">06 Nov</span><span class="w ac">Account</span>
+                  <span class="x">Replied. Asked what a phased migration would involve.</span></li>
+                <li><span class="d">06 Nov</span><span class="w sig">Signal</span>
+                  <span class="x">Engagement score 58. Moved up the queue.</span></li>
+                <li><span class="d">07 Nov</span><span class="w ae">AE</span>
+                  <span class="x">Fit call held by Tony Janusky. No score logged since.</span></li>
               </ul>
             </div>
-            <div class="note">Every row is a recorded event. Signal writes leads and activity;
-              accounts and opportunities stay in Salesforce.</div>
           </div>
 
+          <!-- contacts -->
           <div class="card" style="margin-top:14px">
-            <div class="ch">Research pack</div>
-            <div class="cb pack">
-              <p><b>Why this account.</b> Carle Health runs a multi-site patient access operation
-                across Illinois with roughly 640 contact-centre seats on an on-prem Genesys estate.
-                The speech platform underneath it has a published end-of-support date, which is the
-                dated pressure the score keys on.</p>
-              <p><b>What they said publicly.</b> A 2026 capital plan names patient access and
-                digital front door as funded programmes. Two job postings in the last quarter ask
-                for contact-centre engineers with migration experience.</p>
-              <p><b>Who decides.</b> Scott Hargus owns support services and telecom. A VP of
-                Patient Experience was appointed in September, which is the second Tier 1 persona
-                at the account and the reason for the persona boost.</p>
-              <p><b>What to open with.</b> The end-of-support date, not the platform. They have
-                already decided to move; the question is who runs it.</p>
-              <div class="srcline">Sources recorded against each claim ·
-                <a href="#" onclick="return false">carle.org newsroom</a> ·
-                <a href="#" onclick="return false">2026 capital plan</a> ·
-                <a href="#" onclick="return false">LinkedIn postings</a></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- RIGHT COLUMN -->
-        <div>
-          <div class="card">
-            <div class="ch">How the lead score was built</div>
-            <div class="cb">
-              <div class="dim"><span class="dn">Contact-centre intensity</span>
-                <span class="dw">25%</span><span class="db"><i style="width:100%"></i></span></div>
-              <div class="dim"><span class="dn">Sector</span>
-                <span class="dw">20%</span><span class="db"><i style="width:100%"></i></span></div>
-              <div class="dim"><span class="dn">Buying trigger</span>
-                <span class="dw">15%</span><span class="db"><i style="width:100%"></i></span></div>
-              <div class="dim"><span class="dn">Modernisation signal</span>
-                <span class="dw">15%</span><span class="db"><i style="width:100%"></i></span></div>
-              <div class="dim"><span class="dn">Revenue</span>
-                <span class="dw">10%</span><span class="db"><i style="width:70%"></i></span></div>
-              <div class="dim"><span class="dn">Size</span>
-                <span class="dw">10%</span><span class="db"><i style="width:75%"></i></span></div>
-              <div class="dim"><span class="dn">Region</span>
-                <span class="dw">5%</span><span class="db"><i style="width:100%"></i></span></div>
-              <div class="boost">
-                <span class="bch up">+5 confirmed Genesys estate</span>
-                <span class="bch up">+5 sector peer is a customer</span>
-                <span class="bch up">+3 two Tier 1 personas</span>
-              </div>
-            </div>
-            <div class="note">Seven weighted dimensions, then boosts, capped at 100.
-              Weights are configurable.</div>
-          </div>
-
-          <div class="card" style="margin-top:14px">
-            <div class="ch">Contacts</div>
-            <div class="cb" style="padding:16px 0 0 18px">
+            <div class="ohead"><h3>Contacts</h3>
+              <div class="ostat"><span>4 found · 2 with a verified email</span></div></div>
+            <div class="cpad" style="padding-top:14px">
               <table>
-                <thead><tr><th>Contact</th><th>Tier</th><th class="r">Email</th></tr></thead>
+                <thead><tr><th>Contact</th><th>Persona tier</th><th class="r">Email</th><th class="r">Phone</th></tr></thead>
                 <tbody>
-                  <tr><td><div class="cn">Scott Hargus</div>
-                    <div class="cr">IT Exec Director, Support Services &amp; Telecom</div></td>
-                    <td><span class="tier">Tier 1</span></td>
-                    <td class="r"><span class="ver y">Verified</span></td></tr>
-                  <tr><td><div class="cn">Marilyn Boothe</div>
-                    <div class="cr">VP, Patient Experience</div></td>
-                    <td><span class="tier">Tier 1</span></td>
-                    <td class="r"><span class="ver y">Verified</span></td></tr>
-                  <tr><td><div class="cn">Dev Ramanathan</div>
+                  <tr><td><div class="cn">Marvin York</div>
+                    <div class="cr">VP Member Experience, Speech Analytics</div></td>
+                    <td>Tier 1</td><td class="r"><span class="chip g">Verified</span></td>
+                    <td class="r"><span class="chip g">Yes</span></td></tr>
+                  <tr><td><div class="cn">Danielle Okonkwo</div>
                     <div class="cr">Director, Telephony Engineering</div></td>
-                    <td><span class="tier">Tier 2</span></td>
-                    <td class="r"><span class="ver y">Verified</span></td></tr>
-                  <tr><td><div class="cn">Ann Petrowski</div>
-                    <div class="cr">Manager, Access Centre</div></td>
-                    <td><span class="tier">Tier 3</span></td>
-                    <td class="r"><span class="ver y">Verified</span></td></tr>
-                  <tr><td><div class="cn">Owen Delacroix</div>
-                    <div class="cr">Workforce Management Lead</div></td>
-                    <td><span class="tier">Tier 4</span></td>
-                    <td class="r"><span class="ver n">Not found</span></td></tr>
+                    <td>Tier 2</td><td class="r"><span class="chip g">Verified</span></td>
+                    <td class="r"><span class="chip g">Yes</span></td></tr>
+                  <tr><td><div class="cn">Ray Villanueva</div>
+                    <div class="cr">Manager, Member Contact Centre</div></td>
+                    <td>Tier 3</td><td class="r"><span class="chip">Unverified</span></td>
+                    <td class="r"><span class="chip">&mdash;</span></td></tr>
+                  <tr><td><div class="cn">Priya Raman</div>
+                    <div class="cr">Head of Fraud Operations</div></td>
+                    <td>Tier 3</td><td class="r"><span class="chip">Unverified</span></td>
+                    <td class="r"><span class="chip">&mdash;</span></td></tr>
                 </tbody>
               </table>
             </div>
-            <div class="note">Checked against Servion's persona set and ranked on role fit and
-              how complete the record is.</div>
+          </div>
+        </div>
+
+        <!-- ============ RIGHT ============ -->
+        <div>
+          <div class="sc">
+            <div class="warnbx"><b>Fit call held, score not logged.</b>
+              Until Tony Janusky adds a score this cannot count as a SAL. 14 days waiting.</div>
           </div>
 
-          <div class="card" style="margin-top:14px" id="draft">
-            <div class="ch">Outreach draft</div>
-            <div class="cb">
-              <div class="draft">
-                <div class="dsub">Subject: Genesys end-of-support and the Carle access centre</div>
-                <div class="dbody">Scott,
-
-Carle's access centre runs on a Genesys estate whose speech layer goes end-of-support next year. Most of the health systems we work with treat that date as the forcing function rather than the platform itself.
-
-We ran the migration for two comparable multi-site systems, both mid-size, both on-prem to cloud, both keeping their existing WFM. Happy to walk you through what those took, if it is useful ahead of your planning cycle.
-
-Would a short call in the next two weeks be worth it?
-
-Patricia</div>
-                <div class="dmeta">
-                  <span>Servion template · Healthcare access</span>
-                  <span>Reviewed and sent by Patricia Shostak · 05 Nov</span>
-                </div>
-              </div>
+          <div class="sc">
+            <div class="sch">Scores</div>
+            <div class="scores">
+              <div class="sbx"><div class="k">Lead</div><div class="v">74</div>
+                <div class="bar"><i style="width:74%;background:var(--blue)"></i></div></div>
+              <div class="sbx"><div class="k">Engagement</div><div class="v">58</div>
+                <div class="bar"><i style="width:58%;background:var(--violet)"></i></div></div>
             </div>
-            <div class="note">Drafted on Servion's own templates and matched to the account's
-              campaign. Every message is reviewed and sent by a person.</div>
+            <div class="scores" style="grid-template-columns:1fr">
+              <div class="sbx"><div class="k">AE call score</div>
+                <div class="v" style="color:var(--rose-d);font-size:13px">Not logged</div></div>
+            </div>
+          </div>
+
+          <div class="sc">
+            <div class="sch">Assigned to <span class="pen">&#9998;</span></div>
+            <div class="srow">&#9786; Tony Janusky <span style="color:var(--ink-3)">· AE</span></div>
+          </div>
+
+          <div class="sc">
+            <div class="sch">SDR</div>
+            <div class="srow">&#9786; Nadia Haddad</div>
+          </div>
+
+          <div class="sc">
+            <div class="sch">Account owner (CRM)</div>
+            <div class="srow un">&#9786; Unassigned</div>
+          </div>
+
+          <div class="sc">
+            <div class="sch">&#9707; Relationship notes</div>
+            <textarea class="notes" placeholder=""></textarea>
+            <button class="savebtn">Save</button>
+            <div style="clear:both"></div>
+          </div>
+
+          <div class="sc">
+            <div class="sch">&#9741; Salesforce</div>
+            <div class="chips" style="margin-top:0">
+              <span class="chip a">Lead</span>
+            </div>
+            <div style="font-size:10.5px;color:var(--ink-3);margin-top:8px">
+              OWNER: <b style="color:var(--ink-2)">Unassigned</b></div>
+            <div class="crm">
+              <div class="crmb"><div class="k">Open deals</div><div class="v">0</div></div>
+              <div class="crmb"><div class="k">Contacts</div><div class="v">4</div></div>
+              <div class="crmb"><div class="k">Last activity</div><div class="v">07/11/2026</div></div>
+              <div class="crmb"><div class="k">Last contacted</div><div class="v">06/11/2026</div></div>
+            </div>
+            <a class="openx" href="#" onclick="return false">Open in Salesforce &#8599;</a>
+          </div>
+
+          <div class="sc">
+            <div class="sch">Recent CRM activity</div>
+            <div class="actv">
+              <div class="r1"><span class="tag">Task</span><span class="tag">Not started</span>
+                <span class="dt">07 Nov 2026</span></div>
+              <div class="t">Add fit call score</div>
+              <div class="o">Tony Janusky</div>
+            </div>
+            <div class="actv">
+              <div class="r1"><span class="tag">Call</span><span class="tag">Logged</span>
+                <span class="dt">07 Nov 2026</span></div>
+              <div class="t">Fit call held, 28 min</div>
+              <div class="o">Tony Janusky</div>
+            </div>
+            <div class="actv">
+              <div class="r1"><span class="tag">Email</span><span class="tag">Replied</span>
+                <span class="dt">06 Nov 2026</span></div>
+              <div class="t">Re: phased migration</div>
+              <div class="o">Nadia Haddad</div>
+            </div>
           </div>
         </div>
       </div>
-
-      <footer>
-        <b>Sample account page.</b> Layout and fields follow the data Signal holds per account.
-        Figures are illustrative. Signal follows an account to SAL; discovery and everything after
-        it sit with the AE in Salesforce.
-      </footer>
     </div>
   </div>
 </div>
+<button class="fab" title="Feedback">&#9707;</button>
 </body>
 </html>
