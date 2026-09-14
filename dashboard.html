@@ -464,7 +464,7 @@
             <div class="spL"><div class="subk">Outreach and response</div><div class="chrow" id="chn"></div><div class="chreal" id="chreal"></div></div>
             <div class="spR"><div class="subk">Human replies · <span id="rqN"></span> <sup class="prov est">est</sup></div><div class="rqbar" id="rqbar"></div><div id="rqrows"></div></div>
           </div>
-          <div class="actwrap"><div class="subk">Activity logged in Salesforce, by week <span style="color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">· Salesforce only until Fave and Nooks are connected</span></div>
+          <div class="actwrap"><div class="subk">Activity logged in Salesforce, by week <span style="color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">· Salesforce only until Phave and Nooks are connected</span></div>
             <svg class="chart" id="act" role="img" aria-label="Weekly emails and calls logged in Salesforce" style="height:190px"></svg>
             <div class="clg" style="padding-bottom:6px"><span><i style="background:var(--blue)"></i>Emails</span><span><i style="background:var(--green)"></i>Calls</span></div>
             <div class="kpis" id="actKpi"></div></div>
@@ -799,7 +799,7 @@ function drawCh(){
   const k=a.act_kpi;
   $('actKpi').innerHTML=[['Emails logged',nf(k.emails),'all records · Salesforce'],['Calls logged',nf(k.calls),'all records · Salesforce'],['Leads emailed',nf(k.leads_emailed),pc(k.leads_emailed,a.stages.leads.n)+' of leads created'],['Leads called',nf(k.leads_called),pc(k.leads_called,a.stages.leads.n)+' of leads created'],['Per week',nf(Math.round((k.emails+k.calls)/Math.max(1,k.weeks))),'activities · '+k.weeks+' weeks']]
     .map(x=>'<div class="kp"><div class="a">'+x[0]+'</div><div class="b">'+x[1]+'</div><div class="c">'+x[2]+'</div></div>').join('');
-  $('chNote').innerHTML='<b>Response rate</b> and <b>connection rate</b> are kept apart: one is email, the other is voice. Servion confirmed both come from Nooks; the figures shown are estimates anchored to the real bookings until that connection is live. The weekly chart is real Salesforce activity only; the consolidated view across Fave, Nooks and Salesforce is built once those connections exist.';
+  $('chNote').innerHTML='<b>Response rate</b> and <b>connection rate</b> are kept apart: one is email, the other is voice. Servion confirmed both come from Nooks; the figures shown are estimates anchored to the real bookings until that connection is live. The weekly chart is real Salesforce activity only; the consolidated view across Phave, Nooks and Salesforce is built once those connections exist.';
 }
 
 /* ---------- 9 score ---------- */
