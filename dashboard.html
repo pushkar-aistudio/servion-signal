@@ -408,19 +408,19 @@
 
       <div class="blk"><div class="bh"><h2>Pipeline funnel</h2><span class="r"><label class="acvsel">ACV field <select id="acvF"></select></label><span class="pill">Responded → SAL → opportunity → won</span></span></div>
         <div class="card"><div class="fn">
-          <div class="frow"><div class="fhd">Stage · hover for definition</div><div class="fhd">Share of responded · dashed = previous stage</div><div class="fhd r">Count</div><div class="fhd r" id="fhdAcv">Amount · total</div><div class="fhd r">Conversion</div><div class="fhd"></div></div>
+          <div class="frow"><div class="fhd">Stage</div><div class="fhd">Share of responded</div><div class="fhd r">Count</div><div class="fhd r" id="fhdAcv">Amount · total</div><div class="fhd r">Conversion</div><div class="fhd"></div></div>
           <div id="fnl"></div></div>
-          <div class="drill" id="sdrill"><div class="drillh"><b id="sdrillN"></b><span>fit calls scored in the period, highest score first · what each became</span><button class="lnk" id="sdrillX">Hide</button></div>
+          <div class="drill" id="sdrill"><div class="drillh"><b id="sdrillN"></b><span>fit calls scored · highest score first</span><button class="lnk" id="sdrillX">Hide</button></div>
             <div class="tw"><table class="d"><thead><tr><th>Account</th><th>Sector</th><th>AE</th><th class="r">Score</th><th>Outcome</th><th>Opportunity</th><th class="r">Waiting</th></tr></thead><tbody id="sdrillBody"></tbody></table></div>
             <div class="showmore"><button class="lnk" id="sdrillMore"></button></div></div>
-          <div class="drill" id="saldrill"><div class="drillh"><b id="saldrillN"></b><span>sales-accepted leads in the period · scored 7 or above</span><button class="lnk" id="salCsv">Export CSV</button><button class="lnk" id="saldrillX">Hide</button></div>
+          <div class="drill" id="saldrill"><div class="drillh"><b id="saldrillN"></b><span>sales-accepted leads · scored 7 or above</span><button class="lnk" id="salCsv">Export CSV</button><button class="lnk" id="saldrillX">Hide</button></div>
             <div class="tw"><table class="d"><thead><tr><th>Account</th><th>Sector</th><th>AE</th><th class="r">Score</th><th>Created</th><th>Opportunity</th><th>Stage</th><th class="r">ACV</th><th class="r">Waiting</th></tr></thead><tbody id="saldrillBody"></tbody></table></div>
             <div class="showmore"><button class="lnk" id="saldrillMore"></button></div></div>
           <div class="drill" id="odrill"><div class="drillh"><b id="odrillN"></b><span id="odrillLab"></span><button class="lnk" id="oCsv">Export CSV</button><button class="lnk" id="odrillX">Hide</button></div>
             <div class="tw"><table class="d"><thead><tr><th>Opportunity</th><th>Account</th><th>Type</th><th>Stage</th><th>Owner</th><th>Created</th><th>Close date</th><th class="r">ACV</th></tr></thead><tbody id="odrillBody"></tbody></table></div>
             <div class="showmore"><button class="lnk" id="odrillMore"></button></div></div>
           <div class="fout" id="fout"></div>
-          <div class="flg"><span><i style="background:var(--violet)"></i>Marketing-qualified</span><span><i style="background:var(--blue)"></i>Direct outbound</span><span><i class="gh"></i>Previous stage</span><span style="color:var(--ink-4)">Conversion = this stage ÷ previous stage</span></div>
+          <div class="flg"><span><i style="background:var(--violet)"></i>Marketing-qualified</span><span><i style="background:var(--blue)"></i>Direct outbound</span><span><i class="gh"></i>Previous stage</span></div>
           <div class="lad" id="afterSal"></div><div class="note" id="fnNote"></div></div></div>
 
       <div class="blk"><div class="bh"><h2>Market breakdown</h2><span class="r"><button class="lnk" id="mktCsv">Export CSV</button><span class="pill">Where the SALs come from</span></span></div>
@@ -446,7 +446,7 @@
         <div class="card"><div class="split">
           <div class="spL"><div class="subk">Outreach and response</div><div class="chrow" id="chn"></div><div class="chreal" id="chreal"></div></div>
           <div class="spR"><div class="subk">Human replies · <span id="rqN"></span> <sup class="prov est">est</sup></div><div class="rqbar" id="rqbar"></div><div id="rqrows"></div></div></div>
-          <div class="actwrap"><div class="subk">Activity logged in Salesforce, by week <span class="subnote">· all records · follows the period only</span></div>
+          <div class="actwrap"><div class="subk">Activity logged in Salesforce, by week</div>
             <svg class="chart" id="act" role="img" aria-label="Weekly emails and calls logged in Salesforce" style="height:190px"></svg>
             <div class="clg" style="padding-bottom:6px"><span><i style="background:var(--blue)"></i>Emails</span><span><i style="background:var(--green)"></i>Calls</span></div>
             <div class="kpis" id="actKpi"></div></div>
@@ -458,14 +458,14 @@
 
       <div class="secdiv" id="refdiv" role="separator" aria-label="Reference section">
         <div class="secline"><span class="ln"></span><span class="lab">Reference · not part of the dashboard</span><span class="ln"></span></div>
-        <p class="secsub">The two sections below document the data behind this page: what was extracted from Salesforce, which filters apply, and how every metric is defined. They are here so the numbers can be checked against Salesforce, and they will not appear in the product.</p>
+        <p class="secsub">What was extracted, which filters apply, and how every metric is defined. Not part of the product.</p>
       </div>
 
       <div class="blk" id="datablk"><div class="bh"><h2>Data pulled and filters applied</h2><span class="r"><span class="pill" id="dataPill"></span></span></div>
         <div class="card"><div class="kpis" id="dataKpi" style="border-top:0;margin:0"></div>
           <div class="split"><div class="spL"><div class="subk">Filters on this page right now</div><div id="dataFilters" class="filt"></div></div>
             <div class="spR"><div class="subk">Salesforce export · 7 September 2026</div><div class="tw"><table class="d small"><thead><tr><th>Object</th><th class="r">Rows pulled</th><th class="r">In Salesforce</th><th></th></tr></thead><tbody id="dataObjs"></tbody></table></div></div></div>
-          <div class="reconh"><b>Why a Salesforce report can show different numbers.</b> Same fields, different filters. The first row is this dashboard as currently filtered; the last row is an unfiltered report.</div>
+          <div class="reconh"><b>Same fields, different filters.</b> The first row is this dashboard as filtered; the last is an unfiltered report.</div>
           <div class="tw"><table class="d small"><thead><tr><th>Leads</th><th class="r">Meetings booked</th><th class="r">Fit calls held</th><th class="r">SAL (7+)</th><th class="r">Marketing-qualified</th></tr></thead><tbody id="reconL"></tbody></table></div>
           <div class="tw" style="border-top:1px solid var(--line)"><table class="d small"><thead><tr><th>Opportunities</th><th class="r">Created</th><th class="r">Closed Won</th><th class="r">Closed Lost</th><th class="r">New Logo</th></tr></thead><tbody id="reconO"></tbody></table></div>
           <div class="note" id="dataNote"></div></div></div>
@@ -679,7 +679,7 @@ function drawPerf(){
   const a=A(),s=a.stages,held=s.held.n,sal=s.sal.n,scored=s.scored.n;
   $('pLab').textContent=PER[F.w].rng+(F.by==='created'?' · leads created in period':' · leads touched in period');
   $('perfHero').innerHTML='<div class="tk">SALs converted</div><div class="hn"><span class="big">'+nf(sal)+'</span><span class="of">of '+nf(held)+' fit calls held</span></div>'+
-    '<div class="hsub"><b>'+pc(sal,held)+'</b> of fit calls held became a SAL. Of the '+nf(scored)+' calls scored, <b>'+pc(sal,scored)+'</b> scored 7 or above.'+(PER[F.w].start<20260401?' <b>Scoring began in April 2026</b>; earlier calls are shown unscored.':'')+'</div>'+
+    '<div class="hsub">Of the '+nf(scored)+' fit calls scored, <b>'+pc(sal,scored)+'</b> scored 7 or above.'+(PER[F.w].start<20260401?' <b>Scoring began in April 2026</b>; earlier calls are shown unscored.':'')+'</div>'+
     '<div class="hsec"><div><div class="k">Meetings booked</div><div class="v">'+nf(s.booked.n)+'</div><div class="s">'+pc(held,s.booked.n)+' went on to be held</div></div><div><div class="k">Marketing-qualified share</div><div class="v">'+pc(s.sal.mq,sal)+'</div><div class="s">'+nf(s.sal.mq)+' of '+nf(sal)+' SALs came via marketing</div></div></div>';
   const ser=G==='week'?a.weekly:a.series,svg=$('perf'),Wd=svg.clientWidth||760,H=svg.clientHeight||230,padL=12,padR=12,padT=24,padB=24;
   const n=ser.length,gw=(Wd-padL-padR)/n,bw=Math.min(46,gw*0.64),mx=Math.max(1,...ser.map(x=>x.held));
@@ -712,9 +712,9 @@ function drawCov(){
 function drawFunnel(){
   const a=A(),s=a.stages,e=a.est,c=s.after_sal;const R=(k,lab,who,o,ex)=>Object.assign({k,lab,who,n:o.n,mq:o.mq,dr:o.direct},ex||{});
   const rows=[{k:'responded',lab:'Responded',who:'Replied or connected · Nooks',n:e.responded,mq:e.responded_mq,dr:e.responded_direct,est:true},R('booked','Meeting booked','SDR',s.booked),R('held','Fit call held','AE',s.held),R('scored','Fit call scored','AE · survey',s.scored,{drill:true}),R('sal','SAL converted','Score 7 or above',s.sal,{saldrill:true}),
-    {sep:'After SAL · the same leads followed into Salesforce opportunities, stage by stage'},R('opp','Opportunity created','Converted lead'+(c.incubation.n?' · '+c.incubation.n+' via Incubation (pre-opp)':''),c.opp,{prev:4,ops:c.opp.ops}),
-    ...['Discovery','Evaluating','Negotiation','Pending Approval','PCN Requested'].map((st,i)=>R('stage',st,'Probability '+[10,25,50,75,90][i]+'%',c[st],{ops:c[st].ops})),R('won','Closed Won','Final outcome',c['Closed Won'],{cls:'won',ops:c['Closed Won'].ops}),
-    {sep:'Exits from the chain above'},R('lost','Closed Lost','Exited at any stage',c.lost,{prev:6,cls:'lost',ops:c.lost.ops}),R('opp','No opportunity record','Converted to account or contact only',c.norecord,{prev:6,cls:'norec'})];
+    {sep:'After SAL'},R('opp','Opportunity created','Converted lead'+(c.incubation.n?' · '+c.incubation.n+' via Incubation (pre-opp)':''),c.opp,{prev:4,ops:c.opp.ops}),
+    ...['Discovery','Evaluating','Negotiation','Pending Approval','PCN Requested'].map((st,i)=>R('stage',st,'Probability '+[10,25,50,75,90][i]+'%',c[st],{ops:c[st].ops})),R('won','Closed Won','',c['Closed Won'],{cls:'won',ops:c['Closed Won'].ops}),
+    {sep:'Exits'},R('lost','Closed Lost','Exited at any stage',c.lost,{prev:6,cls:'lost',ops:c.lost.ops}),R('opp','No opportunity record','Converted to account or contact only',c.norecord,{prev:6,cls:'norec'})];
   const head=rows[0].n||1;let o='',lastReal=null;
   rows.forEach((r,i)=>{if(r.sep){o+='<div class="fsep">'+r.sep+'</div>';return;}const pi=r.prev!=null?r.prev:lastReal,prev=pi!=null?rows[pi]:null;const w=100*r.n/head,pw=prev?100*prev.n/head:0,mqw=r.n?100*r.mq/r.n:0;
     const tip=esc('<div class=th>'+r.lab+'</div>'+tipRows([['Marketing-qualified',r.mq],['Direct outbound',r.dr],['Total',r.n]])+(prev?'<div class=tb>'+pc(r.n,prev.n)+' of '+prev.lab.toLowerCase()+'</div>':''));
@@ -749,7 +749,7 @@ function drawFunnel(){
     $('sdrillBody').innerHTML=show.map(r=>'<tr><td><a class="colink" href="account.html" target="_blank">'+esc(r.co)+'</a><div class="rn"><span>'+esc(r.src)+(r.mq?' · marketing-qualified':'')+'</span></div></td><td>'+esc(r.sec)+'</td><td>'+esc(r.own)+'</td><td class="r"><span class="sbox '+(r.sal?'s5':'s3')+'">'+r.score+'</span></td><td>'+(r.sal?'<span class="tag ok">SAL</span>':'<span class="tag warn">Nurture</span>')+'</td><td>'+(r.opp?'<span class="tag '+(r.opp==='Closed Won'?'ok':/Lost|Duplicate/.test(r.opp)?'bad':'')+'">'+esc(r.opp)+'</span>':r.conv?'<span class="tag">Converted · no record</span>':'<span style="color:var(--ink-4)">—</span>')+'</td><td class="r">'+(r.days==null?'—':r.days+'d')+'</td></tr>').join('');
     $('sdrillMore').innerHTML=L.length>cap?(SALL?'Show fewer <span class="arw">&#9650;</span>':'Show '+(L.length-cap)+' more <span class="arw">&#9660;</span>'):'';$('sdrillMore').style.display=L.length>cap?'':'none';}
   const o2=a.opps,tile=(k,v,cls,acvv)=>'<div class="lst '+(cls||'')+(v?' tclick':' z')+'"'+(v?' role="button" tabindex="0" data-tile="'+esc(k)+'"':'')+'><div class="k">'+k+'</div><div class="v">'+nf(v)+'</div>'+(acvv?'<div class="lacv">'+money(acvv)+'</div>':'')+'</div>';
-  $('afterSal').innerHTML='<div class="ladh"><b>For reference · '+(F.opptype==='nl'?'all New Logo opportunities':'all opportunities')+' created in period</b><span>'+nf(o2.shown)+(F.opptype==='nl'?' of '+nf(o2.created_all)+' opportunities':'')+', by current stage · includes those that did not come through the lead funnel</span></div>'+
+  $('afterSal').innerHTML='<div class="ladh"><b>For reference · '+(F.opptype==='nl'?'all New Logo opportunities':'all opportunities')+' created in period</b><span>'+nf(o2.shown)+(F.opptype==='nl'?' of '+nf(o2.created_all):'')+', by current stage</span></div>'+
     '<div class="ladrow">'+o2.ladder.map(x=>tile(x.stage,x.n,x.stage==='Closed Won'?'won':'',x.acv)).join('')+tile('Closed Lost',o2.other['Closed Lost'],'lost',o2.otherRows['Closed Lost'].reduce((t,o)=>t+acvOf(o),0))+'</div>'+
     '<div class="ladft">'+(F.opptype==='nl'?'<span>Renewals and add-ons ('+nf(o2.created_all-o2.nl_created)+') are excluded: they do not pass through the lead funnel</span>':'<span>All opportunity types shown, including renewals and add-ons</span>')+'<span>Closed in period, any creation date: <b style="color:var(--green-d)">'+nf(o2.closed_in_period.won)+' won</b> · <b style="color:var(--rose-d)">'+nf(o2.closed_in_period.lost)+' lost</b></span><span>Total '+acvName()+': <b>'+money(o2.acvTotal)+'</b></span></div>';
   $('fnNote').innerHTML='An opportunity counts at a stage if it <b>ever reached</b> it, so every row is a subset of the one above.'+(s.held_unscored.n?' <b>'+nf(s.held_unscored.n)+' held calls await a score.</b>':'');
@@ -799,7 +799,7 @@ function drawMQ(){
   const steps=[{lab:'Marketing-qualified',n:m.qualified,sub:(m.per_month?'≈ '+m.per_month+' per month':''),rank:1,k:'mqa'},{lab:'Worked by SDR or AE',n:m.worked,sub:'email, call or booking',rank:2,k:'worked'},{lab:'Meeting booked',n:m.booked,rank:3,k:'booked'},{lab:'Fit call held',n:m.held,rank:4,k:'held'},{lab:'SAL',n:m.sal,sub:'scored 7 or above',rank:5,k:'sal'},{lab:'Opportunity created',n:m.opp,sub:'converted lead · any path'+(ch.incubation.n?' · '+ch.incubation.n+' via Incubation':''),rank:6,k:'opp',ops:ch.opp.ops},
     ...MAIN.slice(0,5).map(st=>({lab:st,n:ch[st].n,rank:6,k:'stage',stage:true,ops:ch[st].ops})),{lab:'Closed Won',n:ch['Closed Won'].n,rank:6,k:'won',won:true,ops:ch['Closed Won'].ops}];
   $('mqPill').textContent=nf(m.qualified)+' qualified'+(m.per_month?' · ≈ '+m.per_month+'/month':'');const base=m.qualified||1;
-  $('mqf').innerHTML='<div class="cvtot">Of <b>'+nf(m.universe)+'</b> accounts'+(F.country?' in the selected countries':'')+', <b>'+nf(m.qualified)+'</b> became marketing-qualified in the period. Click a stage to see the accounts.</div>'+
+  $('mqf').innerHTML='<div class="cvtot">Of <b>'+nf(m.universe)+'</b> accounts'+(F.country?' in the selected countries':'')+', <b>'+nf(m.qualified)+'</b> became marketing-qualified in the period.</div>'+
     '<div class="mqhd"><span></span><span></span><span>Accounts</span><span>'+acvName()+' · total</span><span></span></div>'+
     steps.map((s,i)=>{const prev=i?steps[i-1].n:null,on=DRILL&&DLAB===s.lab,col=s.won?'var(--green)':i===0?'var(--violet)':s.stage?'#b9a8f7':i>=4?'var(--green)':'var(--violet-p)';
       const sAcv=s.ops&&s.ops.length?acvSum(s.ops):0;
