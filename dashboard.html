@@ -157,7 +157,7 @@
 
   /* funnel */
   .fn{padding:16px 20px 4px}
-  .frow{display:grid;grid-template-columns:172px 1fr 78px 92px;gap:16px;align-items:center;padding:7px 0}
+  .frow{display:grid;grid-template-columns:168px 1fr 68px 96px 88px 12px;gap:14px;align-items:center;padding:7px 0;border-radius:7px}
   .fhd{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680;padding:0 0 9px;border-bottom:1px solid var(--line)}
   .fhd.r{text-align:right}
   .fst{font-size:13.5px;font-weight:600}
@@ -289,8 +289,15 @@
   .qempty{padding:18px 16px;color:var(--ink-2);font-size:12.5px;line-height:1.55}
   .acvsel{display:inline-flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
   .acvsel select{font:inherit;font-size:11px;letter-spacing:0;text-transform:none;font-weight:500;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink-2)}
-  .fn .num .acvn{display:block;font-size:11px;font-weight:600;color:var(--green-d);margin-top:2px;cursor:default}
-  .act.fdrillb{margin-left:8px;padding:2px 9px;font-size:11px;vertical-align:1px}
+  .fn .acvcell{text-align:right;font-size:13px;font-weight:660;color:var(--green-d)}
+  .fn .acvcell.z{color:var(--ink-4);font-weight:400}
+  .frow.click{cursor:pointer;transition:background .1s}
+  .frow.click:hover{background:var(--card-2)}
+  .frow.click.on{background:var(--violet-l)}
+  .frow.click .chev{color:var(--ink-4);font-size:13px;text-align:center}
+  .frow.click:hover .chev,.frow.click.on .chev{color:var(--violet-d)}
+  .frow.click:focus-visible{outline:2px solid var(--violet);outline-offset:-2px}
+
   .lst .lacv{font-size:11px;font-weight:650;color:var(--green-d);margin-top:3px}
   .lst.tclick{cursor:pointer;transition:background .1s} .lst.tclick:hover{background:var(--card-2);border-color:var(--ink-4)}
   .lst.tclick:focus-visible{outline:2px solid var(--violet);outline-offset:-2px}
@@ -335,13 +342,14 @@
   @media(max-width:900px){
     .menu{display:flex} .side{position:fixed;left:-208px;z-index:60;transition:left .18s} .side.open{left:0}
     .split{grid-template-columns:1fr} .spL{border-right:0;border-bottom:1px solid var(--line)}
-    .frow{grid-template-columns:120px 1fr 60px 72px;gap:9px}
+    .frow{grid-template-columns:112px 1fr 56px 80px 68px 12px;gap:8px}
     .pr{grid-template-columns:1fr 88px 120px;row-gap:5px} .pr .pb{grid-column:1/-1;order:9} .pr.hd .pbh{display:none}
     .chrow{grid-template-columns:1fr}
   }
   @media(max-width:680px){
     .body{padding:0 12px 60px} .topin{padding:0 12px} .hn .big{font-size:50px}
-    .frow{grid-template-columns:1fr 60px 72px;row-gap:4px} .frow .ftw{grid-column:1/-1;order:9}
+    .frow{grid-template-columns:1fr 60px 70px 12px;row-gap:4px}
+    .frow .acvcell{display:none} .frow .ftw{grid-column:1/-1;order:9}
     .prow{grid-template-columns:1fr 84px 62px;row-gap:3px} .prow .ptr2{grid-column:1/-1;order:9}
     .ttl span{display:none} .sdrcard{grid-template-columns:1fr 1fr}
   }
@@ -393,10 +401,8 @@
 
       <div class="blk"><div class="bh"><h2>Pipeline funnel</h2><span class="r"><label class="acvsel">ACV field <select id="acvF"></select></label><span class="pill">Responded → SAL → opportunity → won</span></span></div>
         <div class="card"><div class="fn">
-          <div class="frow"><div class="fhd">Stage · hover for definition</div><div class="fhd">Share of responded · dashed = previous stage</div><div class="fhd r">Count</div><div class="fhd r">Conversion</div></div>
+          <div class="frow"><div class="fhd">Stage · hover for definition</div><div class="fhd">Share of responded · dashed = previous stage</div><div class="fhd r">Count</div><div class="fhd r" id="fhdAcv">Amount · total</div><div class="fhd r">Conversion</div><div class="fhd"></div></div>
           <div id="fnl"></div></div>
-          <div class="fout" id="fout"></div>
-          <div class="flg"><span><i style="background:var(--violet)"></i>Marketing-qualified</span><span><i style="background:var(--blue)"></i>Direct outbound</span><span><i class="gh"></i>Previous stage</span><span style="color:var(--ink-4)">Conversion = this stage ÷ previous stage</span></div>
           <div class="drill" id="sdrill"><div class="drillh"><b id="sdrillN"></b><span>fit calls scored in the period, highest score first · what each became</span><button class="lnk" id="sdrillX">Hide</button></div>
             <div class="tw"><table class="d"><thead><tr><th>Account</th><th>Sector</th><th>AE</th><th class="r">Score</th><th>Outcome</th><th>Opportunity</th><th class="r">Waiting</th></tr></thead><tbody id="sdrillBody"></tbody></table></div>
             <div class="showmore"><button class="lnk" id="sdrillMore"></button></div></div>
@@ -406,6 +412,8 @@
           <div class="drill" id="odrill"><div class="drillh"><b id="odrillN"></b><span id="odrillLab"></span><button class="lnk" id="oCsv">Export CSV</button><button class="lnk" id="odrillX">Hide</button></div>
             <div class="tw"><table class="d"><thead><tr><th>Opportunity</th><th>Account</th><th>Type</th><th>Stage</th><th>Owner</th><th>Created</th><th>Close date</th><th class="r">ACV</th></tr></thead><tbody id="odrillBody"></tbody></table></div>
             <div class="showmore"><button class="lnk" id="odrillMore"></button></div></div>
+          <div class="fout" id="fout"></div>
+          <div class="flg"><span><i style="background:var(--violet)"></i>Marketing-qualified</span><span><i style="background:var(--blue)"></i>Direct outbound</span><span><i class="gh"></i>Previous stage</span><span style="color:var(--ink-4)">Conversion = this stage ÷ previous stage</span></div>
           <div class="lad" id="afterSal"></div><div class="note" id="fnNote"></div></div></div>
 
       <div class="blk"><div class="bh"><h2>Market breakdown</h2><span class="r"><span class="pill">Where the SALs come from</span></span></div>
@@ -504,7 +512,9 @@ const DEFS=[
  ['mqa','Marketing-qualified','The account crossed the marketing engagement threshold and was handed to sales.','Lead.MQA_Status__c IN (\'Pending\',\'Converted\')','C2, C3 · reports “most relevant marketing qualified leads” and “marketing engaged accounts from Jan 2026”.','sf'],
  ['worked','Worked by SDR or AE','Someone acted on the qualified account.','Task.WhoId = Lead.Id with DB_Activity_Type__c IN (\'Email\',\'Call\') OR Lead.Appointment_Status__c = \'Meeting Scheduled\'','C28 · “Yes.”','sf'],
  ['path','Marketing-qualified vs direct outbound','How the account entered: through marketing qualification, or worked directly by the SDR without it.','Lead.MQA_Status__c IS NOT NULL → marketing-qualified; IS NULL → direct outbound','C21 · “Blank lead sources are usually included from ZoomInfo for campaign purposes… the only ones that matter are the ones with the lead source.”','sf'],
- ['source','Lead source','Where the lead came from: outbound, web enquiry or form, event or partner, marketing campaign, referral.','Lead.LeadSource + Lead.Lead_Source_Detail__c, grouped into six buckets','C21 · as above; unsourced marketing-qualified leads shown under Marketing campaign.','sf'],
+ ['source','Lead Source','Where the lead came from, exactly as recorded in the standard Salesforce field. No grouping, relabelling or inference.','Lead.LeadSource, raw picklist values; (blank) is left blank.','C21 · “Blank lead sources are usually included from ZoomInfo for campaign purposes… the only ones that matter are the ones with the lead source.”','sf'],
+ ['detail','Lead Source Detail','The second-level field beneath Lead Source, naming the specific mechanism rather than the channel.','Lead.Lead_Source_Detail__c, raw picklist values.','Selva · Salesforce holds two fields, Lead Source and Lead Source Detail.','sf'],
+ ['acv','ACV · opportunity value','The value of the opportunity, totalled for each stage. The field is switchable in the Pipeline funnel header. Probable ACV is a probability-weighted forecast, not an ACV.','Opportunity.Amount (default, 36 of 43 New Logo) · Est_Actual_ACV_VAD__c (42 of 43) · ACV_Gross__c (8 of 43) · Probable_acv__c (= Amount x Probability). Shown in US dollars; the extract carries no CurrencyIsoCode.','Requested 17 Sep 2026. Which field is standard, and whether the org is multi-currency, still to be confirmed.','sf'],
  ['sector','Sector','Industry of the account, mapped to Servion’s target sectors.','Account.Industry where Account.Name ≈ Lead.Company; else Lead.Industry; mapped to nine target sectors','C19 · “Yes, pls map.”','sf'],
  ['platform','Incumbent platform','Which contact-centre platform the account runs today.','Not stored in Salesforce · Signal research','C22 · “Very few have current CC platform information. Will help if Signal can source it.”','sig'],
  ['people','AE and SDR','Who owns the record.','Lead.OwnerId and Opportunity.OwnerId → User.Name; User 005PQ00000AYoe9YAD (Trish Shostak, inactive) merged into 005PQ00000Fp1awYAB (Patricia Shostak)','C23 · “Only Patricia Shostak is an SDR. The rest are all AEs.”','sf'],
@@ -677,7 +687,7 @@ function drawPerf(){
     if(x.held&&hH>14)o+='<text x="'+cx+'" y="'+(base-4)+'" text-anchor="middle" font-size="10" font-weight="600" fill="'+(x.sal?'#fff':'var(--ink-2)')+'">'+x.held+'</text>';});
   svg.innerHTML=o;
   $('perfLg').innerHTML='<span><i style="background:var(--blue-p)"></i>Bar = fit calls held</span><span><i style="background:var(--green)"></i>Converted to SAL (7+)</span><span><i class="hatch"></i>Still maturing</span><span style="color:var(--ink-4)">% = SAL rate of held</span>'+(G==='week'?'<span style="color:var(--ink-4)">Last 13 weeks</span>':'');
-  $('perfNote').innerHTML='Fit calls held: <b>Meeting Status = Occurred</b>. SAL: <b>SAL Score 7 or above</b>, recorded through the fit-call survey. '+(F.by==='created'?'Leads are grouped by the month they were created and followed through the funnel, so recent months look lighter until they mature.':'Leads are grouped by the month they were last touched in Salesforce.');
+  $('perfNote').innerHTML='Fit calls held is <b>Meeting Status = Occurred</b>; a SAL is <b>SAL Score 7 or above</b>, from the fit-call survey.'+(F.by==='created'?' Recent months look lighter until the cohort matures.':'');
 }
 /* ---------- 2 coverage ---------- */
 function drawCov(){
@@ -689,7 +699,7 @@ function drawCov(){
     '<div class="obstats"><div><div class="k"><span class="def"'+dtip('scope')+'>Enriched</span>'+SIG()+'</div><div class="v">'+nf(s.scope.n)+'</div><div class="s">leads in scope this period</div></div>'+
     '<div><div class="k"><span class="def"'+dtip('reached')+'>Reached out</span></div><div class="v">'+nf(s.reached.n)+'</div><div class="s"><b>'+pc(s.reached.n,s.scope.n)+'</b> of enriched · campaign or SDR</div></div>'+
     '<div><div class="k"><span class="def"'+dtip('responded')+'>Responded</span>'+EST()+'</div><div class="v">'+nf(e.responded)+'</div><div class="s"><b>'+pc(e.responded,s.reached.n)+'</b> of reached · the funnel starts here</div></div></div>';
-  $('covNote').innerHTML='One population of <b>leads</b>, each step a subset of the last. Of the '+nf(s.reached.n)+' reached, <b>'+nf(s.in_campaign)+'</b> were in the marketing campaign and <b>'+nf(s.contacted.n)+'</b> were emailed or called by the SDR ('+nf(s.reached_both)+' both). <b>Reached</b> means we made contact; <b>Responded</b> means a human came back to us, whatever the answer.';
+  $('covNote').innerHTML='Each step is a subset of the one above: <b>reached</b> means we made contact, <b>responded</b> means a human came back — of '+nf(s.reached.n)+' reached, '+nf(s.in_campaign)+' through the campaign and '+nf(s.contacted.n)+' by the SDR.';
 }
 /* ---------- 3 funnel ---------- */
 function drawFunnel(){
@@ -702,14 +712,19 @@ function drawFunnel(){
   rows.forEach((r,i)=>{if(r.sep){o+='<div class="fsep">'+r.sep+'</div>';return;}const pi=r.prev!=null?r.prev:lastReal,prev=pi!=null?rows[pi]:null;const w=100*r.n/head,pw=prev?100*prev.n/head:0,mqw=r.n?100*r.mq/r.n:0;
     const tip=esc('<div class=th>'+r.lab+'</div>'+tipRows([['Marketing-qualified',r.mq],['Direct outbound',r.dr],['Total',r.n]])+(prev?'<div class=tb>'+pc(r.n,prev.n)+' of '+prev.lab.toLowerCase()+'</div>':''));
     const inner=r.cls?'<i class="'+r.cls+'" style="width:100%" data-tip="'+tip+'"></i>':'<i class="mq" style="width:'+mqw.toFixed(1)+'%" data-tip="'+tip+'"></i><i class="dr" style="width:'+(100-mqw).toFixed(1)+'%" data-tip="'+tip+'"></i>';
-    const btn=r.drill?' <button class="act fdrillb" id="sdrillGo">'+(SDRILL?'Hide calls':'View '+nf(a.scored.length)+' calls')+'</button>'
-      :r.saldrill?' <button class="act fdrillb" id="saldrillGo">'+(SALDRILL?'Hide SALs':'View '+nf(r.n)+' SALs')+'</button>'
-      :(r.ops&&r.ops.length?' <button class="act fdrillb odrillGo" data-lab="'+esc(r.lab)+'" data-tip="'+esc('<div class=th>'+r.lab+'</div>'+(r.ops.length<r.n?'Lists the '+r.ops.length+' with an opportunity record in Salesforce. The other '+(r.n-r.ops.length)+' converted without one and are shown separately below.':'Lists all '+r.ops.length+' opportunities.'))+'">View '+nf(r.ops.length)+(r.ops.length<r.n?' of '+nf(r.n):'')+'</button>':'');
-    const rowAcv=r.ops&&r.ops.length?acvSum(r.ops):0;
-    o+='<div class="frow"><div><div class="fst"><span class="def"'+dtip(r.k)+'>'+r.lab+'</span>'+(r.est?EST():'')+btn+'</div><span class="fwho">'+r.who+'</span></div>'+
-      '<div class="ftw">'+(prev&&!r.cls?'<div class="fghost" style="width:'+Math.max(pw,1.6).toFixed(2)+'%"></div>':'')+'<div class="fbar" style="width:'+Math.max(w,1.6).toFixed(2)+'%">'+inner+'</div></div><div class="num">'+nf(r.n)+(rowAcv?'<small class="acvn" data-tip="'+esc('<div class=th>'+r.lab+'</div>'+tipRows([[acvName(),moneyFull(rowAcv)],['Average per opportunity',moneyFull(Math.round(rowAcv/r.ops.length))]]))+'">'+money(rowAcv)+'</small>':'')+'</div>'+
-      '<div class="cv'+(prev?'':' dim')+'">'+(prev?pc(r.n,prev.n)+'<small>of '+prev.lab.toLowerCase()+'</small>':'head')+'</div></div>';if(!r.cls)lastReal=i;});
+    const act=r.drill?'scored':r.saldrill?'sal':(r.ops&&r.ops.length?'opp':'');
+    const on=act==='scored'?SDRILL:act==='sal'?SALDRILL:act==='opp'?!!(ODRILL&&ODRILL.key===r.lab):false;
+    const nOps=r.ops?r.ops.length:0,rowAcv=nOps?acvSum(r.ops):0;
+    const atip=(act==='opp'&&nOps<r.n)?esc('<div class=th>'+r.lab+'</div>'+nOps+' of these '+r.n+' have an opportunity record in Salesforce; the other '+(r.n-nOps)+' converted without one and are listed separately below.'):'';
+    o+='<div class="frow'+(act?' click'+(on?' on':''):'')+'"'+(act?' role="button" tabindex="0" data-act="'+act+'" data-lab="'+esc(r.lab)+'"'+(atip?' data-tip="'+atip+'"':''):'')+'>'+
+      '<div><div class="fst"><span class="def"'+dtip(r.k)+'>'+r.lab+'</span>'+(r.est?EST():'')+'</div><span class="fwho">'+r.who+'</span></div>'+
+      '<div class="ftw">'+(prev&&!r.cls?'<div class="fghost" style="width:'+Math.max(pw,1.6).toFixed(2)+'%"></div>':'')+'<div class="fbar" style="width:'+Math.max(w,1.6).toFixed(2)+'%">'+inner+'</div></div>'+
+      '<div class="num">'+nf(r.n)+'</div>'+
+      '<div class="acvcell'+(rowAcv?'':' z')+'"'+(rowAcv?' data-tip="'+esc('<div class=th>'+r.lab+'</div>'+tipRows([[acvName()+' total',moneyFull(rowAcv)],['Average per opportunity',moneyFull(Math.round(rowAcv/nOps))],['Opportunities',nOps]]))+'"':'')+'>'+(rowAcv?money(rowAcv):'')+'</div>'+
+      '<div class="cv'+(prev?'':' dim')+'">'+(prev?pc(r.n,prev.n)+'<small>of '+prev.lab.toLowerCase()+'</small>':'head')+'</div>'+
+      '<div class="chev">'+(act?(on?'&#9650;':'&#8250;'):'')+'</div></div>';if(!r.cls)lastReal=i;});
   $('fnl').innerHTML=o;
+  $('fhdAcv').textContent=acvName()+' · total';
   $('fout').innerHTML='<div class="fo"><div class="k">SALs</div><div class="v">'+nf(s.sal.n)+'</div><div class="s">'+pc(s.sal.n,s.held.n)+' of fit calls held</div></div><div class="fo"><div class="k">Scored below 7 · nurture</div><div class="v">'+nf(s.nurture.n)+'</div><div class="s">'+pc(s.nurture.n,s.scored.n)+' of scored</div></div>'+
     '<div class="fo'+(s.held_unscored.n?' warn':'')+'"><div class="k">Held, not yet scored</div><div class="v">'+nf(s.held_unscored.n)+'</div><div class="s">blocks a SAL decision</div></div><div class="fo"><div class="k">Booked, not yet held</div><div class="v">'+nf(Math.max(0,s.booked.n-s.held.n))+'</div><div class="s">upcoming or pending</div></div>'+
     '<div class="fo"><div class="k">Marketing-qualified path</div><div class="v">'+pc(s.sal.mq,s.sal.n)+'</div><div class="s">of SALs · '+pc(s.booked.mq,s.booked.n)+' of bookings</div></div>'+
@@ -730,18 +745,18 @@ function drawFunnel(){
   $('afterSal').innerHTML='<div class="ladh"><b>For reference · '+(F.opptype==='nl'?'all New Logo opportunities':'all opportunities')+' created in period</b><span>'+nf(o2.shown)+(F.opptype==='nl'?' of '+nf(o2.created_all)+' opportunities':'')+', by current stage · includes those that did not come through the lead funnel</span></div>'+
     '<div class="ladrow">'+o2.ladder.map(x=>tile(x.stage,x.n,x.stage==='Closed Won'?'won':'',x.acv)).join('')+tile('Closed Lost',o2.other['Closed Lost'],'lost',o2.otherRows['Closed Lost'].reduce((t,o)=>t+acvOf(o),0))+'</div>'+
     '<div class="ladft">'+(F.opptype==='nl'?'<span>Renewals and add-ons ('+nf(o2.created_all-o2.nl_created)+') are excluded: they do not pass through the lead funnel</span>':'<span>All opportunity types shown, including renewals and add-ons</span>')+'<span>Closed in period, any creation date: <b style="color:var(--green-d)">'+nf(o2.closed_in_period.won)+' won</b> · <b style="color:var(--rose-d)">'+nf(o2.closed_in_period.lost)+' lost</b></span><span>Total '+acvName()+': <b>'+money(o2.acvTotal)+'</b></span></div>';
-  $('fnNote').innerHTML='Click any <b>View</b> button, or a tile above, to list the actual records; both lists export to CSV. <b>'+acvName()+'</b> is read from Salesforce and shown in US dollars, and the field can be changed in the block header. Every row is a subset of the one above it, down to Closed Won: an opportunity counts at a stage if it ever reached it. Bars split by entry path, <b>marketing-qualified</b> (violet) or <b>direct outbound</b> (blue). Closed Lost and converted-without-record are exits, so they sit below the chain. Hover any stage name for its definition.'+(s.held_unscored.n?' <b>'+nf(s.held_unscored.n)+' held calls await a score.</b>':'');
+  $('fnNote').innerHTML='Every row is a subset of the one above, down to Closed Won: an opportunity counts at a stage if it ever reached it.'+(s.held_unscored.n?' <b>'+nf(s.held_unscored.n)+' held calls await a score.</b>':'');
 }
 /* ---------- 4 market ---------- */
 const PLAT=[['Genesys',.28],['Avaya',.24],['Cisco',.18],['NICE',.12],['Five9',.08],['Not yet researched',.10]];
 function apportion(total,shares){const raw=shares.map(s=>total*s),fl=raw.map(Math.floor);let rem=total-fl.reduce((a,b)=>a+b,0);raw.map((r,i)=>[r-fl[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,rem).forEach(x=>fl[x[1]]++);return fl;}
 function drawMarket(){
   const a=A();let rows,label,note;
-  if(MT==='source'){rows=a.rawsrc;label='Lead Source';note='Raw <b>Lead Source</b> picklist values exactly as stored in Salesforce, with no grouping, relabelling or inference. A group-by on this field in Salesforce, under the same filters, returns these figures. <b>(blank)</b> is left blank rather than being assigned a source.';}
-  else if(MT==='detail'){rows=a.rawdet;label='Lead Source Detail';note='Raw <b>Lead Source Detail</b> picklist values exactly as stored in Salesforce. Servion has noted that partner-sourced and AE-sourced leads are often not filled in, which is why blank dominates.';}
-  else if(MT==='sector'){rows=a.sector;label='Sector';note='Sector from the matching Salesforce account where one exists, otherwise from the lead record. <b>Not classified</b> rows are leads with no industry on either; filling this gap is part of Signal enrichment.';}
-  else if(MT==='country'){rows=a.country;label='Country';note='Lead country as recorded in Salesforce. Use the Country filter above to restrict the whole page.';}
-  else{const t=a.stages;const L=apportion(t.leads.n,PLAT.map(p=>p[1])),B=apportion(t.booked.n,PLAT.map(p=>p[1])),H=apportion(t.held.n,PLAT.map(p=>p[1])),S=apportion(t.sal.n,PLAT.map(p=>p[1]));rows=PLAT.map((p,i)=>({name:p[0],leads:L[i],booked:B[i],held:H[i],sal:S[i]}));label='Incumbent platform';note='<b>Signal research.</b> Servion confirmed very few accounts carry a current platform in Salesforce, so this cut comes from Signal enrichment. Illustrative until research is complete.';}
+  if(MT==='source'){rows=a.rawsrc;label='Lead Source';note='Raw <b>Lead Source</b> values exactly as Salesforce stores them, with no grouping or inference.';}
+  else if(MT==='detail'){rows=a.rawdet;label='Lead Source Detail';note='Raw <b>Lead Source Detail</b>, the second-level field beneath Lead Source.';}
+  else if(MT==='sector'){rows=a.sector;label='Sector';note='Sector from the matching Salesforce account, otherwise from the lead record.';}
+  else if(MT==='country'){rows=a.country;label='Country';note='Lead country as recorded in Salesforce.';}
+  else{const t=a.stages;const L=apportion(t.leads.n,PLAT.map(p=>p[1])),B=apportion(t.booked.n,PLAT.map(p=>p[1])),H=apportion(t.held.n,PLAT.map(p=>p[1])),S=apportion(t.sal.n,PLAT.map(p=>p[1]));rows=PLAT.map((p,i)=>({name:p[0],leads:L[i],booked:B[i],held:H[i],sal:S[i]}));label='Incumbent platform';note='<b>Signal research</b> — Servion confirmed very few accounts carry a platform in Salesforce.';}
   $('mHead').innerHTML='<tr><th>'+label+'</th><th class="r">Leads</th><th class="r">Booked</th><th class="r">Held</th><th class="r">SAL</th><th class="r">SAL rate of held</th></tr>';
   const T={leads:0,booked:0,held:0,sal:0};
   $('mBody').innerHTML=rows.filter(r=>r.leads||r.held).map(r=>{['leads','booked','held','sal'].forEach(k=>T[k]+=r[k]);const mute=/Unattributed|Not classified|Not yet|Unknown|\(blank\)/.test(r.name);
@@ -755,7 +770,7 @@ function drawPeople(){
   const mx=Math.max(1,...aes.map(p=>p.held));
   $('aes').innerHTML='<div class="pr hd"><div>AE</div><div class="pbh">Fit calls held · SALs</div><div class="rr">SAL / held</div><div class="rr">'+(F.opptype==='nl'?'New logo':'Opps')+' · won · lost · '+acvName()+'</div></div>'+
     aes.map(p=>'<div class="pr"><div class="pn">'+esc(p.name)+'</div><div class="pb"><i class="h" style="width:'+(100*p.held/mx)+'%" data-tip="'+esc('<div class=th>'+p.name+'</div>'+tipRows([['Meetings booked',p.booked],['Fit calls held',p.held],['Scored',p.scored],['SALs',p.sal],['Opportunities created',p.nl],['Won',p.won],['Lost',p.lost]]))+'"></i><i class="s" style="width:'+(100*p.sal/mx)+'%"></i></div><div class="pv"><b>'+p.sal+'</b> / '+p.held+'</div><div class="opx"><b>'+p.nl+'</b><span class="'+(p.won?'w':'z')+'">'+p.won+' won</span><span class="'+(p.lost?'l':'z')+'">'+p.lost+' lost</span><span class="acvp">'+money(p.acv||0)+'</span></div></div>').join('')||'<div class="qempty">No AE activity under these filters.</div>';
-  $('pNote').innerHTML='Attribution by <b>record owner</b> in Salesforce. Fit calls on leads owned by the SDR are counted under her, because the AE who held them is not recorded on the lead. Opportunities are attributed to the opportunity owner. Servion confirmed Patricia Shostak is the only SDR; everyone else is an AE. Booked can read below held where the appointment status was updated after the meeting.';
+  $('pNote').innerHTML='Attributed by <b>record owner</b>; Servion confirmed Patricia Shostak is the only SDR.';
 }
 /* ---------- 6 needs action ---------- */
 const QDEF=[{k:'noscore',lab:'Fit call held, not scored',at:'AE has not filled the survey',cls:'r'},{k:'nothold',lab:'Meeting scheduled, not yet held',at:'Booked in Salesforce, waiting to happen',cls:'a'},{k:'returned',lab:'Sent back to the SDR',at:'Status: Return to SDR',cls:'a'},{k:'noanswer',lab:'Replied, not answered',at:'Human reply, no follow-up yet',cls:'a',est:true},{k:'lowscore',lab:'Scored below 7',at:'In nurture',cls:''},{k:'engaged',lab:'Engaged accounts',at:'Marketing-qualified, no meeting yet',cls:''}];
@@ -769,7 +784,7 @@ function drawQ(){
     $('qBody').innerHTML=show.length?show.map(r=>'<tr><td><a class="colink" href="account.html" target="_blank">'+esc(r.co)+'</a><div class="rn"><span>'+esc(r.src)+'</span></div></td><td>'+esc(r.sec)+'</td><td>'+esc(r.own)+'</td><td>'+stTag(r)+'</td><td class="r"><span class="wt '+(r.days>=14?'r':r.days>=7?'a':'')+'">'+(r.days==null?'—':r.days+'d')+'</span></td><td class="r"><a class="act" href="account.html" target="_blank">Open</a></td></tr>').join(''):'<tr><td colspan="6" style="padding:16px;color:var(--ink-3)">Nothing waiting.</td></tr>';
     if(rows.length>cap){mb.innerHTML=QALL?'Show fewer <span class="arw">&#9650;</span>':'Show '+(rows.length-cap)+' more <span class="arw">&#9660;</span>';mb.style.display='';}else{mb.innerHTML='';mb.style.display='none';}
     $('qMoreNote').textContent=Qq.n>rows.length?nf(Qq.n-rows.length)+' further accounts in this group beyond the '+rows.length+' shown':'';}
-  $('qNote').innerHTML='<b>Waiting</b> is days since the record was last modified in Salesforce, the proxy Servion chose until stage history is extracted in full. <b>Sent back to the SDR</b> is the Salesforce status Return to SDR. <b>Engaged accounts</b> are marketing-qualified with status Pending and no meeting booked. This is a today view over all 2026 leads: it follows the country, sector, source, path and owner filters but not the period.';
+  $('qNote').innerHTML='A today view over all 2026 leads, following every filter except the period; <b>waiting</b> is days since the record was last modified.';
 }
 /* ---------- 7 marketing-qualified ---------- */
 function drawMQ(){
@@ -786,14 +801,14 @@ function drawMQ(){
     const tg=s=>/Closed Won/.test(s)?'ok':/Lost|no record/.test(s)?'bad':s==='SAL'||/Opportunity/.test(s)?'ok':/held|booked/.test(s)?'warn':'';
     $('drillBody').innerHTML=show.length?show.map(r=>'<tr><td><a class="colink" href="account.html" target="_blank">'+esc(r.co)+'</a><div class="rn"><span>'+esc(r.src)+'</span></div></td><td>'+esc(r.sec)+'</td><td><span class="tag '+tg(r.stage)+'">'+esc(r.stage)+'</span></td><td>'+esc(r.own)+'</td><td class="r">'+nf(r.mk)+'</td><td class="r">'+(r.days==null?'—':r.days+'d')+'</td></tr>').join(''):'<tr><td colspan="6" style="padding:16px;color:var(--ink-3)">No accounts at this stage.</td></tr>';
     $('drillMore').innerHTML=L.length>cap?(DALL?'Show fewer <span class="arw">&#9650;</span>':'Show '+(L.length-cap)+' more <span class="arw">&#9660;</span>'):'';$('drillMore').style.display=L.length>cap?'':'none';}
-  $('mqNote').innerHTML='Replaces the Hot Leads list. <b>Marketing-qualified</b> is the MQA status set in Salesforce once an account crosses the engagement threshold. From <b>Opportunity created</b> onward the rows follow the converted accounts through each Salesforce stage they reached; Closed Won is the end of the chain and exits are listed beneath. Opportunity creation can happen without a SAL score, so that step is not a strict subset of SAL.';
+  $('mqNote').innerHTML='Replaces the Hot Leads list; from <b>Opportunity created</b> onward the rows follow the same accounts through each Salesforce stage they reached.';
 }
 /* ---------- 8 channels ---------- */
 function drawCh(){
   const a=A(),e=a.est,s=a.stages;
   $('chn').innerHTML='<div class="chbox"><div class="k"><span class="def"'+dtip('reply')+'>Email · response rate</span>'+EST()+'</div><div class="v">'+e.reply_rate+'%</div><div class="s"><b>'+nf(e.replied)+'</b> human replies from <b>'+nf(e.emailed)+'</b> people emailed (real, Salesforce). Out-of-office, bounces and auto-replies excluded.</div></div>'+
     '<div class="chbox"><div class="k"><span class="def"'+dtip('connect')+'>Calls · connection rate</span>'+EST()+'</div><div class="v">'+e.connect_rate+'%</div><div class="s"><b>'+nf(e.connected)+'</b> conversations with <b>'+nf(e.called)+'</b> people called (real, Salesforce). Measured per person, not per dial.</div></div>';
-  $('chreal').innerHTML='<b>Real from Salesforce:</b> '+nf(s.sf_emailed)+' people emailed · '+nf(s.sf_called)+' people called · '+nf(s.sf_touched)+' contacted by either. Only the share who answered is estimated, because outcomes are not recorded in Salesforce. Reply categories will be classified by Signal from the Nooks reply text.';
+  $('chreal').innerHTML='<b>Real from Salesforce:</b> '+nf(s.sf_emailed)+' people emailed · '+nf(s.sf_called)+' called · '+nf(s.sf_touched)+' contacted by either.';
   const mix=e.reply_mix,keys=Object.keys(mix),cols=['var(--green)','var(--blue)','var(--amber)','var(--ink-4)'],tot=Math.max(1,keys.reduce((t,k)=>t+mix[k],0));$('rqN').textContent=nf(e.replied);
   $('rqbar').innerHTML=keys.map((k,i)=>'<i style="width:'+(100*mix[k]/tot)+'%;background:'+cols[i]+'" data-tip="'+esc('<div class=th>'+k+'</div>'+tipRows([['Replies',mix[k]],['Share',pc(mix[k],tot)]]))+'">'+(mix[k]/tot>0.12?pc(mix[k],tot):'')+'</i>').join('');
   $('rqrows').innerHTML=keys.map((k,i)=>'<div class="rqr"><span class="sw" style="background:'+cols[i]+'"></span><span>'+k+'</span><span class="n">'+nf(mix[k])+'</span><span class="p">'+pc(mix[k],tot)+'</span></div>').join('')+'<div class="rqr" style="border-top:1px solid var(--line)"><span class="sw" style="background:var(--rose)"></span><span>Opted out</span><span class="n">'+nf(e.optout)+'</span><span class="p">'+pc(e.optout,e.emailed,1)+'</span></div>';
@@ -801,14 +816,14 @@ function drawCh(){
   svg.innerHTML=wa.map((x,i)=>{const cx=padL+gw*i+gw/2,x0=cx-bw/2,eh=x.email*sc,chh=x.call*sc,lab=new Date(x.w).toLocaleString('en-US',{day:'2-digit',month:'short'});const tip=esc('<div class=th>Week of '+lab+'</div>'+tipRows([['Emails logged',x.email],['Calls logged',x.call]]));
     return '<rect x="'+x0+'" y="'+(base-eh-chh)+'" width="'+bw+'" height="'+eh+'" rx="2" fill="var(--blue)" data-tip="'+tip+'"/><rect x="'+x0+'" y="'+(base-chh)+'" width="'+bw+'" height="'+chh+'" rx="2" fill="var(--green)" data-tip="'+tip+'"/>'+((x.email+x.call)&&n<=30?'<text x="'+cx+'" y="'+(base-eh-chh-5)+'" text-anchor="middle" font-size="10" font-weight="600" fill="var(--ink-2)">'+(x.email+x.call)+'</text>':'')+((n<=14||i%Math.ceil(n/13)===0)?'<text x="'+cx+'" y="'+(H-8)+'" text-anchor="middle" font-size="10" fill="var(--ink-3)">'+lab+'</text>':'');}).join('');
   const k=a.act_kpi;$('actKpi').innerHTML=[['Emails logged',nf(k.emails),'all records · Salesforce'],['Calls logged',nf(k.calls),'all records · Salesforce'],['Leads emailed',nf(k.leads_emailed),pc(k.leads_emailed,s.leads.n)+' of leads in period'],['Leads called',nf(k.leads_called),pc(k.leads_called,s.leads.n)+' of leads in period'],['Per week',nf(Math.round((k.emails+k.calls)/Math.max(1,k.weeks))),'activities · '+k.weeks+' weeks']].map(x=>'<div class="kp"><div class="a">'+x[0]+'</div><div class="b">'+x[1]+'</div><div class="c">'+x[2]+'</div></div>').join('');
-  $('chNote').innerHTML='<b>Response rate</b> and <b>connection rate</b> are kept apart: one is email, the other is voice. Servion confirmed both come from Nooks; the figures shown are estimates on the real Salesforce base until that connection is live. The weekly chart is real Salesforce activity only; the consolidated view across Phave, Nooks and Salesforce is built once those connections exist.';
+  $('chNote').innerHTML='Response and connection rates come from <b>Nooks</b> and are estimated on the real Salesforce base until that connection is live.';
 }
 /* ---------- 9 score ---------- */
 function drawScore(){
   const a=A(),rows=ST==='eng'?a.engagement:a.signal;$('sCol').innerHTML=ST==='eng'?'Engagement score · Salesforce':'Signal lead score '+SIG();
   $('sBody').innerHTML=rows.map(r=>'<tr><td class="rn">'+r.bucket+'</td><td class="r">'+nf(r.leads)+'</td><td class="r">'+nf(r.held)+'</td><td class="r"><b>'+nf(r.sal)+'</b></td><td class="r"><span class="cell"><span class="t"><i style="width:'+(r.held?100*r.sal/r.held:0)+'%"></i></span><b>'+(r.held?pc(r.sal,r.held):'—')+'</b></span></td></tr>').join('');
   const band=a.engagement.find(x=>x.bucket==='10-49')||{held:0},H=a.stages.held.n;
-  $('sNote').innerHTML=ST==='eng'?'The marketing engagement score already in Salesforce (<b>SF Mkto Score</b>). <b>'+nf(band.held)+' of '+nf(H)+'</b> fit calls held sit in the 10–49 band, so the score is already doing real work as a gate. Servion has said the Phave engagement score is not yet synced; this field is the closest thing in the CRM today.':'<b>Signal-generated.</b> The lead score Signal assigns before any contact, bucketed. Shown to test whether higher-scored leads convert better; illustrative until Servion returns the agreed scoring approach.';
+  $('sNote').innerHTML=ST==='eng'?'The engagement score already in Salesforce (<b>SF Mkto Score</b>) — <b>'+nf(band.held)+' of '+nf(H)+'</b> fit calls held sit in the 10–49 band; the Phave score is not yet synced.':'<b>Signal-generated</b> and illustrative until Servion returns the agreed scoring approach.';
 }
 /* ---------- data + defs ---------- */
 function drawData(){
@@ -816,7 +831,7 @@ function drawData(){
   $('dataKpi').innerHTML=[['Lead records in period',nf(s.leads.n),F.country?'selected countries':'all countries'],['In scope · enriched',nf(s.scope.n),pc(s.scope.n,s.leads.n)+' of records'],['Opportunities created in period',nf(a.opps.created_all),'all types'],['Of which New Logo',nf(a.opps.nl_created),F.opptype==='nl'?'the only type in the funnel':'shown with all types'],['Accounts in Salesforce',nf(a.mqf.universe),F.country?'selected countries':'all countries']].map(x=>'<div class="kp"><div class="a">'+x[0]+'</div><div class="b">'+x[1]+'</div><div class="c">'+x[2]+'</div></div>').join('');
   const fl=[['Period','Lead '+(F.by==='created'?'CreatedDate':'LastModifiedDate')+' from '+PER[F.w].rng+'.'+(F.by==='created'?' Leads are followed through every later stage, whenever it happened.':' Any creation date; closest to a Salesforce report.')],
     ['Country',F.country?[...F.country].map(i=>COUNTRIES[i]).join(', '):'All countries'],['Sector',F.sector?[...F.sector].map(i=>SECTORS[i]).join(', '):'All sectors'],['Lead source',F.source?[...F.source].map(i=>SOURCES[i]).join(', '):'All sources'],['Entry path',F.path?(F.path==='mq'?'Marketing-qualified only':'Direct outbound only'):'Both paths'],['Owner',F.owner?[...F.owner].map(i=>OWNERS[i]).join(', '):'All owners'],
-    ['Opportunities',(F.opptype==='nl'?'New Logo only, ':'All types, ')+'created in period, same country, sector and owner filters.'],['Needs Action','All 2026 leads, same filters except period — a today view.'],['Activity chart','All Salesforce Task records by ActivityDate in period, any lead or contact, not affected by other filters.'],['Estimates','Responded, response rate, connection rate, reply mix: not in Salesforce, marked est.'],['Signal','Enriched scope, lead score, incumbent platform: produced by Signal, marked Signal.']];
+    ['Opportunities',(F.opptype==='nl'?'New Logo only, ':'All types, ')+'created in period, same country, sector and owner filters.'],['ACV',acvName()+', shown in US dollars. The extract carries no currency field, so multi-currency is unconfirmed.'],['Needs Action','All 2026 leads, same filters except period — a today view.'],['Activity chart','All Salesforce Task records by ActivityDate in period, any lead or contact, not affected by other filters.'],['Estimates','Responded, response rate, connection rate, reply mix: not in Salesforce, marked est.'],['Signal','Enriched scope, lead score, incumbent platform: produced by Signal, marked Signal.']];
   $('dataFilters').innerHTML=fl.map(x=>'<div class="frow2"><b>'+x[0]+'</b><span>'+esc(x[1])+'</span></div>').join('');
   $('dataObjs').innerHTML=X.objects.map(o=>'<tr'+(o[1]<o[2]?' class="mute"':'')+'><td class="mono">'+o[0]+'</td><td class="r">'+nf(o[1])+'</td><td class="r">'+nf(o[2])+'</td><td>'+(o[1]<o[2]?'<span class="tag bad">truncated</span>':'')+'</td></tr>').join('');
   $('reconL').innerHTML=R.leads.map((x,i)=>'<tr'+(i===0?' style="font-weight:650"':'')+'><td>'+esc(x[0])+'</td><td class="r">'+nf(x[1].booked)+'</td><td class="r">'+nf(x[1].held)+'</td><td class="r">'+nf(x[1].sal)+'</td><td class="r">'+nf(x[1].mqa)+'</td></tr>').join('');
@@ -843,17 +858,17 @@ $('mTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b
 $('sTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ST=b.dataset.k;[...$('sTabs').children].forEach(x=>x.setAttribute('aria-selected',x===b));drawScore();});
 $('qTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;QT=b.dataset.k;QALL=false;drawQ();});
 $('qMore').addEventListener('click',()=>{QALL=!QALL;drawQ();});
-document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('mqgo')){e.preventDefault();e.target.click();}});
-document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('.mqgo');if(g&&!e.target.closest('[data-tip].def')){const r=+g.dataset.rank,l=g.dataset.lab;if(DRILL&&DLAB===l){DRILL=false;}else{DRILL=true;DRANK=r;DLAB=l;DALL=false;}drawMQ();}if(e.target.id==='sdrillGo'){SDRILL=!SDRILL;drawFunnel();}
-  if(e.target.id==='saldrillGo'){SALDRILL=!SALDRILL;SALDALL=false;ODRILL=null;drawFunnel();}
-  const od=e.target.closest&&e.target.closest('.odrillGo');
-  if(od){const lb=od.dataset.lab,aa=A(),cc=aa.stages.after_sal;const key=lb==='Opportunity created'?'opp':lb==='Closed Lost'?'lost':lb;
-    const ops=(cc[key]&&cc[key].ops)||[];
-    if(ODRILL&&ODRILL.key===lb){ODRILL=null;}else{ODRILL={key:lb,lab:lb+' · opportunities from leads that became SALs in this period',rows:ops.map(i=>D.opps[i])};OALL=false;SALDRILL=false;}
-    drawFunnel();}
+document.addEventListener('keydown',e=>{const t=e.target;if((e.key==='Enter'||e.key===' ')&&t.classList&&(t.classList.contains('mqgo')||t.classList.contains('frow')||t.classList.contains('lst'))){e.preventDefault();t.click();}});
+document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('.mqgo');if(g&&!e.target.closest('[data-tip].def')){const r=+g.dataset.rank,l=g.dataset.lab;if(DRILL&&DLAB===l){DRILL=false;}else{DRILL=true;DRANK=r;DLAB=l;DALL=false;}drawMQ();}const fr=e.target.closest&&e.target.closest('.frow.click');
+  if(fr&&!e.target.closest('[data-tip].def')){const act=fr.dataset.act,lb=fr.dataset.lab;
+    if(act==='scored'){SDRILL=!SDRILL;SALDRILL=false;ODRILL=null;}
+    else if(act==='sal'){SALDRILL=!SALDRILL;SALDALL=false;SDRILL=false;ODRILL=null;}
+    else if(act==='opp'){const cc=A().stages.after_sal,key=lb==='Opportunity created'?'opp':lb==='Closed Lost'?'lost':lb;const ops=(cc[key]&&cc[key].ops)||[];
+      if(ODRILL&&ODRILL.key===lb){ODRILL=null;}else{ODRILL={key:lb,lab:lb+' · opportunities from leads that became SALs in this period',rows:ops.map(i=>D.opps[i])};OALL=false;SDRILL=false;SALDRILL=false;}}
+    drawFunnel();return;}
   const tl=e.target.closest&&e.target.closest('.lst.tclick');
-  if(tl){const k=tl.dataset.tile,aa=A(),o2=aa.opps;const f=o2.ladder.find(x=>x.stage===k);const rws=f?f.rows:(o2.otherRows[k]||[]);
-    if(ODRILL&&ODRILL.key==='tile:'+k){ODRILL=null;}else{ODRILL={key:'tile:'+k,lab:'every opportunity created in the period now at '+k+', whether or not it came through the lead funnel',rows:rws};OALL=false;SALDRILL=false;}
+  if(tl){const k=tl.dataset.tile,o2=A().opps;const f=o2.ladder.find(x=>x.stage===k);const rws=f?f.rows:(o2.otherRows[k]||[]);
+    if(ODRILL&&ODRILL.key==='tile:'+k){ODRILL=null;}else{ODRILL={key:'tile:'+k,lab:'every opportunity created in the period now at '+k+', whether or not it came through the lead funnel',rows:rws};OALL=false;SDRILL=false;SALDRILL=false;}
     drawFunnel();}});
 $('drillX').addEventListener('click',()=>{DRILL=false;drawMQ();});$('drillMore').addEventListener('click',()=>{DALL=!DALL;drawMQ();});
 $('sdrillX').addEventListener('click',()=>{SDRILL=false;drawFunnel();});$('sdrillMore').addEventListener('click',()=>{SALL=!SALL;drawFunnel();});
