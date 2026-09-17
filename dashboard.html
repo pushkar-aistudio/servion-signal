@@ -151,6 +151,13 @@
   .prow.click{cursor:pointer;border-radius:8px;margin:0 -10px;padding:8px 10px;transition:background .1s}
   .prow.click:hover{background:var(--card-2)} .prow.click.on{background:var(--violet-l)}
   .prow.click .chev{display:inline-block;margin-left:8px;color:var(--ink-4);font-size:13px;width:10px}
+  #mqf .prow{grid-template-columns:170px 1fr 84px 92px 74px}
+  #mqf .macv{text-align:right;font-size:13px;font-weight:660;color:var(--green-d)}
+  #mqf .macv.z{color:var(--ink-4);font-weight:400}
+  .mqhd{display:grid;grid-template-columns:170px 1fr 84px 92px 74px;gap:14px;padding:4px 0 6px;border-bottom:1px solid var(--line);margin-bottom:4px}
+  .mqhd span{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680;text-align:right}
+  .mqhd span:nth-child(-n+2){text-align:left}
+  @media(max-width:680px){#mqf .prow{grid-template-columns:1fr 84px 74px} #mqf .macv{display:none} .mqhd{display:none}}
   .prow.click:hover .chev,.prow.click.on .chev{color:var(--violet-d)}
   .prow.click:focus-visible{outline:2px solid var(--violet);outline-offset:-2px}
   .pc2{text-align:right;font-size:12.5px;color:var(--ink-2);font-weight:600}
@@ -416,7 +423,7 @@
           <div class="flg"><span><i style="background:var(--violet)"></i>Marketing-qualified</span><span><i style="background:var(--blue)"></i>Direct outbound</span><span><i class="gh"></i>Previous stage</span><span style="color:var(--ink-4)">Conversion = this stage ÷ previous stage</span></div>
           <div class="lad" id="afterSal"></div><div class="note" id="fnNote"></div></div></div>
 
-      <div class="blk"><div class="bh"><h2>Market breakdown</h2><span class="r"><span class="pill">Where the SALs come from</span></span></div>
+      <div class="blk"><div class="bh"><h2>Market breakdown</h2><span class="r"><button class="lnk" id="mktCsv">Export CSV</button><span class="pill">Where the SALs come from</span></span></div>
         <div class="card"><div class="tabs" id="mTabs"><button data-k="source" aria-selected="true">Lead Source</button><button data-k="detail" aria-selected="false">Lead Source Detail</button><button data-k="sector" aria-selected="false">Sector</button><button data-k="country" aria-selected="false">Country</button><button data-k="platform" aria-selected="false">Incumbent platform <sup class="prov sig">Signal</sup></button></div>
           <div class="tw"><table class="d"><thead id="mHead"></thead><tbody id="mBody"></tbody><tfoot id="mFoot"></tfoot></table></div><div class="note" id="mNote"></div></div></div>
 
@@ -430,7 +437,7 @@
 
       <div class="blk"><div class="bh"><h2>Marketing-qualified accounts</h2><span class="r"><span class="pill" id="mqPill"></span></span></div>
         <div class="card"><div class="prewrap" id="mqf"></div>
-          <div class="drill" id="drill"><div class="drillh"><b id="drillN"></b><span id="drillLab"></span><button class="lnk" id="drillX">Hide</button></div>
+          <div class="drill" id="drill"><div class="drillh"><b id="drillN"></b><span id="drillLab"></span><button class="lnk" id="mqCsv">Export CSV</button><button class="lnk" id="drillX">Hide</button></div>
             <div class="tw"><table class="d"><thead><tr><th>Account</th><th>Sector</th><th>Furthest stage</th><th>Owner</th><th class="r">Engagement score</th><th class="r">Waiting</th></tr></thead><tbody id="drillBody"></tbody></table></div>
             <div class="showmore"><button class="lnk" id="drillMore"></button></div></div>
           <div class="note" id="mqNote"></div></div></div>
@@ -687,7 +694,7 @@ function drawPerf(){
     if(x.held&&hH>14)o+='<text x="'+cx+'" y="'+(base-4)+'" text-anchor="middle" font-size="10" font-weight="600" fill="'+(x.sal?'#fff':'var(--ink-2)')+'">'+x.held+'</text>';});
   svg.innerHTML=o;
   $('perfLg').innerHTML='<span><i style="background:var(--blue-p)"></i>Bar = fit calls held</span><span><i style="background:var(--green)"></i>Converted to SAL (7+)</span><span><i class="hatch"></i>Still maturing</span><span style="color:var(--ink-4)">% = SAL rate of held</span>'+(G==='week'?'<span style="color:var(--ink-4)">Last 13 weeks</span>':'');
-  $('perfNote').innerHTML='Fit calls held is <b>Meeting Status = Occurred</b>; a SAL is <b>SAL Score 7 or above</b>, from the fit-call survey.'+(F.by==='created'?' Recent months look lighter until the cohort matures.':'');
+  $('perfNote').innerHTML=(F.by==='created'?'Leads are followed from the month they were created, so recent months look lighter until the cohort matures.':'Leads are grouped by the month they were last touched in Salesforce.');
 }
 /* ---------- 2 coverage ---------- */
 function drawCov(){
@@ -699,7 +706,7 @@ function drawCov(){
     '<div class="obstats"><div><div class="k"><span class="def"'+dtip('scope')+'>Enriched</span>'+SIG()+'</div><div class="v">'+nf(s.scope.n)+'</div><div class="s">leads in scope this period</div></div>'+
     '<div><div class="k"><span class="def"'+dtip('reached')+'>Reached out</span></div><div class="v">'+nf(s.reached.n)+'</div><div class="s"><b>'+pc(s.reached.n,s.scope.n)+'</b> of enriched · campaign or SDR</div></div>'+
     '<div><div class="k"><span class="def"'+dtip('responded')+'>Responded</span>'+EST()+'</div><div class="v">'+nf(e.responded)+'</div><div class="s"><b>'+pc(e.responded,s.reached.n)+'</b> of reached · the funnel starts here</div></div></div>';
-  $('covNote').innerHTML='Each step is a subset of the one above: <b>reached</b> means we made contact, <b>responded</b> means a human came back — of '+nf(s.reached.n)+' reached, '+nf(s.in_campaign)+' through the campaign and '+nf(s.contacted.n)+' by the SDR.';
+  $('covNote').innerHTML='Of the '+nf(s.reached.n)+' reached, <b>'+nf(s.in_campaign)+'</b> came through the marketing campaign and <b>'+nf(s.contacted.n)+'</b> were emailed or called by the SDR.';
 }
 /* ---------- 3 funnel ---------- */
 function drawFunnel(){
@@ -745,7 +752,7 @@ function drawFunnel(){
   $('afterSal').innerHTML='<div class="ladh"><b>For reference · '+(F.opptype==='nl'?'all New Logo opportunities':'all opportunities')+' created in period</b><span>'+nf(o2.shown)+(F.opptype==='nl'?' of '+nf(o2.created_all)+' opportunities':'')+', by current stage · includes those that did not come through the lead funnel</span></div>'+
     '<div class="ladrow">'+o2.ladder.map(x=>tile(x.stage,x.n,x.stage==='Closed Won'?'won':'',x.acv)).join('')+tile('Closed Lost',o2.other['Closed Lost'],'lost',o2.otherRows['Closed Lost'].reduce((t,o)=>t+acvOf(o),0))+'</div>'+
     '<div class="ladft">'+(F.opptype==='nl'?'<span>Renewals and add-ons ('+nf(o2.created_all-o2.nl_created)+') are excluded: they do not pass through the lead funnel</span>':'<span>All opportunity types shown, including renewals and add-ons</span>')+'<span>Closed in period, any creation date: <b style="color:var(--green-d)">'+nf(o2.closed_in_period.won)+' won</b> · <b style="color:var(--rose-d)">'+nf(o2.closed_in_period.lost)+' lost</b></span><span>Total '+acvName()+': <b>'+money(o2.acvTotal)+'</b></span></div>';
-  $('fnNote').innerHTML='Every row is a subset of the one above, down to Closed Won: an opportunity counts at a stage if it ever reached it.'+(s.held_unscored.n?' <b>'+nf(s.held_unscored.n)+' held calls await a score.</b>':'');
+  $('fnNote').innerHTML='An opportunity counts at a stage if it <b>ever reached</b> it, so every row is a subset of the one above.'+(s.held_unscored.n?' <b>'+nf(s.held_unscored.n)+' held calls await a score.</b>':'');
 }
 /* ---------- 4 market ---------- */
 const PLAT=[['Genesys',.28],['Avaya',.24],['Cisco',.18],['NICE',.12],['Five9',.08],['Not yet researched',.10]];
@@ -789,12 +796,14 @@ function drawQ(){
 /* ---------- 7 marketing-qualified ---------- */
 function drawMQ(){
   const m=A().mqf,ch=m.chain;
-  const steps=[{lab:'Marketing-qualified',n:m.qualified,sub:(m.per_month?'≈ '+m.per_month+' per month':''),rank:1,k:'mqa'},{lab:'Worked by SDR or AE',n:m.worked,sub:'email, call or booking',rank:2,k:'worked'},{lab:'Meeting booked',n:m.booked,rank:3,k:'booked'},{lab:'Fit call held',n:m.held,rank:4,k:'held'},{lab:'SAL',n:m.sal,sub:'scored 7 or above',rank:5,k:'sal'},{lab:'Opportunity created',n:m.opp,sub:'converted lead · any path'+(ch.incubation.n?' · '+ch.incubation.n+' via Incubation':''),rank:6,k:'opp'},
-    ...MAIN.slice(0,5).map(st=>({lab:st,n:ch[st].n,rank:6,k:'stage',stage:true})),{lab:'Closed Won',n:ch['Closed Won'].n,rank:6,k:'won',won:true}];
+  const steps=[{lab:'Marketing-qualified',n:m.qualified,sub:(m.per_month?'≈ '+m.per_month+' per month':''),rank:1,k:'mqa'},{lab:'Worked by SDR or AE',n:m.worked,sub:'email, call or booking',rank:2,k:'worked'},{lab:'Meeting booked',n:m.booked,rank:3,k:'booked'},{lab:'Fit call held',n:m.held,rank:4,k:'held'},{lab:'SAL',n:m.sal,sub:'scored 7 or above',rank:5,k:'sal'},{lab:'Opportunity created',n:m.opp,sub:'converted lead · any path'+(ch.incubation.n?' · '+ch.incubation.n+' via Incubation':''),rank:6,k:'opp',ops:ch.opp.ops},
+    ...MAIN.slice(0,5).map(st=>({lab:st,n:ch[st].n,rank:6,k:'stage',stage:true,ops:ch[st].ops})),{lab:'Closed Won',n:ch['Closed Won'].n,rank:6,k:'won',won:true,ops:ch['Closed Won'].ops}];
   $('mqPill').textContent=nf(m.qualified)+' qualified'+(m.per_month?' · ≈ '+m.per_month+'/month':'');const base=m.qualified||1;
   $('mqf').innerHTML='<div class="cvtot">Of <b>'+nf(m.universe)+'</b> accounts'+(F.country?' in the selected countries':'')+', <b>'+nf(m.qualified)+'</b> became marketing-qualified in the period. Click a stage to see the accounts.</div>'+
+    '<div class="mqhd"><span></span><span></span><span>Accounts</span><span>'+acvName()+' · total</span><span></span></div>'+
     steps.map((s,i)=>{const prev=i?steps[i-1].n:null,on=DRILL&&DLAB===s.lab,col=s.won?'var(--green)':i===0?'var(--violet)':s.stage?'#b9a8f7':i>=4?'var(--green)':'var(--violet-p)';
-      return '<div class="prow mqgo click'+(on?' on':'')+(s.won?' last':'')+'" role="button" tabindex="0" data-rank="'+s.rank+'" data-lab="'+esc(s.lab)+'" aria-expanded="'+on+'"><div class="pk"><span class="def"'+dtip(s.k)+'>'+s.lab+'</span>'+(s.sub?'<small>'+s.sub+'</small>':'')+'</div><div class="ptr2"><i style="width:'+Math.max(1.5,100*s.n/base)+'%;background:'+col+'" data-tip="'+esc('<div class=th>'+s.lab+'</div>'+tipRows([['Accounts',s.n],['Of qualified',pc(s.n,m.qualified)]]))+'"></i></div><div class="pv2">'+nf(s.n)+'</div><div class="pc2">'+(prev!=null?pc(s.n,prev):'')+'<span class="chev">'+(on?'&#9650;':'&#8250;')+'</span></div></div>';}).join('')+
+      const sAcv=s.ops&&s.ops.length?acvSum(s.ops):0;
+      return '<div class="prow mqgo click'+(on?' on':'')+(s.won?' last':'')+'" role="button" tabindex="0" data-rank="'+s.rank+'" data-lab="'+esc(s.lab)+'" aria-expanded="'+on+'"><div class="pk"><span class="def"'+dtip(s.k)+'>'+s.lab+'</span>'+(s.sub?'<small>'+s.sub+'</small>':'')+'</div><div class="ptr2"><i style="width:'+Math.max(1.5,100*s.n/base)+'%;background:'+col+'" data-tip="'+esc('<div class=th>'+s.lab+'</div>'+tipRows([['Accounts',s.n],['Of qualified',pc(s.n,m.qualified)]]))+'"></i></div><div class="pv2">'+nf(s.n)+'</div><div class="macv'+(sAcv?'':' z')+'"'+(sAcv?' data-tip="'+esc('<div class=th>'+s.lab+'</div>'+tipRows([[acvName()+' total',moneyFull(sAcv)],['Average',moneyFull(Math.round(sAcv/s.ops.length))]]))+'"':'')+'>'+(sAcv?money(sAcv):'')+'</div><div class="pc2">'+(prev!=null?pc(s.n,prev):'')+'<span class="chev">'+(on?'&#9650;':'&#8250;')+'</span></div></div>';}).join('')+
     '<div class="ladft" style="margin-top:8px"><span>Exits: <b style="color:var(--rose-d)">'+nf(ch.lost.n)+' closed lost</b> · <b>'+nf(ch.norecord.n)+'</b> converted without an opportunity record</span></div>';
   $('drill').classList.toggle('on',DRILL);
   if(DRILL){const L=m.list.filter(r=>r.rank>=DRANK),cap=10,show=DALL?L:L.slice(0,cap);$('drillN').textContent=nf(L.length);$('drillLab').textContent='marketing-qualified accounts that reached “'+DLAB+'” or beyond, furthest stage first';
@@ -840,7 +849,7 @@ function drawData(){
 }
 function drawDefs(){$('defBody').innerHTML=DEFS.map(d=>'<tr><td class="rn">'+d[1]+'</td><td style="max-width:340px">'+d[2]+'</td><td class="mono" style="color:var(--ink-2);max-width:300px;font-size:11.5px">'+d[3]+'</td><td style="color:var(--ink-2);max-width:320px;font-size:12px">'+d[4]+'</td><td>'+SRC[d[5]]+'</td></tr>').join('');}
 function drawAcvSel(){const s=$('acvF');if(!s.options.length){s.innerHTML=D.acvFields.map(f=>'<option value="'+f[0]+'" title="'+esc(f[2])+'">'+f[1].replace(/__c$/,'')+'</option>').join('');
-  s.addEventListener('change',()=>{ACVF=s.value;drawFunnel();drawPeople();});}
+  s.addEventListener('change',()=>{ACVF=s.value;drawFunnel();drawPeople();drawMQ();});}
   s.value=ACVF;}
 function drawAll(){
   compute();const P=PER[F.w];
@@ -855,6 +864,8 @@ $('segW').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)
 $('segBy').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;F.by=b.dataset.by;[...$('segBy').children].forEach(x=>x.setAttribute('aria-pressed',x===b));refresh();});
 $('segG').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;G=b.dataset.g;[...$('segG').children].forEach(x=>x.setAttribute('aria-pressed',x===b));drawPerf();});
 $('mTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;MT=b.dataset.k;[...$('mTabs').children].forEach(x=>x.setAttribute('aria-selected',x===b));drawMarket();});
+$('mktCsv').addEventListener('click',()=>{const hdr=[...$('mHead').querySelectorAll('th')].slice(0,5).map(t=>t.textContent.trim());const rows=[...$('mBody').querySelectorAll('tr')].map(tr=>[...tr.children].slice(0,5).map(td=>td.textContent.trim()));csvDownload([hdr].concat(rows),'servion-'+MT+'.csv');});
+$('mktCsv').addEventListener('click',()=>{const t=$('mHead').textContent.trim().split(/\s{2,}/)[0]||'Value';const rows=[...$('mBody').querySelectorAll('tr')].map(tr=>[...tr.children].slice(0,5).map(td=>td.textContent.trim()));csvDownload([[t,'Leads','Booked','Held','SAL']].concat(rows),'servion-'+MT+'.csv');});
 $('sTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ST=b.dataset.k;[...$('sTabs').children].forEach(x=>x.setAttribute('aria-selected',x===b));drawScore();});
 $('qTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;QT=b.dataset.k;QALL=false;drawQ();});
 $('qMore').addEventListener('click',()=>{QALL=!QALL;drawQ();});
@@ -870,7 +881,9 @@ document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest
   if(tl){const k=tl.dataset.tile,o2=A().opps;const f=o2.ladder.find(x=>x.stage===k);const rws=f?f.rows:(o2.otherRows[k]||[]);
     if(ODRILL&&ODRILL.key==='tile:'+k){ODRILL=null;}else{ODRILL={key:'tile:'+k,lab:'every opportunity created in the period now at '+k+', whether or not it came through the lead funnel',rows:rws};OALL=false;SDRILL=false;SALDRILL=false;}
     drawFunnel();}});
-$('drillX').addEventListener('click',()=>{DRILL=false;drawMQ();});$('drillMore').addEventListener('click',()=>{DALL=!DALL;drawMQ();});
+$('drillX').addEventListener('click',()=>{DRILL=false;drawMQ();});
+$('mqCsv').addEventListener('click',()=>{const L=A().mqf.list.filter(r=>r.rank>=DRANK);csvDownload([['Account','Sector','Furthest stage','Owner','Engagement score','Lead Source','Days since last touch']].concat(L.map(r=>[r.co,r.sec,r.stage,r.own,r.mk,r.src,r.days])),'servion-marketing-qualified.csv');});
+$('mqCsv').addEventListener('click',()=>{const L=A().mqf.list.filter(r=>r.rank>=DRANK);csvDownload([['Account','Sector','Furthest stage','Owner','Engagement score','Lead Source','Days since last touch']].concat(L.map(r=>[r.co,r.sec,r.stage,r.own,r.mk,r.src,r.days])),'servion-marketing-qualified.csv');});$('drillMore').addEventListener('click',()=>{DALL=!DALL;drawMQ();});
 $('sdrillX').addEventListener('click',()=>{SDRILL=false;drawFunnel();});$('sdrillMore').addEventListener('click',()=>{SALL=!SALL;drawFunnel();});
 $('saldrillX').addEventListener('click',()=>{SALDRILL=false;drawFunnel();});$('saldrillMore').addEventListener('click',()=>{SALDALL=!SALDALL;drawFunnel();});
 $('odrillX').addEventListener('click',()=>{ODRILL=null;drawFunnel();});$('odrillMore').addEventListener('click',()=>{OALL=!OALL;drawFunnel();});
