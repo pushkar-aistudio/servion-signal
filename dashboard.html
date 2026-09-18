@@ -742,20 +742,20 @@ function drawCov(){
 /* ---------- 3 funnel ---------- */
 function drawFunnel(){
   const a=A(),s=a.stages,e=a.est,c=s.after_sal;const R=(k,lab,who,o,ex)=>Object.assign({k,lab,who,n:o.n,mq:o.mq,dr:o.direct},ex||{});
-  const rows=[{k:'responded',lab:'Responded',who:'Replied or connected · Nooks',n:e.responded,mq:e.responded_mq,dr:e.responded_direct,est:true},R('booked','Meeting booked','SDR',s.booked),R('held','Fit call held','AE',s.held),R('scored','Fit call scored','AE · survey',s.scored,{drill:true}),R('sal','SAL converted','Score 7 or above',s.sal,{saldrill:true}),
+  const rows=[{k:'responded',lab:'Responded',who:'Replied or connected · Nooks',n:e.responded,mq:e.responded_mq,dr:e.responded_direct,est:true,resp:true},R('booked','Meeting booked','SDR',s.booked),R('held','Fit call held','AE',s.held),R('scored','Fit call scored','AE · survey',s.scored,{drill:true}),R('sal','SAL converted','Score 7 or above',s.sal,{saldrill:true}),
     {sep:'After SAL'},R('opp','Opportunity created','Converted lead'+(c.incubation.n?' · '+c.incubation.n+' via Incubation (pre-opp)':''),c.opp,{prev:4,ops:c.opp.ops,norec:c.norecord.n}),
     ...['Discovery','Evaluating','Negotiation','Pending Approval','PCN Requested'].map((st,i)=>R('stage',st,'Probability '+[10,25,50,75,90][i]+'%',c[st],{ops:c[st].ops})),R('won','Closed Won','',c['Closed Won'],{cls:'won',ops:c['Closed Won'].ops}),
-    {sep:'Exits'},R('lost','Closed Lost','Exited at any stage',c.lost,{prev:6,cls:'lost',ops:c.lost.ops}),R('opp','No opportunity record','Converted to account or contact only',c.norecord,{prev:6,cls:'norec'})];
+    {sep:'Exits'},R('lost','Closed Lost','Exited at any stage',c.lost,{prev:6,cls:'lost',ops:c.lost.ops}),R('opp','No opportunity record','Converted to account or contact only',c.norecord,{prev:6,cls:'norec',leadsKey:'norec'})];
   const head=rows[0].n||1;const oppHead=(rows.find(r=>r.lab==='Opportunity created')||{}).n||1;let o='',lastReal=null,afterSal=false;
   rows.forEach((r,i)=>{if(r.sep){o+='<div class="fsep">'+r.sep+(r.sep==='After SAL'?' <em>· bars scaled to this section</em>':'')+'</div>';if(r.sep==='After SAL')afterSal=true;return;}const pi=r.prev!=null?r.prev:lastReal,prev=pi!=null?rows[pi]:null;const sc=afterSal?oppHead:head;const w=100*r.n/sc,pw=prev?100*prev.n/sc:0,mqw=r.n?100*r.mq/r.n:0;
     const tip=esc('<div class=th>'+r.lab+'</div>'+tipRows([['Marketing-qualified',r.mq],['Direct outbound',r.dr],['Total',r.n]])+(prev?'<div class=tb>'+pc(r.n,prev.n)+' of '+prev.lab.toLowerCase()+'</div>':''));
     const inner=r.cls?'<i class="'+r.cls+'" style="width:100%" data-tip="'+tip+'"></i>':'<i class="mq" style="width:'+mqw.toFixed(1)+'%" data-tip="'+tip+'"></i><i class="dr" style="width:'+(100-mqw).toFixed(1)+'%" data-tip="'+tip+'"></i>';
-    const act=r.drill?'scored':r.saldrill?'sal':(r.ops&&r.ops.length?'opp':(r.k==='booked'||r.k==='held')?'leads':'');
+    const act=r.drill?'scored':r.saldrill?'sal':r.resp?'resp':(r.ops&&r.ops.length?'opp':(r.leadsKey||r.k==='booked'||r.k==='held')?'leads':'');
     const on=act==='scored'?SDRILL:act==='sal'?SALDRILL:act==='opp'?!!(ODRILL&&ODRILL.key===r.lab):false;
     const nOps=r.ops?r.ops.length:0,rowAcv=nOps?acvSum(r.ops):0;
     const dup=r.norec!=null?r.n-r.norec-nOps:0;
     const atip=(act==='opp'&&r.norec!=null&&nOps<r.n)?esc('<div class=th>'+r.lab+'</div>These '+r.n+' converted leads point to '+nOps+' opportunity record'+(nOps===1?'':'s')+' in Salesforce; '+r.norec+' converted without one and are listed separately below'+(dup>0?', and '+dup+(dup===1?' shares':' share')+' an opportunity with another lead':'')+'.'):'';
-    o+='<div class="frow'+(act?' click'+(on?' on':''):'')+'"'+(act?' role="button" tabindex="0" data-act="'+act+'" data-stg="'+esc(r.k)+'" data-lab="'+esc(r.lab)+'"'+(atip?' data-tip="'+atip+'"':''):'')+'>'+
+    o+='<div class="frow'+(act?' click'+(on?' on':''):'')+'"'+(act?' role="button" tabindex="0" data-act="'+act+'" data-stg="'+esc(r.leadsKey||r.k)+'" data-lab="'+esc(r.lab)+'"'+(atip?' data-tip="'+atip+'"':''):'')+'>'+
       '<div><div class="fst"><span class="def"'+dtip(r.k)+'>'+r.lab+'</span>'+(r.est?EST():'')+'</div><span class="fwho">'+r.who+'</span></div>'+
       '<div class="ftw">'+(prev&&!r.cls?'<div class="fghost" style="width:'+Math.max(pw,1.6).toFixed(2)+'%"></div>':'')+'<div class="fbar" style="width:'+Math.max(w,1.6).toFixed(2)+'%">'+inner+'</div></div>'+
       '<div class="num">'+nf(r.n)+'</div>'+
@@ -833,7 +833,7 @@ function drawMQ(){
   const steps=[{lab:'Marketing-qualified',n:m.qualified,sub:(m.per_month?'≈ '+m.per_month+' per month':''),rank:1,k:'mqa'},{lab:'Worked by SDR or AE',n:m.worked,sub:'email, call or booking',rank:2,k:'worked'},{lab:'Meeting booked',n:m.booked,rank:3,k:'booked'},{lab:'Fit call held',n:m.held,rank:4,k:'held'},{lab:'SAL',n:m.sal,sub:'scored 7 or above',rank:5,k:'sal'},{lab:'Opportunity created',n:m.opp,sub:'converted lead · any path'+(ch.incubation.n?' · '+ch.incubation.n+' via Incubation':''),rank:6,k:'opp',ops:ch.opp.ops},
     ...MAIN.slice(0,5).map(st=>({lab:st,n:ch[st].n,rank:6,k:'stage',stage:true,ops:ch[st].ops})),{lab:'Closed Won',n:ch['Closed Won'].n,rank:6,k:'won',won:true,ops:ch['Closed Won'].ops}];
   $('mqPill').textContent=nf(m.qualified)+' qualified'+(m.per_month?' · ≈ '+m.per_month+'/month':'');const base=m.qualified||1;
-  $('mqf').innerHTML='<div class="cvtot"><b>'+nf(m.qualified)+'</b> of the <b>'+nf(a.stages.leads.n)+'</b> lead records created in the period are marketing-qualified. Counted in leads, not accounts: MQA status sits on the Lead.</div>'+
+  $('mqf').innerHTML='<div class="cvtot"><b>'+nf(m.qualified)+'</b> of the <b>'+nf(a.stages.leads.n)+'</b> lead record'+(a.stages.leads.n===1?'':'s')+' created in the period '+(a.stages.leads.n===1?'is':'are')+' marketing-qualified. Counted in leads, not accounts: MQA status sits on the Lead.</div>'+
     '<div class="mqhd"><span></span><span></span><span>Leads</span><span>'+acvName()+' · total</span><span></span></div>'+
     steps.map((s,i)=>{const prev=i?steps[i-1].n:null,on=DRILL&&DLAB===s.lab,col=s.won?'var(--green)':i===0?'var(--violet)':s.stage?'#b9a8f7':i>=4?'var(--green)':'var(--violet-p)';
       const sAcv=s.ops&&s.ops.length?acvSum(s.ops):0;
@@ -859,7 +859,7 @@ function drawCh(){
   const wa=a.activity,svg=$('act'),Wd=svg.clientWidth||760,H=190,padL=14,padR=14,padT=18,padB=26,n=wa.length||1,gw=(Wd-padL-padR)/n,bw=Math.min(34,gw*0.66),mx=Math.max(1,...wa.map(x=>x.email+x.call)),base=H-padB,sc=(H-padT-padB)/mx;
   svg.innerHTML=wa.map((x,i)=>{const cx=padL+gw*i+gw/2,x0=cx-bw/2,eh=x.email*sc,chh=x.call*sc,lab=new Date(x.w).toLocaleString('en-US',{day:'2-digit',month:'short'});const tip=esc('<div class=th>Week of '+lab+'</div>'+tipRows([['Emails logged',x.email],['Calls logged',x.call]]));
     return '<rect x="'+x0+'" y="'+(base-eh-chh)+'" width="'+bw+'" height="'+eh+'" rx="2" fill="var(--blue)" data-tip="'+tip+'"/><rect x="'+x0+'" y="'+(base-chh)+'" width="'+bw+'" height="'+chh+'" rx="2" fill="var(--green)" data-tip="'+tip+'"/>'+((x.email+x.call)&&n<=30?'<text x="'+cx+'" y="'+(base-eh-chh-5)+'" text-anchor="middle" font-size="10" font-weight="600" fill="var(--ink-2)">'+(x.email+x.call)+'</text>':'')+((n<=14||i%Math.ceil(n/13)===0)?'<text x="'+cx+'" y="'+(H-8)+'" text-anchor="middle" font-size="10" fill="var(--ink-3)">'+lab+'</text>':'');}).join('');
-  const k=a.act_kpi;$('actKpi').innerHTML=[['Emails logged',nf(k.emails),'Salesforce · '+k.weeks+' whole weeks'],['Calls logged',nf(k.calls),'Salesforce · '+k.weeks+' whole weeks'],['Leads emailed',nf(k.leads_emailed),pc(k.leads_emailed,s.leads.n)+' of leads in period'],['Leads called',nf(k.leads_called),pc(k.leads_called,s.leads.n)+' of leads in period'],['Per week',nf(Math.round((k.emails+k.calls)/Math.max(1,k.weeks))),'activities · '+k.weeks+' weeks']].map(x=>'<div class="kp"><div class="a">'+x[0]+'</div><div class="b">'+x[1]+'</div><div class="c">'+x[2]+'</div></div>').join('');
+  const k=a.act_kpi;$('actKpi').innerHTML=[['Emails logged',nf(k.emails),'all leads, unfiltered · '+k.weeks+' whole weeks'],['Calls logged',nf(k.calls),'all leads, unfiltered · '+k.weeks+' whole weeks'],['Leads emailed',nf(k.leads_emailed),pc(k.leads_emailed,s.leads.n)+' of leads in period'],['Leads called',nf(k.leads_called),pc(k.leads_called,s.leads.n)+' of leads in period'],['Per week',nf(Math.round((k.emails+k.calls)/Math.max(1,k.weeks))),'activities · '+k.weeks+' weeks']].map(x=>'<div class="kp"><div class="a">'+x[0]+'</div><div class="b">'+x[1]+'</div><div class="c">'+x[2]+'</div></div>').join('');
   $('chNote').innerHTML='Response and connection rates come from <b>Nooks</b> and are estimated on the real Salesforce base until that connection is live.';
 }
 /* ---------- 9 score ---------- */
@@ -958,7 +958,11 @@ document.addEventListener('click',e=>{
   if(pg){const nm=pg.dataset.p,i=OWNERS.indexOf(nm),L=A().L;if(i<0)return;openLeads(nm,L.filter(x=>x[10]===i),'','#pplBlk .card');return;}
   const g=e.target.closest&&e.target.closest('.mqgo');if(g&&!e.target.closest('[data-tip].def')){const r=+g.dataset.rank,l=g.dataset.lab;if(DRILL&&DLAB===l){DRILL=false;}else{DRILL=true;DRANK=r;DLAB=l;DALL=false;}drawMQ();}const fr=e.target.closest&&e.target.closest('.frow.click');
   if(fr&&!e.target.closest('[data-tip].def')){const act=fr.dataset.act,lb=fr.dataset.lab;
-    if(act==='leads'){const L=A().L,k=fr.dataset.stg;const f=k==='booked'?(x=>x[5]):(x=>x[6]);openLeads(lb,L.filter(f),'','#fnlBlk .card');return;}
+    if(act==='resp'){const a=A(),e2=a.est,st=a.stages;
+      openLeads('Leads we emailed or called',a.L.filter(contacted),
+        'Responded ('+nf(e2.responded)+') is an estimate — '+nf(e2.replied)+' email replies from '+nf(st.sf_emailed)+' people emailed and '+nf(e2.connected)+' call connects from '+nf(st.sf_called)+' called. Salesforce does not store reply or connect outcomes, so the named responder list arrives when Nooks is connected. Listed here are the people we contacted.',
+        '#fnlBlk .card');return;}
+    if(act==='leads'){const L=A().L,k=fr.dataset.stg;const f=k==='booked'?(x=>x[5]):k==='norec'?(x=>x[7]>=7&&x[8]&&x[9]<0):(x=>x[6]);openLeads(lb,L.filter(f),k==='norec'?'converted to an account or contact, with no opportunity record in Salesforce':'','#fnlBlk .card');return;}
     if(act==='scored'){SDRILL=!SDRILL;SALDRILL=false;ODRILL=null;}
     else if(act==='sal'){SALDRILL=!SALDRILL;SALDALL=false;SDRILL=false;ODRILL=null;}
     else if(act==='opp'){const cc=A().stages.after_sal,key=lb==='Opportunity created'?'opp':lb==='Closed Lost'?'lost':lb;const ops=(cc[key]&&cc[key].ops)||[];
