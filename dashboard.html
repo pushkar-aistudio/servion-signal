@@ -164,18 +164,18 @@
 
   /* funnel */
   .fn{padding:16px 20px 4px}
-  .frow{display:grid;grid-template-columns:168px 1fr 68px 96px 88px 12px;gap:14px;align-items:center;padding:7px 0;border-radius:7px}
+  .frow{display:grid;grid-template-columns:168px 1fr 68px 96px 88px 12px;gap:14px;align-items:center;padding:3px 0;border-radius:7px}
   .fhd{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680;padding:0 0 9px;border-bottom:1px solid var(--line)}
   .fhd.r{text-align:right}
-  .fst{font-size:13.5px;font-weight:600}
+  .fst{font-size:13px;font-weight:600}
   .fwho{display:block;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);font-weight:680;margin-top:2px}
-  .ftw{position:relative;height:34px}
-  .fghost{position:absolute;left:0;top:0;height:34px;border-radius:5px;border:1px dashed var(--ink-4);opacity:.55}
-  .fbar{position:absolute;left:0;top:0;height:34px;border-radius:5px;overflow:hidden;display:flex;min-width:4px}
+  .ftw{position:relative;height:26px}
+  .fghost{position:absolute;left:0;top:0;height:26px;border-radius:5px;border:1px dashed var(--ink-4);opacity:.55}
+  .fbar{position:absolute;left:0;top:0;height:26px;border-radius:5px;overflow:hidden;display:flex;min-width:4px}
   .fbar i{display:block;height:100%;cursor:pointer} .fbar i:hover{filter:brightness(1.08)}
   .fbar i.mq{background:var(--violet)} .fbar i.dr{background:var(--blue)}
   .fn .num{text-align:right;font-size:13px;color:var(--ink-2);font-weight:600}
-  .fn .cv{text-align:right;font-size:21px;font-weight:700;letter-spacing:-.02em}
+  .fn .cv{text-align:right;font-size:18px;font-weight:700;letter-spacing:-.02em}
   .fn .cv small{display:block;font-size:9.5px;color:var(--ink-3);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
   .fn .cv.dim{color:var(--ink-4);font-weight:450;font-size:13px}
   .fout{display:flex;border-top:1px solid var(--line);margin-top:6px}
@@ -248,14 +248,14 @@
   .sdrc .v{font-size:22px;font-weight:690;margin-top:3px;letter-spacing:-.02em} .sdrc .s{font-size:10.5px;color:var(--ink-3)}
   .sdrc.who2 .nm{font-size:13.5px;font-weight:650} .sdrc.who2 .rl{font-size:10.5px;color:var(--ink-3);margin-top:2px}
   .pchart{padding:8px 16px 4px}
-  .pr{display:grid;grid-template-columns:170px 1fr 88px 132px;gap:13px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line-2)}
+  .pr{display:grid;grid-template-columns:170px 1fr 88px 132px;gap:13px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line-2)}
   .pr:last-child{border-bottom:0}
   .pr.hd{padding:9px 0 7px;border-bottom:1px solid var(--line)}
   .pr.hd div{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
   .pr.hd .rr{text-align:right}
   .pn{font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .pb{position:relative;height:22px}
-  .pb i{position:absolute;left:0;border-radius:3px;display:block;top:0;height:22px;cursor:pointer}
+  .pb{position:relative;height:18px}
+  .pb i{position:absolute;left:0;border-radius:3px;display:block;top:0;height:18px;cursor:pointer}
   .pb i.h{background:var(--blue-p)} .pb i.s{background:var(--green)}
   .pv{text-align:right;font-size:12.5px;color:var(--ink-2)} .pv b{color:var(--green-d);font-weight:700}
   .opx{text-align:right;font-size:12px;color:var(--ink-2);display:flex;gap:8px;justify-content:flex-end;align-items:baseline}
@@ -290,7 +290,8 @@
   .kp .a{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
   .kp .b{font-size:18px;font-weight:690;margin-top:3px;letter-spacing:-.02em} .kp .c{font-size:10.5px;color:var(--ink-3)}
   @media(max-width:900px){.kpis{grid-template-columns:repeat(3,1fr)}} @media(max-width:680px){.kpis{grid-template-columns:1fr 1fr}}
-  .fn .fsep{padding:10px 0 4px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680;border-top:1px dashed var(--line);margin-top:6px}
+  .fn .fsep{padding:9px 0 3px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680;border-top:1px dashed var(--line);margin-top:5px}
+  .fn .fsep em{font-style:normal;text-transform:none;letter-spacing:0;color:var(--ink-4);font-weight:500}
   .fbar i.won{background:var(--green)} .fbar i.lost{background:var(--rose)} .fbar i.norec{background:var(--ink-4)}
   .cvlg .lgk{margin-right:4px;vertical-align:-1px}
   .qempty{padding:18px 16px;color:var(--ink-2);font-size:12.5px;line-height:1.55}
@@ -306,7 +307,9 @@
   table.d tr.mgo{cursor:pointer} table.d tr.mgo:hover td{background:var(--card-2)}
   .pr.pgo{cursor:pointer;border-radius:7px;transition:background .1s} .pr.pgo:hover{background:var(--card-2)}
   .srcwarn{margin-top:10px;padding:9px 12px;background:var(--amber-l);border:1px solid #f0dcb4;border-radius:7px;font-size:12px;color:#7a5410}
+  #lblk{margin:0;border:0;border-top:1px solid var(--line);border-radius:0 0 var(--r) var(--r);background:var(--card)}
   #lblk .drill.on{display:block;border-top:0}
+  #lblk[hidden]{display:none!important}
   .acvsel{display:inline-flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
   .acvsel select{font:inherit;font-size:11px;letter-spacing:0;text-transform:none;font-weight:500;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink-2)}
   .fn .acvcell{text-align:right;font-size:13px;font-weight:660;color:var(--green-d)}
@@ -377,6 +380,11 @@
 </head>
 <body>
 <div id="tip" role="tooltip" aria-hidden="true"></div>
+<div class="card leadcard" id="lblk" hidden>
+  <div class="drill on" id="ldrill"><div class="drillh"><b id="ldrillN"></b><span id="ldrillLab"></span><button class="lnk" id="lCsv">Export CSV</button><button class="lnk" id="ldrillX">Hide</button></div>
+    <div class="tw"><table class="d"><thead><tr><th>Account</th><th>Sector</th><th>Lead Source</th><th>Owner</th><th>Stage reached</th><th>Created</th><th class="r">Waiting</th></tr></thead><tbody id="ldrillBody"></tbody></table></div>
+    <div class="showmore"><button class="lnk" id="ldrillMore"></button></div></div>
+</div>
 <div class="shell">
   <aside class="side" id="side">
     <div class="brand"><div class="mark">S</div><div class="bt">Servion<span>Global Solutions</span></div></div>
@@ -410,22 +418,17 @@
     <div class="body">
       <div class="asof" id="asof"></div>
 
-      <div class="blk"><div class="bh"><h2>Performance</h2><span class="r"><span class="pill" id="pLab"></span></span></div>
+      <div class="blk" id="perfBlk"><div class="bh"><h2>Performance</h2><span class="r"><span class="pill" id="pLab"></span></span></div>
         <div class="card"><div class="perfwrap">
           <div class="perfhero" id="perfHero"></div>
           <div class="perfchart"><div class="chtop"><span class="chk">Fit calls held and SALs converted</span><div class="seg sm" id="segG"><button data-g="month" aria-pressed="true">Month</button><button data-g="week" aria-pressed="false">Week</button></div></div>
             <svg class="chart tall" id="perf" role="img" aria-label="Fit calls held and SALs converted over time"></svg><div class="clg" id="perfLg"></div></div>
         </div><div class="note" id="perfNote"></div></div></div>
 
-      <div class="blk" id="lblk" style="display:none"><div class="card">
-          <div class="drill on" id="ldrill"><div class="drillh"><b id="ldrillN"></b><span id="ldrillLab"></span><button class="lnk" id="lCsv">Export CSV</button><button class="lnk" id="ldrillX">Hide</button></div>
-            <div class="tw"><table class="d"><thead><tr><th>Account</th><th>Sector</th><th>Lead Source</th><th>Owner</th><th>Stage reached</th><th>Created</th><th class="r">Waiting</th></tr></thead><tbody id="ldrillBody"></tbody></table></div>
-            <div class="showmore"><button class="lnk" id="ldrillMore"></button></div></div></div></div>
-
-      <div class="blk"><div class="bh"><h2>Account coverage</h2><span class="r"><span class="pill">Enriched → reached out → responded</span></span></div>
+      <div class="blk" id="covBlk"><div class="bh"><h2>Account coverage</h2><span class="r"><span class="pill">Enriched → reached out → responded</span></span></div>
         <div class="card"><div class="prewrap" id="cov"></div><div class="note" id="covNote"></div></div></div>
 
-      <div class="blk"><div class="bh"><h2>Pipeline funnel</h2><span class="r"><label class="acvsel">ACV field <select id="acvF"></select></label><span class="pill">Responded → SAL → opportunity → won</span></span></div>
+      <div class="blk" id="fnlBlk"><div class="bh"><h2>Pipeline funnel</h2><span class="r"><label class="acvsel">ACV field <select id="acvF"></select></label><span class="pill">Responded → SAL → opportunity → won</span></span></div>
         <div class="card"><div class="fn">
           <div class="frow"><div class="fhd">Stage</div><div class="fhd">Share of responded</div><div class="fhd r">Count</div><div class="fhd r" id="fhdAcv">Amount · total</div><div class="fhd r">Conversion</div><div class="fhd"></div></div>
           <div id="fnl"></div></div>
@@ -439,14 +442,14 @@
             <div class="tw"><table class="d"><thead><tr><th>Opportunity</th><th>Account</th><th>Type</th><th>Stage</th><th>Owner</th><th>Created</th><th>Close date</th><th class="r">ACV</th></tr></thead><tbody id="odrillBody"></tbody></table></div>
             <div class="showmore"><button class="lnk" id="odrillMore"></button></div></div>
           <div class="fout" id="fout"></div>
-          <div class="flg"><span><i style="background:var(--violet)"></i>Marketing-qualified</span><span><i style="background:var(--blue)"></i>Direct outbound</span><span><i class="gh"></i>Previous stage</span></div>
+          <div class="flg"><span><i style="background:var(--violet)"></i>Marketing-qualified</span><span><i style="background:var(--blue)"></i>Direct outbound</span><span><i class="gh"></i>Previous stage</span><span style="color:var(--ink-4)">After SAL, bars scale to that section so small numbers stay readable</span></div>
           <div class="lad" id="afterSal"></div><div class="note" id="fnNote"></div></div></div>
 
-      <div class="blk"><div class="bh"><h2>Market breakdown</h2><span class="r"><button class="lnk" id="mktCsv">Export CSV</button><span class="pill">Where the SALs come from</span></span></div>
+      <div class="blk" id="mktBlk"><div class="bh"><h2>Market breakdown</h2><span class="r"><button class="lnk" id="mktCsv">Export CSV</button><span class="pill">Where the SALs come from</span></span></div>
         <div class="card"><div class="tabs" id="mTabs"><button data-k="source" aria-selected="true">Lead Source</button><button data-k="detail" aria-selected="false">Lead Source Detail</button><button data-k="sector" aria-selected="false">Sector</button><button data-k="country" aria-selected="false">Country</button><button data-k="platform" aria-selected="false">Incumbent platform <sup class="prov sig">Signal</sup></button></div>
           <div class="tw"><table class="d"><thead id="mHead"></thead><tbody id="mBody"></tbody><tfoot id="mFoot"></tfoot></table></div><div class="note" id="mNote"></div></div></div>
 
-      <div class="blk"><div class="bh"><h2>By people</h2><span class="r"><span class="pill">Through to won and lost</span></span></div>
+      <div class="blk" id="pplBlk"><div class="bh"><h2>By people</h2><span class="r"><span class="pill">Through to won and lost</span></span></div>
         <div class="card"><div class="sdrcard" id="sdr"></div><div class="pchart" id="aes"></div><div class="note" id="pNote"></div></div></div>
 
       <div class="blk" id="needs"><div class="bh"><h2>Needs action</h2><span class="r"><span class="pill">Today view · sorted by time waiting</span></span></div>
@@ -740,8 +743,8 @@ function drawFunnel(){
     {sep:'After SAL'},R('opp','Opportunity created','Converted lead'+(c.incubation.n?' · '+c.incubation.n+' via Incubation (pre-opp)':''),c.opp,{prev:4,ops:c.opp.ops}),
     ...['Discovery','Evaluating','Negotiation','Pending Approval','PCN Requested'].map((st,i)=>R('stage',st,'Probability '+[10,25,50,75,90][i]+'%',c[st],{ops:c[st].ops})),R('won','Closed Won','',c['Closed Won'],{cls:'won',ops:c['Closed Won'].ops}),
     {sep:'Exits'},R('lost','Closed Lost','Exited at any stage',c.lost,{prev:6,cls:'lost',ops:c.lost.ops}),R('opp','No opportunity record','Converted to account or contact only',c.norecord,{prev:6,cls:'norec'})];
-  const head=rows[0].n||1;let o='',lastReal=null;
-  rows.forEach((r,i)=>{if(r.sep){o+='<div class="fsep">'+r.sep+'</div>';return;}const pi=r.prev!=null?r.prev:lastReal,prev=pi!=null?rows[pi]:null;const w=100*r.n/head,pw=prev?100*prev.n/head:0,mqw=r.n?100*r.mq/r.n:0;
+  const head=rows[0].n||1;const oppHead=(rows.find(r=>r.lab==='Opportunity created')||{}).n||1;let o='',lastReal=null,afterSal=false;
+  rows.forEach((r,i)=>{if(r.sep){o+='<div class="fsep">'+r.sep+(r.sep==='After SAL'?' <em>· bars scaled to this section</em>':'')+'</div>';if(r.sep==='After SAL')afterSal=true;return;}const pi=r.prev!=null?r.prev:lastReal,prev=pi!=null?rows[pi]:null;const sc=afterSal?oppHead:head;const w=100*r.n/sc,pw=prev?100*prev.n/sc:0,mqw=r.n?100*r.mq/r.n:0;
     const tip=esc('<div class=th>'+r.lab+'</div>'+tipRows([['Marketing-qualified',r.mq],['Direct outbound',r.dr],['Total',r.n]])+(prev?'<div class=tb>'+pc(r.n,prev.n)+' of '+prev.lab.toLowerCase()+'</div>':''));
     const inner=r.cls?'<i class="'+r.cls+'" style="width:100%" data-tip="'+tip+'"></i>':'<i class="mq" style="width:'+mqw.toFixed(1)+'%" data-tip="'+tip+'"></i><i class="dr" style="width:'+(100-mqw).toFixed(1)+'%" data-tip="'+tip+'"></i>';
     const act=r.drill?'scored':r.saldrill?'sal':(r.ops&&r.ops.length?'opp':(r.k==='booked'||r.k==='held')?'leads':'');
@@ -877,15 +880,18 @@ function drawData(){
 }
 function drawDefs(){$('defBody').innerHTML=DEFS.map(d=>'<tr><td class="rn">'+d[1]+'</td><td style="max-width:340px">'+d[2]+'</td><td class="mono" style="color:var(--ink-2);max-width:300px;font-size:11.5px">'+d[3]+'</td><td style="color:var(--ink-2);max-width:320px;font-size:12px">'+d[4]+'</td><td>'+SRC[d[5]]+'</td></tr>').join('');}
 function stageOf(x){return x[8]?'Opportunity':x[7]>=7?'SAL':x[7]>=0?'Scored':x[6]?'Fit call held':x[5]?'Meeting booked':(x[13]||x[14])?'Contacted':x[15]?'In campaign':'Enriched';}
-function openLeads(lab,rows,note){
-  if(LDRILL&&LDRILL.lab===lab){LDRILL=null;}else{LDRILL={lab,rows,note:note||''};LDALL=false;}
+function openLeads(lab,rows,note,host){
+  if(LDRILL&&LDRILL.lab===lab){LDRILL=null;}else{LDRILL={lab,rows,note:note||'',host:host||null};LDALL=false;}
   drawLeadDrill();
-  if(LDRILL)setTimeout(()=>{const el=$('lblk');const y=el.getBoundingClientRect().top+scrollY-70;scrollTo({top:y,behavior:'smooth'});},20);
+  if(LDRILL)setTimeout(()=>{const el=$('lblk');const r=el.getBoundingClientRect();
+    if(r.top<60||r.top>innerHeight-140)scrollTo({top:r.top+scrollY-90,behavior:'smooth'});},30);
 }
 function drawLeadDrill(){
   const blk=$('lblk');
-  if(!LDRILL){blk.style.display='none';return;}
-  blk.style.display='';
+  if(!LDRILL){blk.hidden=true;return;}
+  blk.hidden=false;
+  const host=LDRILL.host&&document.querySelector(LDRILL.host);
+  if(host&&blk.parentElement!==host) host.appendChild(blk);
   const R=LDRILL.rows,cap=12,show=LDALL?R:R.slice(0,cap);
   $('ldrillN').textContent=nf(R.length);
   $('ldrillLab').textContent=LDRILL.lab+(LDRILL.note?' · '+LDRILL.note:'');
@@ -932,24 +938,24 @@ document.addEventListener('keydown',e=>{const t=e.target;if((e.key==='Enter'||e.
 document.addEventListener('click',e=>{
   const pb=e.target.closest&&e.target.closest('rect.pbar');
   if(pb){const ym=+pb.dataset.m,lab=pb.dataset.lab,L=A().L;
-    if(ym)openLeads('Leads created in '+lab,L.filter(x=>Math.floor((F.by==='created'?x[0]:x[11])/100)===ym),'fit calls held and SALs are inside this cohort');
+    if(ym)openLeads('Leads created in '+lab,L.filter(x=>Math.floor((F.by==='created'?x[0]:x[11])/100)===ym),'fit calls held and SALs are inside this cohort','#perfBlk .card');
     return;}
   const cg=e.target.closest&&e.target.closest('.covgo');
   if(cg&&!e.target.closest('[data-tip].def')){const k=cg.dataset.k,L=A().L;
     const f=k==='scope'?(x=>(x[13]||x[14])||x[15]||x[2]!==SECTORS.indexOf('Not classified')||x[18]>0||x[4]>0):(x=>(x[13]||x[14])||x[15]);
-    openLeads(k==='scope'?'Enriched · leads in scope':'Reached out',L.filter(f));return;}
+    openLeads(k==='scope'?'Enriched · leads in scope':'Reached out',L.filter(f),'','#covBlk .card');return;}
   const mg=e.target.closest&&e.target.closest('tr.mgo');
   if(mg){const k=mg.dataset.mk,v=mg.dataset.mv,L=A().L;
     if(k==='platform'){return;}
     const col=k==='source'?20:k==='detail'?21:k==='sector'?2:1;
     const arr=k==='source'?D.rawsrc:k==='detail'?D.rawdet:k==='sector'?SECTORS:COUNTRIES;
     const i=arr.indexOf(v);if(i<0)return;
-    openLeads(v,L.filter(x=>x[col]===i));return;}
+    openLeads(v,L.filter(x=>x[col]===i),'','#mktBlk .card');return;}
   const pg=e.target.closest&&e.target.closest('.pr.pgo');
-  if(pg){const nm=pg.dataset.p,i=OWNERS.indexOf(nm),L=A().L;if(i<0)return;openLeads(nm,L.filter(x=>x[10]===i));return;}
+  if(pg){const nm=pg.dataset.p,i=OWNERS.indexOf(nm),L=A().L;if(i<0)return;openLeads(nm,L.filter(x=>x[10]===i),'','#pplBlk .card');return;}
   const g=e.target.closest&&e.target.closest('.mqgo');if(g&&!e.target.closest('[data-tip].def')){const r=+g.dataset.rank,l=g.dataset.lab;if(DRILL&&DLAB===l){DRILL=false;}else{DRILL=true;DRANK=r;DLAB=l;DALL=false;}drawMQ();}const fr=e.target.closest&&e.target.closest('.frow.click');
   if(fr&&!e.target.closest('[data-tip].def')){const act=fr.dataset.act,lb=fr.dataset.lab;
-    if(act==='leads'){const L=A().L,k=fr.dataset.stg;const f=k==='booked'?(x=>x[5]):(x=>x[6]);openLeads(lb,L.filter(f));return;}
+    if(act==='leads'){const L=A().L,k=fr.dataset.stg;const f=k==='booked'?(x=>x[5]):(x=>x[6]);openLeads(lb,L.filter(f),'','#fnlBlk .card');return;}
     if(act==='scored'){SDRILL=!SDRILL;SALDRILL=false;ODRILL=null;}
     else if(act==='sal'){SALDRILL=!SALDRILL;SALDALL=false;SDRILL=false;ODRILL=null;}
     else if(act==='opp'){const cc=A().stages.after_sal,key=lb==='Opportunity created'?'opp':lb==='Closed Lost'?'lost':lb;const ops=(cc[key]&&cc[key].ops)||[];
