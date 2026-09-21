@@ -563,7 +563,7 @@ const DEFS=[
  ['waiting','Waiting','Days since anyone last touched the record.','2026-09-18 − Lead.LastModifiedDate, in days','C26 · “Last modified date is the best option available as of now.” C25 · status variations: “We will get that corrected.”','sf'],
  ['eng','Engagement score','The marketing engagement score already stored in Salesforce, banded.','Lead.SF_Mkto_Score__c, banded 0 · 1–9 · 10–49 · 50–149 · 150+','C29 · Phave score “Not yet synced. Pending with Servion.”','sf'],
  ['lead','Account Fit Score','Signal’s fit score for the account, assigned before any contact and shown as a percentage band.','Signal model output, banded 80+ · 65–79 · 50–64 · under 50','C32, C33 · Signal provides; scoring model under review.','sig'],
- ['oppall','Opportunity Created','Every opportunity created in the period that is still open, added together. The stages beneath split the same deals by the stage each one is in today, so they sum back to this number and no deal is counted twice. The shaded part of each bar is the marketing-sourced share.','Opportunity.StageName IN (Incubation, Discovery, Evaluating, Negotiation, Pending Approval, PCN Requested) AND Opportunity.CreatedDate in period. Hold, Closed Won and Closed Lost are shown outside the total.','Selva, 19 Sep call: “Opportunity Created must be the sum total of all opportunity stages, shown as a count with ACV”, with the stage-wise split beneath.','sf'],
+ ['oppall','Open pipeline','Every opportunity created in the period that is still open, added together. Closed Won and Closed Lost are shown below it, outside the total, so they are never double-counted. The stages beneath split the same deals by the stage each one is in today, so they sum back to this number and no deal is counted twice. The shaded part of each bar is the marketing-sourced share.','Opportunity.StageName IN (Incubation, Discovery, Evaluating, Negotiation, Pending Approval, PCN Requested) AND Opportunity.CreatedDate in period. Hold, Closed Won and Closed Lost are shown outside the total.','Selva, 19 Sep call: “Opportunity Created must be the sum total of all opportunity stages, shown as a count with ACV”, with the stage-wise split beneath.','sf'],
  ['mktsrc','Marketing-sourced','Which opportunities count as brought in by marketing. Switchable in the funnel header, because Salesforce records the link two different ways.','Account came in as a lead (Account.Name matches a Lead.Company) · Salesforce conversion link (Lead.ConvertedAccountId, or the account behind Lead.ConvertedOpportunityId) · Either','Selva, 19 Sep call: pipeline sourced by marketing, expected around 35-40% of overall pipeline.','sf'],
  ['period','Period','Leads grouped by the month they were created and followed through every stage.','Lead.CreatedDate BETWEEN period start AND 2026-09-18; country as set in the filter bar','C35 · “These vary – weekly, monthly and yearly.”','sf']];
 const DEF=k=>{const d=DEFS.find(x=>x[0]===k);return d?esc('<div class=th>'+d[1]+'</div>'+d[2]+'<div class=tb>'+d[3]+'</div>'):'';};
@@ -765,20 +765,20 @@ function drawCov(){
 function drawFunnel(){
   const a=A(),s=a.stages,e=a.est,c=s.after_sal,p=a.pipe;const R=(k,lab,who,o,ex)=>Object.assign({k,lab,who,n:o.n,mq:o.mq,dr:o.direct},ex||{});
   const rows=[{k:'responded',lab:'Responded',who:'Replied or connected · Nooks',n:e.responded,mq:e.responded_mq,dr:e.responded_direct,est:true,resp:true},R('booked','Meeting booked','SDR',s.booked),R('held','Fit call held','AE',s.held),R('scored','Fit call scored','AE · survey',s.scored,{drill:true}),R('sal','SAL converted','Score 7 or above',s.sal,{saldrill:true}),
-    {sep:'Pipeline created · every deal counted once, at the stage it is in today'},
-    {k:'oppall',lab:'Opportunity Created',who:'The six open stages added together',n:p.allN,mq:p.n,dr:p.allN-p.n,ops:p.allOps,pipeRow:true,barDenom:p.allN||1,
+    {sep:'Pipeline by stage · every deal counted once, at the stage it is in today'},
+    {k:'oppall',lab:'Open pipeline',who:'The six Salesforce stages added together',n:p.allN,mq:p.n,dr:p.allN-p.n,ops:p.allOps,pipeRow:true,barDenom:p.allN||1,
       mqLab:'Marketing-sourced',drLab:'Other sources',
       cvHtml:(p.allAcv?pc(p.mktAcv,p.allAcv):'—')+'<small>marketing-sourced</small>'},
     ...p.stages.map(st=>({k:'stage',lab:st.lab,who:PROBOF[st.st]||'',n:st.n,mq:st.mk,dr:st.n-st.mk,ops:st.ops,pipeRow:true,barDenom:p.allN||1,
       mqLab:'Marketing-sourced',drLab:'Other sources',
-      cvHtml:pc(st.n,p.allN)+'<small>of opportunity created</small>'})),
+      cvHtml:pc(st.n,p.allN)+'<small>of open pipeline</small>'})),
     {sep:'Outside the total · closed in the period'},
     {k:'won',lab:'Closed Won',who:'Created and won in this period',n:p.won.length,ops:p.won,cls:'won',pipeRow:true,barDenom:p.allN||1,
       mq:p.mktOf(p.won),dr:p.won.length-p.mktOf(p.won),mqLab:'Marketing-sourced',drLab:'Other sources',
-      cvHtml:pc(p.won.length,p.allN)+'<small>of opportunity created</small>'},
+      cvHtml:pc(p.won.length,p.allN)+'<small>of open pipeline</small>'},
     {k:'lost',lab:'Closed Lost',who:'Created and lost in this period',n:p.lost.length,ops:p.lost,cls:'lost',pipeRow:true,barDenom:p.allN||1,
       mq:p.mktOf(p.lost),dr:p.lost.length-p.mktOf(p.lost),mqLab:'Marketing-sourced',drLab:'Other sources',
-      cvHtml:pc(p.lost.length,p.allN)+'<small>of opportunity created</small>'},
+      cvHtml:pc(p.lost.length,p.allN)+'<small>of open pipeline</small>'},
   ];
   const head=rows[0].n||1;const oppHead=(rows.find(r=>r.lab==='Opportunity created')||{}).n||1;let o='',lastReal=null,afterSal=false;
   rows.forEach((r,i)=>{if(r.sep){o+='<div class="fsep">'+r.sep+'</div>';return;}const pi=r.prev!=null?r.prev:lastReal,prev=(r.barDenom!=null?null:(pi!=null?rows[pi]:null));const sc=r.barDenom!=null?r.barDenom:(afterSal?oppHead:head);const w=100*r.n/sc,pw=prev?100*prev.n/sc:0,mqw=r.n?100*(r.mq||0)/r.n:0;
@@ -796,7 +796,9 @@ function drawFunnel(){
       '<div class="acvcell'+(rowAcv?'':' z')+'"'+(rowAcv?' data-tip="'+esc('<div class=th>'+r.lab+'</div>'+tipRows([[acvName()+' total',moneyFull(rowAcv)],['Average per opportunity',moneyFull(Math.round(rowAcv/nOps))],['Opportunities',nOps]]))+'"':'')+'>'+(rowAcv?money(rowAcv):'')+'</div>'+
       '<div class="cv'+((prev||r.cvHtml)?'':' dim')+'">'+(r.cvHtml?r.cvHtml:(prev?pc(r.n,prev.n)+'<small>of '+prev.lab.toLowerCase()+'</small>':'head'))+'</div>'+
       '<div class="chev">'+(act?(on?'&#9650;':'&#8250;'):'')+'</div></div>';if(!r.cls)lastReal=i;});
-  o+='<div class="ladft" style="margin-top:8px">Of these <b>'+nf(p.allN)+'</b> opportunities · '+money(p.allAcv)+', <b>'+nf(p.n)+'</b> · '+money(p.mktAcv)+' are <b>marketing-sourced</b> ('+(p.allAcv?pc(p.mktAcv,p.allAcv):'—')+' of ACV): New Logo deals where '+esc(MKTR[MKTF].sent)+'. Renewals and add-ons are never counted as marketing-sourced.</div>';
+  const madeN=p.allN+p.won.length+p.lost.length+p.hold.length;
+  o+='<div class="ladft" style="margin-top:8px"><b>'+nf(madeN)+'</b> opportunit'+(madeN===1?'y was':'ies were')+' created in this period: '+nf(p.allN)+' still open (above), '+nf(p.won.length)+' won, '+nf(p.lost.length)+' lost'+(p.hold.length?', '+nf(p.hold.length)+' on hold':'')+'.</div>';
+  o+='<div class="ladft" style="margin-top:4px">Of the <b>'+nf(p.allN)+'</b> still open · '+money(p.allAcv)+', <b>'+nf(p.n)+'</b> · '+money(p.mktAcv)+' are <b>marketing-sourced</b> ('+(p.allAcv?pc(p.mktAcv,p.allAcv):'—')+' of ACV): New Logo deals where '+esc(MKTR[MKTF].sent)+'. Renewals and add-ons are never counted as marketing-sourced.</div>';
   const side=[['Hold',p.hold]].filter(x=>x[1].length);
   o+=side.length?('<div class="ladft" style="margin-top:6px">Also created in this period and parked, outside the total: '+side.map(x=>'<button class="lnk pside" data-plab="'+esc(x[0])+'">'+nf(x[1].length)+' '+x[0].toLowerCase()+' · '+money(acvSum(x[1]))+'</button>').join(' · ')+'</div>'):'';
   $('fnl').innerHTML=o;
@@ -823,7 +825,7 @@ function drawFunnel(){
     
     (F.source?'<div class="srcwarn">Filtered by <b>Lead Source</b>. Opportunity.LeadSource is blank on most records in Salesforce, so this section will look sparse — the lead stages above are unaffected.</div>':'')+
     '<div class="ladft">'+(F.opptype==='nl'?'<span>Renewals and add-ons ('+nf(o2.created_all-o2.nl_created)+') are not included: the funnel and the breakdown are New Logo only</span>':'<span>All opportunity types shown, including renewals and add-ons</span>')+'<span>Closed in period, any creation date: <b style="color:var(--green-d)">'+nf(o2.closed_in_period.won)+' won</b> · <b style="color:var(--rose-d)">'+nf(o2.closed_in_period.lost)+' lost</b></span><span>Total '+acvName()+': <b>'+money(o2.acvTotal)+'</b></span></div>';
-  $('fnNote').innerHTML='Above SAL the rows are a funnel: each stage is a subset of the one before it. Below it the rows are a breakdown: every opportunity is counted once, at the stage it is in today, so the stages add back to Opportunity Created.'+(s.held_unscored.n?' <b>'+nf(s.held_unscored.n)+' held calls await a score.</b>':'');
+  $('fnNote').innerHTML='Above SAL the rows are a funnel: each stage is a subset of the one before it. Below it the rows are a breakdown: every opportunity is counted once, at the stage it is in today, so the stages add back to Open pipeline.'+(s.held_unscored.n?' <b>'+nf(s.held_unscored.n)+' held calls await a score.</b>':'');
 }
 /* ---------- 4 market ---------- */
 const PLAT=[['Genesys',.28],['Avaya',.24],['Cisco',.18],['NICE',.12],['Five9',.08],['Not yet researched',.10]];
@@ -928,7 +930,7 @@ function openLeads(lab,rows,note,host){
     if(r.top<60||r.top>innerHeight-140)scrollTo({top:r.top+scrollY-90,behavior:'smooth'});},30);
 }
 function openPipeDrill(lb){const pp=A().pipe;
-  const bank=[{lab:'Opportunity Created',ops:pp.allOps,note:'every opportunity counted in the total, at its current stage'}]
+  const bank=[{lab:'Open pipeline',ops:pp.allOps,note:'every opportunity counted in the total, at its current stage'}]
     .concat(pp.stages.map(st=>({lab:st.lab,ops:st.ops,note:'every opportunity sitting at '+st.st+' today'})))
     .concat([{lab:'Hold',ops:pp.hold,note:'parked at Hold today'},{lab:'Closed Won',ops:pp.won,note:'created in the period and already won'},{lab:'Closed Lost',ops:pp.lost,note:'created in the period and lost'}]);
   const row=bank.find(x=>x.lab===lb)||{ops:[],note:''};
