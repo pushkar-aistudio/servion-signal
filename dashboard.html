@@ -680,7 +680,7 @@ function compute(){
   const pHold=[];D.opps.forEach((o,i)=>{if(o[0]>=start&&o[0]<=perEnd()&&ASIDEST.includes(LADDER[o[2]])&&oKeep(o))pHold.push(i);});
   const closedMkt=st=>{const ix=[];D.opps.forEach((o,i)=>{if(o[0]>=start&&o[0]<=perEnd()&&st.includes(LADDER[o[2]])&&oKeep(o))ix.push(i);});return ix;};
   const pipe={allN:pAll.length,allAcv:acvSum(pAll),allOps:pAll,n:pMkt.length,acv:acvSum(pMkt),ops:pMkt,
-    mktAcv:acvSum(pMkt),
+    mktAcv:acvSum(pMkt),mktOf:ix=>ix.filter(i=>mktDeal(D.opps[i])).length,
     stages:OPENST.map(st=>{const ix=pAll.filter(i=>LADDER[D.opps[i][2]]===st),mx=pMkt.filter(i=>LADDER[D.opps[i][2]]===st);
       return {st,lab:st==='Incubation'?'Incubation · Pre-Opportunity':st,n:ix.length,ops:ix,mk:mx.length,mkOps:mx};}),
     hold:pHold,won:closedMkt(['Closed Won']),lost:closedMkt(['Closed Lost','Closed Duplicate'])};
@@ -772,6 +772,13 @@ function drawFunnel(){
     ...p.stages.map(st=>({k:'stage',lab:st.lab,who:PROBOF[st.st]||'',n:st.n,mq:st.mk,dr:st.n-st.mk,ops:st.ops,pipeRow:true,barDenom:p.allN||1,
       mqLab:'Marketing-sourced',drLab:'Other sources',
       cvHtml:pc(st.n,p.allN)+'<small>of opportunity created</small>'})),
+    {sep:'Outside the total · closed in the period'},
+    {k:'won',lab:'Closed Won',who:'Created and won in this period',n:p.won.length,ops:p.won,cls:'won',pipeRow:true,barDenom:p.allN||1,
+      mq:p.mktOf(p.won),dr:p.won.length-p.mktOf(p.won),mqLab:'Marketing-sourced',drLab:'Other sources',
+      cvHtml:pc(p.won.length,p.allN)+'<small>of opportunity created</small>'},
+    {k:'lost',lab:'Closed Lost',who:'Created and lost in this period',n:p.lost.length,ops:p.lost,cls:'lost',pipeRow:true,barDenom:p.allN||1,
+      mq:p.mktOf(p.lost),dr:p.lost.length-p.mktOf(p.lost),mqLab:'Marketing-sourced',drLab:'Other sources',
+      cvHtml:pc(p.lost.length,p.allN)+'<small>of opportunity created</small>'},
   ];
   const head=rows[0].n||1;const oppHead=(rows.find(r=>r.lab==='Opportunity created')||{}).n||1;let o='',lastReal=null,afterSal=false;
   rows.forEach((r,i)=>{if(r.sep){o+='<div class="fsep">'+r.sep+'</div>';return;}const pi=r.prev!=null?r.prev:lastReal,prev=(r.barDenom!=null?null:(pi!=null?rows[pi]:null));const sc=r.barDenom!=null?r.barDenom:(afterSal?oppHead:head);const w=100*r.n/sc,pw=prev?100*prev.n/sc:0,mqw=r.n?100*(r.mq||0)/r.n:0;
@@ -790,8 +797,8 @@ function drawFunnel(){
       '<div class="cv'+((prev||r.cvHtml)?'':' dim')+'">'+(r.cvHtml?r.cvHtml:(prev?pc(r.n,prev.n)+'<small>of '+prev.lab.toLowerCase()+'</small>':'head'))+'</div>'+
       '<div class="chev">'+(act?(on?'&#9650;':'&#8250;'):'')+'</div></div>';if(!r.cls)lastReal=i;});
   o+='<div class="ladft" style="margin-top:8px">Of these <b>'+nf(p.allN)+'</b> opportunities · '+money(p.allAcv)+', <b>'+nf(p.n)+'</b> · '+money(p.mktAcv)+' are <b>marketing-sourced</b> ('+(p.allAcv?pc(p.mktAcv,p.allAcv):'—')+' of ACV): New Logo deals where '+esc(MKTR[MKTF].sent)+'. Renewals and add-ons are never counted as marketing-sourced.</div>';
-  const side=[['Hold',p.hold],['Closed Won',p.won],['Closed Lost',p.lost]].filter(x=>x[1].length);
-  o+=side.length?('<div class="ladft" style="margin-top:6px">Also created in this period, outside the total (all sources): '+side.map(x=>'<button class="lnk pside" data-plab="'+esc(x[0])+'">'+nf(x[1].length)+' '+x[0].toLowerCase()+' · '+money(acvSum(x[1]))+'</button>').join(' · ')+'</div>'):'';
+  const side=[['Hold',p.hold]].filter(x=>x[1].length);
+  o+=side.length?('<div class="ladft" style="margin-top:6px">Also created in this period and parked, outside the total: '+side.map(x=>'<button class="lnk pside" data-plab="'+esc(x[0])+'">'+nf(x[1].length)+' '+x[0].toLowerCase()+' · '+money(acvSum(x[1]))+'</button>').join(' · ')+'</div>'):'';
   $('fnl').innerHTML=o;
   $('fhdAcv').textContent=acvName()+' · total';
   $('fout').innerHTML='<div class="fo"><div class="k">SALs</div><div class="v">'+nf(s.sal.n)+'</div><div class="s">'+pc(s.sal.n,s.held.n)+' of fit calls held</div></div><div class="fo"><div class="k">Scored below 7 · nurture</div><div class="v">'+nf(s.nurture.n)+'</div><div class="s">'+pc(s.nurture.n,s.scored.n)+' of scored</div></div>'+
