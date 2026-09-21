@@ -563,7 +563,7 @@ const DEFS=[
  ['waiting','Waiting','Days since anyone last touched the record.','2026-09-18 − Lead.LastModifiedDate, in days','C26 · “Last modified date is the best option available as of now.” C25 · status variations: “We will get that corrected.”','sf'],
  ['eng','Engagement score','The marketing engagement score already stored in Salesforce, banded.','Lead.SF_Mkto_Score__c, banded 0 · 1–9 · 10–49 · 50–149 · 150+','C29 · Phave score “Not yet synced. Pending with Servion.”','sf'],
  ['lead','Account Fit Score','Signal’s fit score for the account, assigned before any contact and shown as a percentage band.','Signal model output, banded 80+ · 65–79 · 50–64 · under 50','C32, C33 · Signal provides; scoring model under review.','sig'],
- ['oppall','Open pipeline','Every opportunity created in the period that is still open, added together. Closed Won and Closed Lost are shown below it, outside the total, so they are never double-counted. The stages beneath split the same deals by the stage each one is in today, so they sum back to this number and no deal is counted twice. The shaded part of each bar is the marketing-sourced share.','Opportunity.StageName IN (Incubation, Discovery, Evaluating, Negotiation, Pending Approval, PCN Requested) AND Opportunity.CreatedDate in period. Hold, Closed Won and Closed Lost are shown outside the total.','Selva, 19 Sep call: “Opportunity Created must be the sum total of all opportunity stages, shown as a count with ACV”, with the stage-wise split beneath.','sf'],
+ ['oppall','Opportunity Pipeline','Every opportunity created in the period that is still open, added together. Closed Won and Closed Lost are shown below it, outside the total, so they are never double-counted. The stages beneath split the same deals by the stage each one is in today, so they sum back to this number and no deal is counted twice. The shaded part of each bar is the marketing-sourced share.','Opportunity.StageName IN (Incubation, Discovery, Evaluating, Negotiation, Pending Approval, PCN Requested) AND Opportunity.CreatedDate in period. Hold, Closed Won and Closed Lost are shown outside the total.','Selva, 19 Sep call: “Opportunity Created must be the sum total of all opportunity stages, shown as a count with ACV”, with the stage-wise split beneath.','sf'],
  ['mktsrc','Marketing-sourced','Which opportunities count as brought in by marketing. Switchable in the funnel header, because Salesforce records the link two different ways.','Account came in as a lead (Account.Name matches a Lead.Company) · Salesforce conversion link (Lead.ConvertedAccountId, or the account behind Lead.ConvertedOpportunityId) · Either','Selva, 19 Sep call: pipeline sourced by marketing, expected around 35-40% of overall pipeline.','sf'],
  ['period','Period','Leads grouped by the month they were created and followed through every stage.','Lead.CreatedDate BETWEEN period start AND 2026-09-18; country as set in the filter bar','C35 · “These vary – weekly, monthly and yearly.”','sf']];
 const DEF=k=>{const d=DEFS.find(x=>x[0]===k);return d?esc('<div class=th>'+d[1]+'</div>'+d[2]+'<div class=tb>'+d[3]+'</div>'):'';};
@@ -646,7 +646,8 @@ function compute(){
   const MQ=L.filter(isMQ);const universe=F.country?[...F.country].reduce((t,i)=>t+(D.acctByCountry[COUNTRIES[i]]||0),0):D.totals.accounts;
   const months=ser.filter(x=>!x.partial).length||1;
   const mqf={universe,qualified:MQ.length,worked:cnt(MQ,x=>contacted(x)||x[5]),booked:cnt(MQ,x=>x[5]),held:cnt(MQ,x=>x[6]),sal:cnt(MQ,x=>x[7]>=7),opp:cnt(MQ,x=>x[8]),chain:chain(MQ),per_month:+(MQ.length/months).toFixed(1),
-    list:MQ.map(x=>{const r=rowOf(x);const o=x[9]>=0?D.opps[x[9]]:null;r.stage=x[8]?('Opportunity · '+(o?LADDER[o[2]]:'no record')):x[7]>=7?'SAL':x[6]?'Fit call held':x[5]?'Meeting booked':contacted(x)?'Worked':'Qualified';r.rank=x[8]?6:x[7]>=7?5:x[6]?4:x[5]?3:contacted(x)?2:1;return r;}).sort((a,b)=>b.rank-a.rank||b.mk-a.mk)};
+    list:MQ.map(x=>{const r=rowOf(x);const o=x[9]>=0?D.opps[x[9]]:null;r.stage=x[8]?('Opportunity · '+(o?LADDER[o[2]]:'no record')):x[7]>=7?'SAL':x[6]?'Fit call held':x[5]?'Meeting booked':contacted(x)?'Worked':'Qualified';r.rank=x[8]?6:x[7]>=7?5:x[6]?4:x[5]?3:contacted(x)?2:1;
+      r.w=(contacted(x)||x[5])?1:0;r.b=x[5]?1:0;r.h=x[6]?1:0;r.s=x[7]>=7?1:0;r.c=x[8]?1:0;r.oi=x[9];r.st=o?LADDER[o[2]]:(x[8]?'no record':'');return r;}).sort((a,b)=>b.rank-a.rank||b.mk-a.mk)};
   // scores
   const eb=v=>v<=0?'0':v<10?'1-9':v<50?'10-49':v<150?'50-149':'150+';
   const engagement=['0','1-9','10-49','50-149','150+'].map(k=>({bucket:k,leads:0,held:0,sal:0}));for(const x of L){const r=engagement.find(e=>e.bucket===eb(x[12]));r.leads++;if(x[6])r.held++;if(x[7]>=7)r.sal++;}
@@ -680,10 +681,11 @@ function compute(){
   const pHold=[];D.opps.forEach((o,i)=>{if(o[0]>=start&&o[0]<=perEnd()&&ASIDEST.includes(LADDER[o[2]])&&oKeep(o))pHold.push(i);});
   const closedMkt=st=>{const ix=[];D.opps.forEach((o,i)=>{if(o[0]>=start&&o[0]<=perEnd()&&st.includes(LADDER[o[2]])&&oKeep(o))ix.push(i);});return ix;};
   const pipe={allN:pAll.length,allAcv:acvSum(pAll),allOps:pAll,n:pMkt.length,acv:acvSum(pMkt),ops:pMkt,
-    mktAcv:acvSum(pMkt),mktOf:ix=>ix.filter(i=>mktDeal(D.opps[i])).length,
+    mktAcv:acvSum(pMkt),mktCount:pMkt.length,mktOf:ix=>ix.filter(i=>mktDeal(D.opps[i])).length,
     stages:OPENST.map(st=>{const ix=pAll.filter(i=>LADDER[D.opps[i][2]]===st),mx=pMkt.filter(i=>LADDER[D.opps[i][2]]===st);
       return {st,lab:st==='Incubation'?'Incubation · Pre-Opportunity':st,n:ix.length,ops:ix,mk:mx.length,mkOps:mx};}),
     hold:pHold,won:closedMkt(['Closed Won']),lost:closedMkt(['Closed Lost','Closed Duplicate'])};
+  pipe.madeN=pipe.allN+pipe.won.length+pipe.lost.length+pipe.hold.length;
   CUR={start,stages:s,est,series:ser,weekly,sector,source,country,rawsrc,rawdet,salList,opps,people,queues,mqf,engagement,signal,activity:wa,act_kpi,scored,recon,pipe,L};
 }
 function activeFilterLabel(){const parts=[];parts.push(F.country?[...F.country].map(i=>COUNTRIES[i]).join(', '):'all countries');if(F.sector)parts.push([...F.sector].map(i=>SECTORS[i]).join(', '));if(F.source)parts.push([...F.source].map(i=>D.rawsrc[i]).join(', '));if(F.path)parts.push(F.path==='mq'?'marketing-qualified':'direct outbound');if(F.owner)parts.push([...F.owner].map(i=>OWNERS[i]).join(', '));parts.push(F.by==='created'?'lead created in period':'lead touched in period');return parts.join(' · ');}
@@ -765,20 +767,21 @@ function drawCov(){
 function drawFunnel(){
   const a=A(),s=a.stages,e=a.est,c=s.after_sal,p=a.pipe;const R=(k,lab,who,o,ex)=>Object.assign({k,lab,who,n:o.n,mq:o.mq,dr:o.direct},ex||{});
   const rows=[{k:'responded',lab:'Responded',who:'Replied or connected · Nooks',n:e.responded,mq:e.responded_mq,dr:e.responded_direct,est:true,resp:true},R('booked','Meeting booked','SDR',s.booked),R('held','Fit call held','AE',s.held),R('scored','Fit call scored','AE · survey',s.scored,{drill:true}),R('sal','SAL converted','Score 7 or above',s.sal,{saldrill:true}),
-    {sep:'Pipeline by stage · every deal counted once, at the stage it is in today'},
-    {k:'oppall',lab:'Open pipeline',who:'The six Salesforce stages added together',n:p.allN,mq:p.n,dr:p.allN-p.n,ops:p.allOps,pipeRow:true,barDenom:p.allN||1,
+    R('opp','Converted to an opportunity','From these SALs · '+(c.norecord.n?c.norecord.n+' converted with no opportunity record':'all have an opportunity record'),c.opp,{prev:4,ops:c.opp.ops,norec:c.norecord.n}),
+    {sep:'Opportunity Pipeline · every deal counted once, at the stage it is in today'},
+    {k:'oppall',lab:'Opportunity Pipeline',who:'The six Salesforce stages added together',n:p.allN,mq:p.n,dr:p.allN-p.n,ops:p.allOps,pipeRow:true,barDenom:p.allN||1,
       mqLab:'Marketing-sourced',drLab:'Other sources',
-      cvHtml:(p.allAcv?pc(p.mktAcv,p.allAcv):'—')+'<small>marketing-sourced</small>'},
+      cvHtml:pc(p.n,p.allN)+'<small>of deals marketing-sourced</small>'},
     ...p.stages.map(st=>({k:'stage',lab:st.lab,who:PROBOF[st.st]||'',n:st.n,mq:st.mk,dr:st.n-st.mk,ops:st.ops,pipeRow:true,barDenom:p.allN||1,
       mqLab:'Marketing-sourced',drLab:'Other sources',
-      cvHtml:pc(st.n,p.allN)+'<small>of open pipeline</small>'})),
+      cvHtml:pc(st.n,p.allN)+'<small>of opportunity pipeline</small>'})),
     {sep:'Outside the total · closed in the period'},
     {k:'won',lab:'Closed Won',who:'Created and won in this period',n:p.won.length,ops:p.won,cls:'won',pipeRow:true,barDenom:p.allN||1,
       mq:p.mktOf(p.won),dr:p.won.length-p.mktOf(p.won),mqLab:'Marketing-sourced',drLab:'Other sources',
-      cvHtml:pc(p.won.length,p.allN)+'<small>of open pipeline</small>'},
+      cvHtml:pc(p.won.length,p.madeN)+'<small>of all created</small>'},
     {k:'lost',lab:'Closed Lost',who:'Created and lost in this period',n:p.lost.length,ops:p.lost,cls:'lost',pipeRow:true,barDenom:p.allN||1,
       mq:p.mktOf(p.lost),dr:p.lost.length-p.mktOf(p.lost),mqLab:'Marketing-sourced',drLab:'Other sources',
-      cvHtml:pc(p.lost.length,p.allN)+'<small>of open pipeline</small>'},
+      cvHtml:pc(p.lost.length,p.madeN)+'<small>of all created</small>'},
   ];
   const head=rows[0].n||1;const oppHead=(rows.find(r=>r.lab==='Opportunity created')||{}).n||1;let o='',lastReal=null,afterSal=false;
   rows.forEach((r,i)=>{if(r.sep){o+='<div class="fsep">'+r.sep+'</div>';return;}const pi=r.prev!=null?r.prev:lastReal,prev=(r.barDenom!=null?null:(pi!=null?rows[pi]:null));const sc=r.barDenom!=null?r.barDenom:(afterSal?oppHead:head);const w=100*r.n/sc,pw=prev?100*prev.n/sc:0,mqw=r.n?100*(r.mq||0)/r.n:0;
@@ -796,9 +799,9 @@ function drawFunnel(){
       '<div class="acvcell'+(rowAcv?'':' z')+'"'+(rowAcv?' data-tip="'+esc('<div class=th>'+r.lab+'</div>'+tipRows([[acvName()+' total',moneyFull(rowAcv)],['Average per opportunity',moneyFull(Math.round(rowAcv/nOps))],['Opportunities',nOps]]))+'"':'')+'>'+(rowAcv?money(rowAcv):'')+'</div>'+
       '<div class="cv'+((prev||r.cvHtml)?'':' dim')+'">'+(r.cvHtml?r.cvHtml:(prev?pc(r.n,prev.n)+'<small>of '+prev.lab.toLowerCase()+'</small>':'head'))+'</div>'+
       '<div class="chev">'+(act?(on?'&#9650;':'&#8250;'):'')+'</div></div>';if(!r.cls)lastReal=i;});
-  const madeN=p.allN+p.won.length+p.lost.length+p.hold.length;
+  const madeN=p.madeN;
   o+='<div class="ladft" style="margin-top:8px"><b>'+nf(madeN)+'</b> opportunit'+(madeN===1?'y was':'ies were')+' created in this period: '+nf(p.allN)+' still open (above), '+nf(p.won.length)+' won, '+nf(p.lost.length)+' lost'+(p.hold.length?', '+nf(p.hold.length)+' on hold':'')+'.</div>';
-  o+='<div class="ladft" style="margin-top:4px">Of the <b>'+nf(p.allN)+'</b> still open · '+money(p.allAcv)+', <b>'+nf(p.n)+'</b> · '+money(p.mktAcv)+' are <b>marketing-sourced</b> ('+(p.allAcv?pc(p.mktAcv,p.allAcv):'—')+' of ACV): New Logo deals where '+esc(MKTR[MKTF].sent)+'. Renewals and add-ons are never counted as marketing-sourced.</div>';
+  o+='<div class="ladft" style="margin-top:4px">Of the <b>'+nf(p.allN)+'</b> still open · '+money(p.allAcv)+', <b>'+nf(p.n)+'</b> of '+nf(p.allN)+' deals ('+pc(p.n,p.allN)+') · '+money(p.mktAcv)+' of '+money(p.allAcv)+' ('+(p.allAcv?pc(p.mktAcv,p.allAcv):'—')+' of ACV) are <b>marketing-sourced</b>: New Logo deals where '+esc(MKTR[MKTF].sent)+'. Renewals and add-ons are never counted as marketing-sourced.</div>';
   const side=[['Hold',p.hold]].filter(x=>x[1].length);
   o+=side.length?('<div class="ladft" style="margin-top:6px">Also created in this period and parked, outside the total: '+side.map(x=>'<button class="lnk pside" data-plab="'+esc(x[0])+'">'+nf(x[1].length)+' '+x[0].toLowerCase()+' · '+money(acvSum(x[1]))+'</button>').join(' · ')+'</div>'):'';
   $('fnl').innerHTML=o;
@@ -825,7 +828,7 @@ function drawFunnel(){
     
     (F.source?'<div class="srcwarn">Filtered by <b>Lead Source</b>. Opportunity.LeadSource is blank on most records in Salesforce, so this section will look sparse — the lead stages above are unaffected.</div>':'')+
     '<div class="ladft">'+(F.opptype==='nl'?'<span>Renewals and add-ons ('+nf(o2.created_all-o2.nl_created)+') are not included: the funnel and the breakdown are New Logo only</span>':'<span>All opportunity types shown, including renewals and add-ons</span>')+'<span>Closed in period, any creation date: <b style="color:var(--green-d)">'+nf(o2.closed_in_period.won)+' won</b> · <b style="color:var(--rose-d)">'+nf(o2.closed_in_period.lost)+' lost</b></span><span>Total '+acvName()+': <b>'+money(o2.acvTotal)+'</b></span></div>';
-  $('fnNote').innerHTML='Above SAL the rows are a funnel: each stage is a subset of the one before it. Below it the rows are a breakdown: every opportunity is counted once, at the stage it is in today, so the stages add back to Open pipeline.'+(s.held_unscored.n?' <b>'+nf(s.held_unscored.n)+' held calls await a score.</b>':'');
+  $('fnNote').innerHTML='Above SAL the rows are a funnel: each stage is a subset of the one before it. Below it the rows are a breakdown: every opportunity is counted once, at the stage it is in today, so the stages add back to Opportunity Pipeline.'+(s.held_unscored.n?' <b>'+nf(s.held_unscored.n)+' held calls await a score.</b>':'');
 }
 /* ---------- 4 market ---------- */
 const PLAT=[['Genesys',.28],['Avaya',.24],['Cisco',.18],['NICE',.12],['Five9',.08],['Not yet researched',.10]];
@@ -869,8 +872,12 @@ function drawQ(){
 /* ---------- 7 marketing-qualified ---------- */
 function drawMQ(){
   const a=A(),m=a.mqf,ch=m.chain;
+  const MQSEL={'Marketing-qualified':r=>true,'Worked by SDR or AE':r=>r.w,'Meeting booked':r=>r.b,'Fit call held':r=>r.h,'SAL':r=>r.s,'Opportunity created':r=>r.c};
+  const mqRows=lab=>MQSEL[lab]?m.list.filter(MQSEL[lab]):m.list.filter(r=>r.st===lab);
+  const mqOps=lab=>mqRows(lab).map(r=>r.oi).filter(i=>i>=0);
+  window.__mqRows=()=>mqRows(DLAB);
   const steps=[{lab:'Marketing-qualified',n:m.qualified,sub:(m.per_month?'≈ '+m.per_month+' per month':''),rank:1,k:'mqa'},{lab:'Worked by SDR or AE',n:m.worked,sub:'email, call or booking',rank:2,k:'worked'},{lab:'Meeting booked',n:m.booked,rank:3,k:'booked'},{lab:'Fit call held',n:m.held,rank:4,k:'held'},{lab:'SAL',n:m.sal,sub:'scored 7 or above',rank:5,k:'sal'},{lab:'Opportunity created',n:m.opp,sub:'converted lead · any path'+(ch.incubation.n?' · '+ch.incubation.n+' via Incubation':''),rank:6,k:'opp',ops:ch.opp.ops},
-    ...MAIN.slice(0,5).map(st=>({lab:st,n:ch[st].n,rank:6,k:'stage',stage:true,ops:ch[st].ops})),{lab:'Closed Won',n:ch['Closed Won'].n,rank:6,k:'won',won:true,ops:ch['Closed Won'].ops}];
+    ...MAIN.slice(0,5).map(st=>({lab:st,n:mqRows(st).length,rank:6,k:'stage',stage:true,ops:mqOps(st)})),{lab:'Closed Won',n:mqRows('Closed Won').length,rank:6,k:'won',won:true,ops:mqOps('Closed Won')}];
   $('mqPill').textContent=nf(m.qualified)+' qualified'+(m.per_month?' · ≈ '+m.per_month+'/month':'');const base=m.qualified||1;
   $('mqf').innerHTML='<div class="cvtot"><b>'+nf(m.qualified)+'</b> of the <b>'+nf(a.stages.leads.n)+'</b> lead record'+(a.stages.leads.n===1?'':'s')+' created in the period '+(a.stages.leads.n===1?'is':'are')+' marketing-qualified. Counted in leads, not accounts: MQA status sits on the Lead.</div>'+
     '<div class="mqhd"><span></span><span></span><span>Leads</span><span>'+acvName()+' · total</span><span></span></div>'+
@@ -880,7 +887,7 @@ function drawMQ(){
     '<div class="ladft" style="margin-top:8px"><span>Exits: <b style="color:var(--rose-d)">'+nf(ch.lost.n)+' closed lost</b> · <b>'+nf(ch.norecord.n)+'</b> converted without an opportunity record</span></div>';
   $('drill').classList.toggle('on',DRILL);
   revealPanel(DRILL?'drill':null);
-  if(DRILL){const L=m.list.filter(r=>r.rank>=DRANK),cap=10,show=DALL?L:L.slice(0,cap);$('drillN').textContent=nf(L.length);$('drillLab').textContent='marketing-qualified leads that reached “'+DLAB+'” or beyond, furthest stage first';
+  if(DRILL){const L=mqRows(DLAB),cap=10,show=DALL?L:L.slice(0,cap);$('drillN').textContent=nf(L.length);$('drillLab').textContent=MQSEL[DLAB]?('marketing-qualified leads at “'+DLAB+'”, furthest stage first'):('marketing-qualified leads whose opportunity is at “'+DLAB+'” today');
     const tg=s=>/Closed Won/.test(s)?'ok':/Lost|no record/.test(s)?'bad':s==='SAL'||/Opportunity/.test(s)?'ok':/held|booked/.test(s)?'warn':'';
     $('drillBody').innerHTML=show.length?show.map(r=>'<tr><td><a class="colink" href="account.html" target="_blank">'+esc(r.co)+'</a><div class="rn"><span>'+esc(r.src)+'</span></div></td><td>'+esc(r.sec)+'</td><td><span class="tag '+tg(r.stage)+'">'+esc(r.stage)+'</span></td><td>'+esc(r.own)+'</td><td class="r">'+nf(r.mk)+'</td><td class="r">'+(r.days==null?'—':r.days+'d')+'</td></tr>').join(''):'<tr><td colspan="6" style="padding:16px;color:var(--ink-3)">No accounts at this stage.</td></tr>';
     $('drillMore').innerHTML=L.length>cap?(DALL?'Show fewer <span class="arw">&#9650;</span>':'Show '+(L.length-cap)+' more <span class="arw">&#9660;</span>'):'';$('drillMore').style.display=L.length>cap?'':'none';}
@@ -930,7 +937,7 @@ function openLeads(lab,rows,note,host){
     if(r.top<60||r.top>innerHeight-140)scrollTo({top:r.top+scrollY-90,behavior:'smooth'});},30);
 }
 function openPipeDrill(lb){const pp=A().pipe;
-  const bank=[{lab:'Open pipeline',ops:pp.allOps,note:'every opportunity counted in the total, at its current stage'}]
+  const bank=[{lab:'Opportunity Pipeline',ops:pp.allOps,note:'every opportunity counted in the total, at its current stage'}]
     .concat(pp.stages.map(st=>({lab:st.lab,ops:st.ops,note:'every opportunity sitting at '+st.st+' today'})))
     .concat([{lab:'Hold',ops:pp.hold,note:'parked at Hold today'},{lab:'Closed Won',ops:pp.won,note:'created in the period and already won'},{lab:'Closed Lost',ops:pp.lost,note:'created in the period and lost'}]);
   const row=bank.find(x=>x.lab===lb)||{ops:[],note:''};
@@ -1028,8 +1035,7 @@ document.addEventListener('click',e=>{
     if(ODRILL&&ODRILL.key==='tile:'+k){ODRILL=null;}else{ODRILL={key:'tile:'+k,lab:'every opportunity created in the period now at '+k+', whether or not it came through the lead funnel',rows:rws};OALL=false;SDRILL=false;SALDRILL=false;}
     drawFunnel();}});
 $('drillX').addEventListener('click',()=>{DRILL=false;drawMQ();});
-$('mqCsv').addEventListener('click',()=>{const L=A().mqf.list.filter(r=>r.rank>=DRANK);csvDownload([['Account','Sector','Furthest stage','Owner','Engagement score','Lead Source','Days since last touch']].concat(L.map(r=>[r.co,r.sec,r.stage,r.own,r.mk,r.src,r.days])),'servion-marketing-qualified.csv');});
-$('mqCsv').addEventListener('click',()=>{const L=A().mqf.list.filter(r=>r.rank>=DRANK);csvDownload([['Account','Sector','Furthest stage','Owner','Engagement score','Lead Source','Days since last touch']].concat(L.map(r=>[r.co,r.sec,r.stage,r.own,r.mk,r.src,r.days])),'servion-marketing-qualified.csv');});$('drillMore').addEventListener('click',()=>{DALL=!DALL;drawMQ();});
+$('mqCsv').addEventListener('click',()=>{const L=(window.__mqRows?window.__mqRows():A().mqf.list);csvDownload([['Account','Sector','Furthest stage','Owner','Engagement score','Lead Source','Days since last touch']].concat(L.map(r=>[r.co,r.sec,r.stage,r.own,r.mk,r.src,r.days])),'servion-marketing-qualified.csv');});
 $('sdrillX').addEventListener('click',()=>{SDRILL=false;drawFunnel();});$('sdrillMore').addEventListener('click',()=>{SALL=!SALL;drawFunnel();});
 $('saldrillX').addEventListener('click',()=>{SALDRILL=false;drawFunnel();});$('saldrillMore').addEventListener('click',()=>{SALDALL=!SALDALL;drawFunnel();});
 $('odrillX').addEventListener('click',()=>{ODRILL=null;drawFunnel();});$('odrillMore').addEventListener('click',()=>{OALL=!OALL;drawFunnel();});
