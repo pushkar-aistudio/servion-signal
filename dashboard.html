@@ -510,7 +510,7 @@ const iso2int=s=>s?+s.replace(/-/g,''):0;
 const int2iso=n=>String(n).replace(/(\d{4})(\d{2})(\d{2})/,'$1-$2-$3');
 function setCustom(){const f=iso2int($('dFrom').value),t=iso2int($('dTo').value);if(!f||!t||f>t)return false;
   PER.custom.start=f;PER.custom.end=Math.min(t,ASOF);PER.custom.rng=dstr(f)+' – '+dstr(PER.custom.end);return true;}
-const F={w:'apr',by:'created',country:null,sector:null,source:null,path:null,owner:null,opptype:'all'};
+const F={w:'apr',by:'created',country:null,sector:null,source:null,path:null,owner:null,opptype:'nl'};
 let MKTF='either';  /* how an opportunity counts as marketing-sourced: name | link | either */
 const MKTR={either:{lab:'Lead or conversion link',tip:'Counted if the account came in as a lead OR Salesforce links a converted lead to it. The most complete rule.',test:f=>f>0},name:{lab:'Account came in as a lead',tip:'The account name matches the company on a Salesforce lead.',test:f=>(f&1)>0},link:{lab:'Salesforce conversion link',tip:'Salesforce itself links a converted lead to this account or to one of its opportunities.',test:f=>(f&2)>0}};
 const OPENST=['Incubation','Discovery','Evaluating','Negotiation','Pending Approval','PCN Requested'];  /* exactly the stages Selva listed; Hold sits outside the total */
@@ -762,8 +762,8 @@ function drawFunnel(){
   const a=A(),s=a.stages,e=a.est,c=s.after_sal,p=a.pipe;const R=(k,lab,who,o,ex)=>Object.assign({k,lab,who,n:o.n,mq:o.mq,dr:o.direct},ex||{});
   const rows=[{k:'responded',lab:'Responded',who:'Replied or connected · Nooks',n:e.responded,mq:e.responded_mq,dr:e.responded_direct,est:true,resp:true},R('booked','Meeting booked','SDR',s.booked),R('held','Fit call held','AE',s.held),R('scored','Fit call scored','AE · survey',s.scored,{drill:true}),R('sal','SAL converted','Score 7 or above',s.sal,{saldrill:true}),
     {sep:'Pipeline sourced by marketing · every deal counted once, at the stage it is in today'},
-    {k:'oppall',lab:'Opportunity Created',who:'All open stages added together',n:p.n,ops:p.ops,cls:'pipeh',pipeRow:true,barDenom:p.n||1,
-      cvHtml:(p.allAcv?pc(p.acv,p.allAcv):'—')+'<small>of pipeline '+acvName()+'</small>'},
+    {k:'oppall',lab:'Opportunity Created',who:'Marketing-sourced · the six open stages added together',n:p.n,ops:p.ops,cls:'pipeh',pipeRow:true,barDenom:p.n||1,
+      cvHtml:(p.allAcv?pc(p.acv,p.allAcv):'—')+'<small>of '+(F.opptype==='nl'?'New Logo ':'all ')+'pipeline</small>'},
     ...p.stages.map(st=>({k:'stage',lab:st.lab,who:PROBOF[st.st]||'',n:st.n,ops:st.ops,cls:'pipe',pipeRow:true,barDenom:p.n||1,
       cvHtml:pc(st.n,p.n)+'<small>of opportunity created</small>'})),
   ];
@@ -783,6 +783,7 @@ function drawFunnel(){
       '<div class="acvcell'+(rowAcv?'':' z')+'"'+(rowAcv?' data-tip="'+esc('<div class=th>'+r.lab+'</div>'+tipRows([[acvName()+' total',moneyFull(rowAcv)],['Average per opportunity',moneyFull(Math.round(rowAcv/nOps))],['Opportunities',nOps]]))+'"':'')+'>'+(rowAcv?money(rowAcv):'')+'</div>'+
       '<div class="cv'+((prev||r.cvHtml)?'':' dim')+'">'+(r.cvHtml?r.cvHtml:(prev?pc(r.n,prev.n)+'<small>of '+prev.lab.toLowerCase()+'</small>':'head'))+'</div>'+
       '<div class="chev">'+(act?(on?'&#9650;':'&#8250;'):'')+'</div></div>';if(!r.cls)lastReal=i;});
+  o+='<div class="ladft" style="margin-top:8px">Measured against <b>'+nf(p.allN)+'</b> open '+(F.opptype==='nl'?'New Logo ':'')+'opportunit'+(p.allN===1?'y':'ies')+' · '+money(p.allAcv)+' created in this period from every source. Marketing-sourced means '+esc(MKTR[MKTF].lab).toLowerCase()+'.</div>';
   const side=[['Hold',p.hold],['Closed Won',p.won],['Closed Lost',p.lost]].filter(x=>x[1].length);
   o+=side.length?('<div class="ladft" style="margin-top:6px">Also created in this period, outside the total: '+side.map(x=>'<button class="lnk pside" data-plab="'+esc(x[0])+'">'+nf(x[1].length)+' '+x[0].toLowerCase()+' · '+money(acvSum(x[1]))+'</button>').join(' · ')+'</div>'):'';
   $('fnl').innerHTML=o;
