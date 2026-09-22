@@ -294,6 +294,8 @@
   .fn .fsep em{font-style:normal;text-transform:none;letter-spacing:0;color:var(--ink-4);font-weight:500}
   .fbar i.won{background:var(--green)} .fbar i.lost{background:var(--rose)} .fbar i.norec{background:var(--ink-4)}
   .fbar i.pipe{background:var(--violet)} .fbar i.pipeh{background:var(--blue)}
+  .opx .nlw{color:var(--ink-4);font-size:10.5px;margin-left:-4px}
+  .kp.click,.hn.click,.hsec>div.click{cursor:pointer} .kp.click:hover,.hn.click:hover,.hsec>div.click:hover{background:var(--hover,rgba(0,0,0,.03))}
   .cvlg .lgk{margin-right:4px;vertical-align:-1px}
   .qempty{padding:18px 16px;color:var(--ink-2);font-size:12.5px;line-height:1.55}
   .daterange{display:none;align-items:center;gap:8px;margin-left:4px}
@@ -465,7 +467,7 @@
             <div class="showmore"><button class="lnk" id="drillMore"></button></div></div>
           <div class="note" id="mqNote"></div></div></div>
 
-      <div class="blk"><div class="bh"><h2>Engagement by channel</h2><span class="r"><span class="pill">Email and calls</span></span></div>
+      <div class="blk" id="chBlk"><div class="bh"><h2>Engagement by channel</h2><span class="r"><span class="pill">Email and calls</span></span></div>
         <div class="card"><div class="split">
           <div class="spL"><div class="subk">Outreach and response</div><div class="chrow" id="chn"></div><div class="chreal" id="chreal"></div></div>
           <div class="spR"><div class="subk">Human replies · <span id="rqN"></span> <sup class="prov est">est</sup></div><div class="rqbar" id="rqbar"></div><div id="rqrows"></div></div></div>
@@ -733,9 +735,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&OPEN){OPEN=null;dra
 function drawPerf(){
   const a=A(),s=a.stages,held=s.held.n,sal=s.sal.n,scored=s.scored.n;
   $('pLab').textContent=PER[F.w].rng+(F.by==='created'?' · leads created in period':' · leads touched in period');
-  $('perfHero').innerHTML='<div class="tk">SALs converted</div><div class="hn"><span class="big">'+nf(sal)+'</span><span class="of">of '+nf(held)+' fit calls held</span></div>'+
+  $('perfHero').innerHTML='<div class="tk">SALs converted</div><div class="hn click" role="button" tabindex="0" data-fo="sal"><span class="big">'+nf(sal)+'</span><span class="of">of '+nf(held)+' fit calls held</span></div>'+
     '<div class="hsub">Of the '+nf(scored)+' fit calls scored, <b>'+pc(sal,scored)+'</b> scored 7 or above.'+(PER[F.w].start<20260401?' <b>Scoring began in April 2026</b>; earlier calls are shown unscored.':'')+'</div>'+
-    '<div class="hsec"><div><div class="k">Meetings booked</div><div class="v">'+nf(s.booked.n)+'</div><div class="s">'+pc(held,s.booked.n)+' went on to be held</div></div><div><div class="k">Marketing-qualified share</div><div class="v">'+pc(s.sal.mq,sal)+'</div><div class="s">'+nf(s.sal.mq)+' of '+nf(sal)+' SALs came via marketing</div></div></div>';
+    '<div class="hsec"><div class="click" role="button" tabindex="0" data-fo="booked"><div class="k">Meetings booked</div><div class="v">'+nf(s.booked.n)+'</div><div class="s">'+pc(held,s.booked.n)+' went on to be held</div></div><div><div class="k">Marketing-qualified share</div><div class="v">'+pc(s.sal.mq,sal)+'</div><div class="s">'+nf(s.sal.mq)+' of '+nf(sal)+' SALs came via marketing</div></div></div>';
   const ser=G==='week'?a.weekly:a.series,svg=$('perf'),Wd=svg.clientWidth||760,H=svg.clientHeight||230,padL=12,padR=12,padT=24,padB=24;
   const n=ser.length,gw=(Wd-padL-padR)/n,bw=Math.min(46,gw*0.64),mx=Math.max(1,...ser.map(x=>x.held));
   let o='<defs><pattern id="hh" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#fff"/><rect width="3" height="6" fill="#dfe3ea"/></pattern></defs>';
@@ -855,11 +857,11 @@ function drawPeople(){
   const mx=Math.max(1,...aes.map(p=>p.held));
   ['leads','booked','held','sal'].forEach((k,i)=>{const el=$('sdr').children[i+1];if(el){el.classList.add('click');el.setAttribute('role','button');el.tabIndex=0;el.dataset.sdrk=k;}});
   $('aes').innerHTML='<div class="pr hd"><div>AE</div><div class="pbh">Fit calls held · SALs</div><div class="rr">SAL / held</div><div class="rr">'+(F.opptype==='nl'?'New logo':'Opps')+' · won · lost · '+acvName()+'</div></div>'+
-    aes.map(p=>'<div class="pr pgo" role="button" tabindex="0" data-p="'+esc(p.name)+'"><div class="pn">'+esc(p.name)+'</div><div class="pb"><i class="h" style="width:'+(100*p.held/mx)+'%" data-tip="'+esc('<div class=th>'+p.name+'</div>'+tipRows([['Meetings booked',p.booked],['Fit calls held',p.held],['Scored',p.scored],['SALs',p.sal],['Opportunities created',p.nl],['Won',p.won],['Lost',p.lost]]))+'"></i><i class="s" style="width:'+(100*p.sal/mx)+'%"></i></div><div class="pv"><b>'+p.sal+'</b> / '+p.held+'</div><div class="opx"><b>'+p.nl+'</b><span class="'+(p.won?'w':'z')+'">'+p.won+' won</span><span class="'+(p.lost?'l':'z')+'">'+p.lost+' lost</span><span class="acvp">'+money(p.acv||0)+'</span></div></div>').join('')||'<div class="qempty">No AE activity under these filters.</div>';
+    aes.map(p=>'<div class="pr pgo" role="button" tabindex="0" data-p="'+esc(p.name)+'"><div class="pn">'+esc(p.name)+'</div><div class="pb"><i class="h" style="width:'+(100*p.held/mx)+'%" data-tip="'+esc('<div class=th>'+p.name+'</div>'+tipRows([['Meetings booked',p.booked],['Fit calls held',p.held],['Scored',p.scored],['SALs',p.sal],['Opportunities created',p.nl],['Won',p.won],['Lost',p.lost]]))+'"></i><i class="s" style="width:'+(100*p.sal/mx)+'%"></i></div><div class="pv"><b>'+p.sal+'</b> SAL / '+p.held+' held</div><div class="opx"><b>'+p.nl+'</b><span class="nlw">new logo</span><span class="'+(p.won?'w':'z')+'">'+p.won+' won</span><span class="'+(p.lost?'l':'z')+'">'+p.lost+' lost</span><span class="acvp">'+money(p.acv||0)+'</span></div></div>').join('')||'<div class="qempty">No AE activity under these filters.</div>';
   $('pNote').innerHTML='Attributed by <b>record owner</b>; Servion confirmed Patricia Shostak is the only SDR.';
 }
 /* ---------- 6 needs action ---------- */
-const QDEF=[{k:'noscore',lab:'Fit call held, not scored',at:'AE has not filled the survey',cls:'r'},{k:'nothold',lab:'Meeting scheduled, not yet held',at:'Booked in Salesforce, waiting to happen',cls:'a'},{k:'returned',lab:'Sent back to the SDR',at:'Status: Return to SDR',cls:'a'},{k:'noanswer',lab:'Replied, not answered',at:'Human reply, no follow-up yet',cls:'a',est:true},{k:'lowscore',lab:'Scored below 7',at:'In nurture',cls:''},{k:'engaged',lab:'Engaged accounts',at:'Marketing-qualified, no meeting yet',cls:''}];
+const QDEF=[{k:'noscore',lab:'Fit call held, not scored',at:'AE has not filled the survey · all 2026 leads',cls:'r'},{k:'nothold',lab:'Meeting scheduled, not yet held',at:'Booked in Salesforce, waiting to happen · all 2026 leads',cls:'a'},{k:'returned',lab:'Sent back to the SDR',at:'Status: Return to SDR',cls:'a'},{k:'noanswer',lab:'Replied, not answered',at:'Human reply, no follow-up yet',cls:'a',est:true},{k:'lowscore',lab:'Scored below 7',at:'In nurture · all 2026 leads',cls:''},{k:'engaged',lab:'Engaged accounts',at:'Marketing-qualified, no meeting yet',cls:''}];
 function drawQ(){
   const a=A(),q=a.queues,cnt=d=>d.est?a.est.replied_noanswer:q[d.k].n;
   $('qTabs').innerHTML=QDEF.map(d=>'<button data-k="'+d.k+'" class="'+d.cls+'" aria-selected="'+(QT===d.k)+'"><b>'+nf(cnt(d))+(d.est?'<sup class="prov est">est</sup>':'')+'</b><span class="qtl">'+d.lab+'<em>'+d.at+'</em></span></button>').join('');
@@ -908,7 +910,7 @@ function drawCh(){
   const wa=a.activity,svg=$('act'),Wd=svg.clientWidth||760,H=190,padL=14,padR=14,padT=18,padB=26,n=wa.length||1,gw=(Wd-padL-padR)/n,bw=Math.min(34,gw*0.66),mx=Math.max(1,...wa.map(x=>x.email+x.call)),base=H-padB,sc=(H-padT-padB)/mx;
   svg.innerHTML=wa.map((x,i)=>{const cx=padL+gw*i+gw/2,x0=cx-bw/2,eh=x.email*sc,chh=x.call*sc,lab=new Date(x.w).toLocaleString('en-US',{day:'2-digit',month:'short'});const tip=esc('<div class=th>Week of '+lab+'</div>'+tipRows([['Emails logged',x.email],['Calls logged',x.call]]));
     return '<rect x="'+x0+'" y="'+(base-eh-chh)+'" width="'+bw+'" height="'+eh+'" rx="2" fill="var(--blue)" data-tip="'+tip+'"/><rect x="'+x0+'" y="'+(base-chh)+'" width="'+bw+'" height="'+chh+'" rx="2" fill="var(--green)" data-tip="'+tip+'"/>'+((x.email+x.call)&&n<=30?'<text x="'+cx+'" y="'+(base-eh-chh-5)+'" text-anchor="middle" font-size="10" font-weight="600" fill="var(--ink-2)">'+(x.email+x.call)+'</text>':'')+((n<=14||i%Math.ceil(n/13)===0)?'<text x="'+cx+'" y="'+(H-8)+'" text-anchor="middle" font-size="10" fill="var(--ink-3)">'+lab+'</text>':'');}).join('');
-  const k=a.act_kpi;$('actKpi').innerHTML=[['Emails logged',nf(k.emails),'all leads, unfiltered · '+k.weeks+' whole weeks'],['Calls logged',nf(k.calls),'all leads, unfiltered · '+k.weeks+' whole weeks'],['Leads emailed',nf(k.leads_emailed),pc(k.leads_emailed,s.leads.n)+' of leads in period'],['Leads called',nf(k.leads_called),pc(k.leads_called,s.leads.n)+' of leads in period'],['Per week',nf(Math.round((k.emails+k.calls)/Math.max(1,k.weeks))),'activities · '+k.weeks+' weeks']].map(x=>'<div class="kp"><div class="a">'+x[0]+'</div><div class="b">'+x[1]+'</div><div class="c">'+x[2]+'</div></div>').join('');
+  const k=a.act_kpi;$('actKpi').innerHTML=[['Emails logged',nf(k.emails),'all leads, unfiltered · '+k.weeks+' whole weeks'],['Calls logged',nf(k.calls),'all leads, unfiltered · '+k.weeks+' whole weeks'],['Leads emailed',nf(k.leads_emailed),pc(k.leads_emailed,s.leads.n)+' of leads in period','emailed'],['Leads called',nf(k.leads_called),pc(k.leads_called,s.leads.n)+' of leads in period','called'],['Per week',nf(Math.round((k.emails+k.calls)/Math.max(1,k.weeks))),'activities · '+k.weeks+' weeks']].map(x=>'<div class="kp'+(x[3]?' click':'')+'"'+(x[3]?' role="button" tabindex="0" data-fo="'+x[3]+'"':'')+'><div class="a">'+x[0]+'</div><div class="b">'+x[1]+'</div><div class="c">'+x[2]+'</div></div>').join('');
   $('chNote').innerHTML='Response and connection rates come from <b>Nooks</b> and are estimated on the real Salesforce base until that connection is live.';
 }
 /* ---------- 9 score ---------- */
@@ -1021,9 +1023,14 @@ document.addEventListener('click',e=>{
     drawFunnel();openLeads(nm,mine,'every lead they own \u00b7 '+cnt(mine,x=>x[6])+' fit calls held \u00b7 '+cnt(mine,x=>x[7]>=7)+' SAL','#pplBlk .card');return;}
   const fo=e.target.closest&&e.target.closest('[data-fo]');
   if(fo){const a=A(),L=a.L,k=fo.dataset.fo;
-    const F2={sal:[x=>x[7]>=7,'SAL converted · scored 7 or above'],nurture:[x=>x[7]>=0&&x[7]<7,'scored below 7 · in nurture'],
-      held_unscored:[x=>x[6]&&x[7]<0,'fit call held, not yet scored'],booked_unheld:[x=>x[5]&&!x[6],'meeting booked, not yet held']}[k];
-    openLeads(fo.querySelector('.k').textContent.trim(),L.filter(F2[0]),F2[1],'#fnlBlk .card');return;}
+    const F2={sal:[x=>x[7]>=7,'SAL converted · scored 7 or above','SALs converted'],nurture:[x=>x[7]>=0&&x[7]<7,'scored below 7 · in nurture','Scored below 7'],
+      held_unscored:[x=>x[6]&&x[7]<0,'fit call held, not yet scored','Held, not yet scored'],booked_unheld:[x=>x[5]&&!x[6],'meeting booked, not yet held','Booked, not yet held'],
+      booked:[x=>x[5],'meeting booked in this period','Meetings booked'],emailed:[x=>x[13]>0,'an email was logged against the lead','Leads emailed'],
+      called:[x=>x[14]>0,'a call was logged against the lead','Leads called']}[k];
+    if(!F2)return;
+    const host=(k==='emailed'||k==='called')?'#chBlk .card':'#fnlBlk .card';
+    const ttl=((fo.querySelector('.k')||fo.querySelector('.a')||{}).textContent||F2[2]).trim();
+    openLeads(ttl||F2[2],L.filter(F2[0]),F2[1],host);return;}
   const sk=e.target.closest&&e.target.closest('[data-sdrk]');
   if(sk){const a=A(),L=a.L,sd=a.people.find(p=>p.role==='SDR'),nm=sd?sd.name:'',i=OWNERS.indexOf(nm);
     if(i<0)return;
