@@ -579,6 +579,7 @@ const inSet=(s,v)=>!s||s.has(v);
 function dimOK(x,skip){return (skip==='country'||inSet(F.country,x[1]))&&(skip==='sector'||inSet(F.sector,x[2]))&&(skip==='source'||inSet(F.source,x[20]))&&(skip==='owner'||inSet(F.owner,x[10]))&&(skip==='path'||!F.path||(F.path==='mq'?x[4]>0:x[4]===0));}
 const perEnd=()=>PER[F.w].end||ASOF;
 function inPeriod(x,start){const d=F.by==='created'?x[0]:x[11];return d>=start&&d<=perEnd();}
+const internal=x=>/servion/i.test(x[17]||'')||(x[17]||'')==='asSasASS';  /* Servion's own and test records */
 const isMQ=x=>x[4]>0, contacted=x=>x[13]>0||x[14]>0, reached=x=>contacted(x)||x[15]>0;
 const inscope=x=>contacted(x)||x[15]>0||x[2]!==SECTORS.indexOf('Not classified')||x[18]>0||x[4]>0;
 const split=(pop,f)=>{let mq=0,dr=0;for(const x of pop)if(f(x)){if(x[4]>0)mq++;else dr++;}return {mq,direct:dr,n:mq+dr};};
@@ -586,7 +587,7 @@ const cnt=(pop,f)=>{let n=0;for(const x of pop)if(f(x))n++;return n;};
 
 function compute(){
   const P=PER[F.w],start=P.start;
-  const L=D.leads.filter(x=>inPeriod(x,start)&&dimOK(x));
+  const L=D.leads.filter(x=>inPeriod(x,start)&&dimOK(x)&&!internal(x));
   const NC='Not classified';
   const s={leads:split(L,()=>true),mqa:cnt(L,isMQ),scope:split(L,inscope),reached:split(L,reached),
     reached_camp_only:cnt(L,x=>x[15]>0&&!contacted(x)),reached_sdr_only:cnt(L,x=>contacted(x)&&!x[15]),reached_both:cnt(L,x=>contacted(x)&&x[15]>0),
@@ -638,7 +639,7 @@ function compute(){
   for(const o of NL){const p=gp(o[6]);p.nl++;p.acv=(p.acv||0)+acvOf(o);const st=LADDER[o[2]];if(st==='Closed Won')p.won++;else if(st==='Closed Lost')p.lost++;}
   const people=Object.values(PP).filter(p=>(p.held||p.sal||p.nl||p.booked)&&p.name!=='Unassigned').sort((a,b)=>(a.role!=='SDR')-(b.role!=='SDR')||b.sal-a.sal||b.held-a.held||b.nl-a.nl);
   // queues: today view, 2026 leads, dims but no period
-  const Q=D.leads.filter(x=>x[0]>=20260101&&dimOK(x));
+  const Q=D.leads.filter(x=>x[0]>=20260101&&dimOK(x)&&!internal(x));
   const rowOf=x=>({co:x[17]||'(unnamed lead)',sec:SECTORS[x[2]],own:OWNERS[x[10]],days:days(x[11]),st:D.statuses[x[16]],mk:x[12],src:D.rawsrc[x[20]],score:x[7]>=0?x[7]:null});
   const qrows=f=>{const R=Q.filter(f).sort((a,b)=>(days(b[11])||0)-(days(a[11])||0));return {n:R.length,rows:R.slice(0,40).map(rowOf)};};
   const queues={noscore:qrows(x=>x[6]&&x[7]<0&&x[0]>=20260401),nothold:qrows(x=>x[5]&&!x[6]),returned:qrows(x=>x[16]===RET),lowscore:qrows(x=>x[7]>=0&&x[7]<7),engaged:qrows(x=>x[4]===1&&!x[5])};
@@ -742,14 +743,14 @@ function drawPerf(){
     const tip=esc('<div class=th>'+x.lab+'</div>'+tipRows([['Fit calls held',x.held],['SALs (7+)',x.sal],['Scored',x.scored],['Meetings booked',x.booked],['Leads',nf(x.leads)]])+(x.partial?'<div class=tb>Cohort still maturing.</div>':x.pre_scoring?'<div class=tb>Before SAL scoring went live in April 2026.</div>':''));
     o+='<rect class="pbar" data-m="'+(x.ym||'')+'" data-lab="'+esc(x.lab)+'" x="'+x0+'" y="'+(base-hH)+'" width="'+bw+'" height="'+hH+'" rx="3" fill="'+(x.partial?'url(#hh)':'var(--blue-p)')+'" '+(x.partial?'stroke="var(--line)"':'')+' data-tip="'+tip+'"/>';
     if(x.sal)o+='<rect x="'+x0+'" y="'+(base-sH)+'" width="'+bw+'" height="'+sH+'" rx="3" fill="var(--green)" data-tip="'+tip+'"/>';
-    const lab=x.pre_scoring?'—':(x.held&&!x.partial?pc(x.sal,x.held):(x.partial?'new':''));
+    const lab=x.pre_scoring?'—':(x.held&&!x.partial?pc(x.sal,x.held):(x.partial?'so far':''));
     const tiny=x.held&&hH<=14;  /* bar too short to hold the count inside: show it above instead */
     o+='<text x="'+cx+'" y="'+(base-hH-6)+'" text-anchor="middle" font-size="11" font-weight="650" fill="'+(x.pre_scoring?'var(--ink-4)':'var(--ink-2)')+'">'+(tiny?x.held+(lab?' · '+lab:''):lab)+'</text>';
-    if(n<=14||i%2===0)o+='<text x="'+cx+'" y="'+(H-7)+'" text-anchor="middle" font-size="10.5" fill="var(--ink-3)">'+x.lab+'</text>';
+    if(n<=14||i%2===0)o+='<text x="'+cx+'" y="'+(H-7)+'" text-anchor="middle" font-size="10.5" fill="var(--ink-3)">'+(x.partial&&G==='month'?x.lab+' 1\u2013'+String(ASOF%100):x.lab)+'</text>';
     if(x.held&&hH>14)o+='<text x="'+cx+'" y="'+(base-4)+'" text-anchor="middle" font-size="10" font-weight="600" fill="'+(x.sal?'#fff':'var(--ink-2)')+'">'+x.held+'</text>';});
   svg.innerHTML=o;
-  $('perfLg').innerHTML='<span><i style="background:var(--blue-p)"></i>Bar = fit calls held</span><span><i style="background:var(--green)"></i>Converted to SAL (7+)</span><span><i class="hatch"></i>Still maturing</span><span style="color:var(--ink-4)">% = SAL rate of held</span>'+(G==='week'?'<span style="color:var(--ink-4)">Last 13 weeks</span>':'');
-  $('perfNote').innerHTML=(F.by==='created'?'Leads are followed from the month they were created, so recent months look lighter until the cohort matures.':'Leads are grouped by the month they were last touched in Salesforce.');
+  $('perfLg').innerHTML='<span><i style="background:var(--blue-p)"></i>Bar = fit calls held</span><span><i style="background:var(--green)"></i>Converted to SAL (7+)</span><span><i class="hatch"></i>Hatched = month not finished</span><span style="color:var(--ink-4)">% = SAL rate of held</span>'+(G==='week'?'<span style="color:var(--ink-4)">Last 13 weeks</span>':'');
+  $('perfNote').innerHTML=(F.by==='created'?'Leads are followed from the month they were created, so recent months look lighter until the cohort matures. The hatched month is not finished \u2014 the extract stops at '+dstr(ASOF)+'.':'Leads are grouped by the month they were last touched in Salesforce.');
 }
 /* ---------- 2 coverage ---------- */
 function drawCov(){
@@ -767,7 +768,7 @@ function drawCov(){
 function drawFunnel(){
   const a=A(),s=a.stages,e=a.est,c=s.after_sal,p=a.pipe;const R=(k,lab,who,o,ex)=>Object.assign({k,lab,who,n:o.n,mq:o.mq,dr:o.direct},ex||{});
   const rows=[{k:'responded',lab:'Responded',who:'Replied or connected · Nooks',n:e.responded,mq:e.responded_mq,dr:e.responded_direct,est:true,resp:true},R('booked','Meeting booked','SDR',s.booked),R('held','Fit call held','AE',s.held),R('scored','Fit call scored','AE · survey',s.scored,{drill:true}),R('sal','SAL converted','Score 7 or above',s.sal,{saldrill:true}),
-    R('opp','Converted to an opportunity','From these SALs · '+(c.norecord.n?c.norecord.n+' converted with no opportunity record':'all have an opportunity record'),c.opp,{prev:4,ops:c.opp.ops,norec:c.norecord.n}),
+    R('opp','Converted leads','From these SALs · '+(c.norecord.n?c.norecord.n+' converted with no opportunity record':'all have an opportunity record'),c.opp,{prev:4,ops:c.opp.ops,norec:c.norecord.n}),
     {sep:'Opportunity Pipeline · every deal counted once, at the stage it is in today'},
     {k:'oppall',lab:'Opportunity Pipeline',who:'The six Salesforce stages added together',n:p.allN,mq:p.n,dr:p.allN-p.n,ops:p.allOps,pipeRow:true,barDenom:p.allN||1,
       mqLab:'Marketing-sourced',drLab:'Other sources',
@@ -807,9 +808,10 @@ function drawFunnel(){
   $('fnl').innerHTML=o;
   $('fhdAcv').textContent=acvName()+' · total';
   $('fout').innerHTML='<div class="fo"><div class="k">SALs</div><div class="v">'+nf(s.sal.n)+'</div><div class="s">'+pc(s.sal.n,s.held.n)+' of fit calls held</div></div><div class="fo"><div class="k">Scored below 7 · nurture</div><div class="v">'+nf(s.nurture.n)+'</div><div class="s">'+pc(s.nurture.n,s.scored.n)+' of scored</div></div>'+
-    '<div class="fo'+(s.held_unscored.n?' warn':'')+'"><div class="k">Held, not yet scored</div><div class="v">'+nf(s.held_unscored.n)+'</div><div class="s">blocks a SAL decision</div></div><div class="fo"><div class="k">Booked, not yet held</div><div class="v">'+nf(Math.max(0,s.booked.n-s.held.n))+'</div><div class="s">upcoming or pending</div></div>'+
+    '<div class="fo'+(s.held_unscored.n?' warn':'')+'"><div class="k">Held, not yet scored</div><div class="v">'+nf(s.held_unscored.n)+'</div><div class="s">blocks a SAL decision</div></div><div class="fo"><div class="k">Booked, not yet held</div><div class="v">'+nf(cnt(a.L,x=>x[5]&&!x[6]))+'</div><div class="s">upcoming or pending</div></div>'+
     '<div class="fo"><div class="k">Marketing-qualified path</div><div class="v">'+pc(s.sal.mq,s.sal.n)+'</div><div class="s">of SALs · '+pc(s.booked.mq,s.booked.n)+' of bookings</div></div>'+
     '<div class="fo"><div class="k">'+acvName()+' · marketing-sourced</div><div class="v">'+money(p.mktAcv)+'</div><div class="s">'+(p.ops.length?(p.allAcv?pc(p.mktAcv,p.allAcv)+' of pipeline · ':'')+'avg '+money(Math.round(p.mktAcv/p.ops.length))+' · won '+money(acvSum(c['Closed Won'].ops)):'no opportunities yet')+'</div></div>';
+  ['sal','nurture','held_unscored','booked_unheld'].forEach((k,i)=>{const el=$('fout').children[i];if(el){el.classList.add('click');el.setAttribute('role','button');el.tabIndex=0;el.dataset.fo=k;}});
   $('saldrill').classList.toggle('on',SALDRILL);
   if(SALDRILL){const SL=a.salList,cap=10,show=SALDALL?SL:SL.slice(0,cap);$('saldrillN').textContent=nf(SL.length);
     $('saldrillBody').innerHTML=SL.length?show.map(r=>'<tr><td><a class="colink" href="account.html" target="_blank">'+esc(r.co)+'</a><div class="rn"><span>'+esc(r.src)+(r.mq?' · marketing-qualified':'')+'</span></div></td><td>'+esc(r.sec)+'</td><td>'+esc(r.own)+'</td><td class="r"><span class="sbox s5">'+r.score+'</span></td><td>'+dstr(r.created)+'</td><td>'+(r.opp?esc(r.opp):'<span style="color:var(--ink-4)">—</span>')+'</td><td>'+(r.stage?'<span class="tag '+(r.stage==='Closed Won'?'ok':/Lost|Duplicate/.test(r.stage)?'bad':'')+'">'+esc(r.stage)+'</span>':'')+'</td><td class="r">'+(r.oi>=0?money(acvOf(D.opps[r.oi])):'—')+'</td><td class="r">'+(r.days==null?'—':r.days+'d')+'</td></tr>').join(''):'<tr><td colspan="9" style="padding:16px;color:var(--ink-3)">No SALs under these filters.</td></tr>';
@@ -851,6 +853,7 @@ function drawPeople(){
   const a=A(),sdr=a.people.find(p=>p.role==='SDR'),aes=a.people.filter(p=>p.role==='AE');
   $('sdr').innerHTML=sdr?'<div class="sdrc who2"><div class="k">SDR</div><div class="nm">'+esc(sdr.name)+'</div><div class="rl">Books the fit call · the only SDR</div></div><div class="sdrc"><div class="k">Leads owned</div><div class="v">'+nf(sdr.leads)+'</div><div class="s">default owner of imported lists</div></div><div class="sdrc"><div class="k">Meetings booked</div><div class="v">'+nf(sdr.booked)+'</div><div class="s">'+pc(sdr.booked,a.stages.booked.n)+' of all bookings</div></div><div class="sdrc"><div class="k">Fit calls held</div><div class="v">'+nf(sdr.held)+'</div><div class="s">on her leads</div></div><div class="sdrc"><div class="k">Became SAL</div><div class="v">'+nf(sdr.sal)+'</div><div class="s">'+pc(sdr.sal,sdr.held)+' of held</div></div>':'<div class="sdrc who2"><div class="k">SDR</div><div class="nm">No SDR activity under these filters</div></div>';
   const mx=Math.max(1,...aes.map(p=>p.held));
+  ['leads','booked','held','sal'].forEach((k,i)=>{const el=$('sdr').children[i+1];if(el){el.classList.add('click');el.setAttribute('role','button');el.tabIndex=0;el.dataset.sdrk=k;}});
   $('aes').innerHTML='<div class="pr hd"><div>AE</div><div class="pbh">Fit calls held · SALs</div><div class="rr">SAL / held</div><div class="rr">'+(F.opptype==='nl'?'New logo':'Opps')+' · won · lost · '+acvName()+'</div></div>'+
     aes.map(p=>'<div class="pr pgo" role="button" tabindex="0" data-p="'+esc(p.name)+'"><div class="pn">'+esc(p.name)+'</div><div class="pb"><i class="h" style="width:'+(100*p.held/mx)+'%" data-tip="'+esc('<div class=th>'+p.name+'</div>'+tipRows([['Meetings booked',p.booked],['Fit calls held',p.held],['Scored',p.scored],['SALs',p.sal],['Opportunities created',p.nl],['Won',p.won],['Lost',p.lost]]))+'"></i><i class="s" style="width:'+(100*p.sal/mx)+'%"></i></div><div class="pv"><b>'+p.sal+'</b> / '+p.held+'</div><div class="opx"><b>'+p.nl+'</b><span class="'+(p.won?'w':'z')+'">'+p.won+' won</span><span class="'+(p.lost?'l':'z')+'">'+p.lost+' lost</span><span class="acvp">'+money(p.acv||0)+'</span></div></div>').join('')||'<div class="qempty">No AE activity under these filters.</div>';
   $('pNote').innerHTML='Attributed by <b>record owner</b>; Servion confirmed Patricia Shostak is the only SDR.';
@@ -911,7 +914,7 @@ function drawCh(){
 /* ---------- 9 score ---------- */
 function drawScore(){
   const a=A(),rows=ST==='eng'?a.engagement:a.signal;$('sCol').innerHTML=ST==='eng'?'Engagement score · Salesforce':'Account Fit Score '+SIG();
-  $('sBody').innerHTML=rows.map(r=>'<tr><td class="rn">'+r.bucket+'</td><td class="r">'+nf(r.leads)+'</td><td class="r">'+nf(r.held)+'</td><td class="r"><b>'+nf(r.sal)+'</b></td><td class="r"><span class="cell"><span class="t"><i style="width:'+(r.held?100*r.sal/r.held:0)+'%"></i></span><b>'+(r.held?pc(r.sal,r.held):'—')+'</b></span></td></tr>').join('');
+  $('sBody').innerHTML=rows.map(r=>'<tr class="click" role="button" tabindex="0" data-band="'+esc(r.bucket)+'"><td class="rn">'+r.bucket+'</td><td class="r">'+nf(r.leads)+'</td><td class="r">'+nf(r.held)+'</td><td class="r"><b>'+nf(r.sal)+'</b></td><td class="r"><span class="cell"><span class="t"><i style="width:'+(r.held?100*r.sal/r.held:0)+'%"></i></span><b>'+(r.held?pc(r.sal,r.held):'—')+'</b></span></td></tr>').join('');
   const band=a.engagement.find(x=>x.bucket==='10-49')||{held:0},H=a.stages.held.n;
   $('sNote').innerHTML=ST==='eng'?'The engagement score already in Salesforce (<b>SF Mkto Score</b>) — <b>'+nf(band.held)+' of '+nf(H)+'</b> fit calls held sit in the 10–49 band; the Phave score is not yet synced.':'<b>Signal-generated.</b> The Account Fit Score assigned before any contact, banded as a percentage. Illustrative until Servion returns the agreed scoring approach.';
 }
@@ -937,7 +940,7 @@ function openLeads(lab,rows,note,host){
     if(r.top<60||r.top>innerHeight-140)scrollTo({top:r.top+scrollY-90,behavior:'smooth'});},30);
 }
 function openPipeDrill(lb){const pp=A().pipe;
-  const bank=[{lab:'Opportunity Pipeline',ops:pp.allOps,note:'every opportunity counted in the total, at its current stage'}]
+  const bank=[{lab:'Converted leads',ops:[],note:''},{lab:'Opportunity Pipeline',ops:pp.allOps,note:'every opportunity counted in the total, at its current stage'}]
     .concat(pp.stages.map(st=>({lab:st.lab,ops:st.ops,note:'every opportunity sitting at '+st.st+' today'})))
     .concat([{lab:'Hold',ops:pp.hold,note:'parked at Hold today'},{lab:'Closed Won',ops:pp.won,note:'created in the period and already won'},{lab:'Closed Lost',ops:pp.lost,note:'created in the period and lost'}]);
   const row=bank.find(x=>x.lab===lb)||{ops:[],note:''};
@@ -1014,7 +1017,24 @@ document.addEventListener('click',e=>{
   if(pg){const nm=pg.dataset.p,i=OWNERS.indexOf(nm),L=A().L;if(i<0)return;
     const own=[];D.opps.forEach((o,k)=>{if(o[6]===i&&o[0]>=A().start&&o[0]<=perEnd())own.push(k);});
     if(own.length){ODRILL={key:'ae:'+nm,lab:nm+' · every opportunity they own, created in the period',rows:own.map(k=>D.opps[k])};OALL=false;}else{ODRILL=null;}
-    drawFunnel();openLeads(nm,L.filter(x=>x[10]===i),'','#pplBlk .card');return;}
+    const mine=L.filter(x=>x[10]===i);
+    drawFunnel();openLeads(nm,mine,'every lead they own \u00b7 '+cnt(mine,x=>x[6])+' fit calls held \u00b7 '+cnt(mine,x=>x[7]>=7)+' SAL','#pplBlk .card');return;}
+  const fo=e.target.closest&&e.target.closest('[data-fo]');
+  if(fo){const a=A(),L=a.L,k=fo.dataset.fo;
+    const F2={sal:[x=>x[7]>=7,'SAL converted · scored 7 or above'],nurture:[x=>x[7]>=0&&x[7]<7,'scored below 7 · in nurture'],
+      held_unscored:[x=>x[6]&&x[7]<0,'fit call held, not yet scored'],booked_unheld:[x=>x[5]&&!x[6],'meeting booked, not yet held']}[k];
+    openLeads(fo.querySelector('.k').textContent.trim(),L.filter(F2[0]),F2[1],'#fnlBlk .card');return;}
+  const sk=e.target.closest&&e.target.closest('[data-sdrk]');
+  if(sk){const a=A(),L=a.L,sd=a.people.find(p=>p.role==='SDR'),nm=sd?sd.name:'',i=OWNERS.indexOf(nm);
+    if(i<0)return;
+    const F3={leads:[x=>x[10]===i,'every lead they own'],booked:[x=>x[10]===i&&x[5],'meetings booked'],
+      held:[x=>x[10]===i&&x[6],'fit calls held'],sal:[x=>x[10]===i&&x[7]>=7,'became SAL']}[sk.dataset.sdrk];
+    openLeads(nm+' · '+sk.querySelector('.k').textContent.trim(),L.filter(F3[0]),F3[1],'#pplBlk .card');return;}
+  const bd=e.target.closest&&e.target.closest('[data-band]');
+  if(bd){const a=A(),L=a.L,b=bd.dataset.band;
+    const eb=v=>v<=0?'0':v<10?'1-9':v<50?'10-49':v<150?'50-149':'150+';
+    const rows=ST==='eng'?L.filter(x=>eb(x[12])===b):L.filter(x=>['80+','65-79','50-64','Under 50'][x[19]]===b);
+    openLeads((ST==='eng'?'Engagement score ':'Account Fit Score ')+b,rows,'leads in this band','#pplBlk .card');return;}
   const ps=e.target.closest&&e.target.closest('.pside');
   if(ps){openPipeDrill(ps.dataset.plab);return;}
   const g=e.target.closest&&e.target.closest('.mqgo');if(g&&!e.target.closest('[data-tip].def')){const r=+g.dataset.rank,l=g.dataset.lab;if(DRILL&&DLAB===l){DRILL=false;}else{DRILL=true;DRANK=r;DLAB=l;DALL=false;}drawMQ();}const fr=e.target.closest&&e.target.closest('.frow.click');
@@ -1027,8 +1047,8 @@ document.addEventListener('click',e=>{
     if(act==='leads'){const L=A().L,k=fr.dataset.stg;const f=k==='booked'?(x=>x[5]):k==='norec'?(x=>x[7]>=7&&x[8]&&x[9]<0):(x=>x[6]);openLeads(lb,L.filter(f),k==='norec'?'converted to an account or contact, with no opportunity record in Salesforce':'','#fnlBlk .card');return;}
     if(act==='scored'){SDRILL=!SDRILL;SALDRILL=false;ODRILL=null;}
     else if(act==='sal'){SALDRILL=!SALDRILL;SALDALL=false;SDRILL=false;ODRILL=null;}
-    else if(act==='opp'){const cc=A().stages.after_sal,key=lb==='Opportunity created'?'opp':lb==='Closed Lost'?'lost':lb;const ops=(cc[key]&&cc[key].ops)||[];
-      if(ODRILL&&ODRILL.key===lb){ODRILL=null;}else{ODRILL={key:lb,lab:lb+' · opportunities from leads that became SALs in this period',rows:ops.map(i=>D.opps[i])};OALL=false;SDRILL=false;SALDRILL=false;}}
+    else if(act==='opp'){const cc=A().stages.after_sal,key=(lb==='Converted leads'||lb==='Opportunity created')?'opp':lb==='Closed Lost'?'lost':lb;const ops=(cc[key]&&cc[key].ops)||[];
+      if(ODRILL&&ODRILL.key===lb){ODRILL=null;}else{ODRILL={key:lb,lab:lb+' · '+cc.opp.n+' converted leads point to '+ops.length+' opportunity record'+(ops.length===1?'':'s'),rows:ops.map(i=>D.opps[i])};OALL=false;SDRILL=false;SALDRILL=false;}}
     drawFunnel();return;}
   const tl=e.target.closest&&e.target.closest('.lst.tclick');
   if(tl){const k=tl.dataset.tile,o2=A().opps;const f=o2.ladder.find(x=>x.stage===k);const rws=f?f.rows:(o2.otherRows[k]||[]);
