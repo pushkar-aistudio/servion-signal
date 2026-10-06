@@ -296,11 +296,14 @@
   .fbar i.pipe{background:var(--violet)} .fbar i.pipeh{background:var(--blue)}
   .opx .nlw{color:var(--ink-4);font-size:10.5px;margin-left:-4px}
   .note.demo{margin-top:6px;font-size:11px;color:var(--ink-4);border-top:1px dashed var(--line);padding-top:6px}
-  .clhd,.clrow{display:grid;grid-template-columns:1fr 92px 92px 240px 58px 78px 18px;gap:14px;align-items:center}
+  .clhd,.clrow{display:grid;grid-template-columns:200px 84px 84px 1fr 58px 72px 18px;gap:14px;align-items:center}
   .clhd{padding:12px 18px 7px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680}
   .clhd .r{text-align:right} .clhd span small{display:block;font-weight:500;letter-spacing:.04em;color:var(--ink-4)}
   .clrow{padding:13px 18px;border-top:1px solid var(--line);cursor:pointer}
   .clrow:hover{background:var(--hover,rgba(0,0,0,.025))}
+  .clrow.on{background:var(--hover,rgba(0,0,0,.022))}
+  .cdet{padding:4px 18px 14px;border-top:1px dashed var(--line);background:var(--hover,rgba(0,0,0,.015))}
+  .cdt{color:var(--ink-4);font-size:11.5px;padding:9px 0 4px}
   .cln{display:flex;align-items:center;gap:9px} .cln b{font-size:13.5px}
   .cspk{opacity:.75;flex:none}
   .cnum{font-variant-numeric:tabular-nums;font-size:13px;font-weight:600}
@@ -312,13 +315,13 @@
   .clrow .chev{color:var(--ink-4)}
   .cdhd{display:flex;align-items:baseline;gap:14px;padding:12px 18px 4px;border-bottom:1px solid var(--line);flex-wrap:wrap}
   .cdt b{font-size:14px} .cdt span{display:block;color:var(--ink-4);font-size:11.5px}
-  .cfn{padding:12px 18px 4px}
+  .cfn{padding:4px 0 2px}
   .cfr{display:grid;grid-template-columns:132px 1fr 64px 56px;gap:12px;align-items:center;padding:5px 0}
   .cfk{font-size:11.5px;color:var(--ink-2)}
   .cftw{height:16px;background:var(--line);border-radius:4px;overflow:hidden}
   .cfb{display:block;height:100%;background:var(--violet);border-radius:4px} .cfb.z{background:transparent}
   .cfp{color:var(--ink-4);font-size:11.5px;font-variant-numeric:tabular-nums}
-  .cdsec{padding:12px 18px 4px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680;display:flex;gap:10px;align-items:center}
+  .cdsec{padding:12px 0 4px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:680;display:flex;gap:10px;align-items:center}
   .cdsec span{display:flex;align-items:center;gap:7px;text-transform:none;letter-spacing:0;font-weight:500;color:var(--ink-4)}
   .cpendrow{color:var(--ink-4);padding:14px 10px!important}
   @media (max-width:900px){.clhd{display:none}.clrow{grid-template-columns:1fr 70px;row-gap:8px}.cbarw{grid-column:1/-1}.cbpct{text-align:left}.cfr{grid-template-columns:110px 1fr 48px 44px}}
@@ -908,37 +911,33 @@ function drawQ(){
 }
 
 /* ---------- campaign performance ---------- */
-let CAMP=null;
+let CAMP=new Set();
 function drawCamp(){
   const rows=(D.campaigns&&D.campaigns[F.w])||[];
-  const sel=CAMP!=null?rows.find(c=>c.name===CAMP):null;
-  $('campPill').textContent=(sel?sel.name:rows.length+' campaigns')+' · '+PER[F.w].rng;
-  $('campBody').innerHTML=sel?campDetail(sel):campList(rows);
-  $('campNote').innerHTML=sel
-    ? 'Every step counts <b>leads</b>, so the bars narrow for one reason only. Emails are touches, not leads, so they sit in their own table \u2014 one lead receives several. Email performance arrives with the <b>Phave</b> connection.'
-    : 'Emails sent and leads reached are the effort. The bar is the share of those leads that became marketing-qualified, which is what separates a campaign worth repeating from one that is only large. Click a campaign for its funnel and its emails.';
-}
-function spark(v){if(!v||v.length<5)return '';const mx=Math.max(...v,1),w=46,h=14,st=w/Math.max(1,v.length-1);
-  const pts=v.map((x,i)=>(i*st).toFixed(1)+','+(h-(x/mx)*h).toFixed(1)).join(' ');
-  return '<svg class="cspk" viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'"><polyline points="'+pts+'" fill="none" stroke="var(--violet)" stroke-width="1.4"/></svg>';}
-function campList(rows){
-  return '<div class="clhd"><span></span><span class="r">emails<small>sent</small></span><span class="r">leads<small>reached</small></span><span>became MQL</span><span class="r"></span><span class="r">SAL<small>rate</small></span></div>'+
-  rows.map(c=>{const rt=c.leads?c.mql/c.leads:0,w=rt>0?Math.max(rt*100,0.8):0;
-    return '<div class="clrow click" role="button" tabindex="0" data-camp="'+esc(c.name)+'">'+
-      '<div class="cln"><b>'+esc(c.name)+'</b>'+spark(c.spark)+'</div>'+
-      '<div class="r cnum">'+nf(c.sent)+'</div>'+
-      '<div class="r cnum">'+nf(c.leads)+'</div>'+
-      '<div class="cbarw"><span class="cbtrack"><span class="cbar" style="width:'+w.toFixed(2)+'%"></span></span></div>'+
-      '<div class="r cbpct">'+(rt?fmtRate(rt):'0%')+'</div>'+
-      '<div class="r cnum">'+(c.mql?pc(c.sal,c.mql):'—')+'</div>'+
-      '<div class="chev">&#8250;</div></div>';}).join('');
+  $('campPill').textContent=rows.length+' campaigns · '+PER[F.w].rng;
+  $('campBody').innerHTML=
+    '<div class="clhd"><span>campaign</span><span class="r">emails<small>sent</small></span><span class="r">leads<small>reached</small></span><span>became MQL</span><span class="r"></span><span class="r">SAL<small>rate</small></span><span></span></div>'+
+    rows.map(c=>{const rt=c.leads?c.mql/c.leads:0,w=rt>0?Math.max(rt*100,0.8):0,on=CAMP.has(c.name);
+      return '<div class="clrow click'+(on?' on':'')+'" role="button" tabindex="0" aria-expanded="'+on+'" data-camp="'+esc(c.name)+'">'+
+        '<div class="cln"><b>'+esc(c.name)+'</b></div>'+
+        '<div class="r cnum">'+nf(c.sent)+'</div>'+
+        '<div class="r cnum">'+nf(c.leads)+'</div>'+
+        '<div class="cbarw"><span class="cbtrack"><span class="cbar" style="width:'+w.toFixed(2)+'%"></span></span></div>'+
+        '<div class="r cbpct">'+(rt?fmtRate(rt):'0%')+'</div>'+
+        '<div class="r cnum">'+(c.mql?pc(c.sal,c.mql):'—')+'</div>'+
+        '<div class="chev">'+(on?'&#9662;':'&#8250;')+'</div></div>'+
+        (on?campDetail(c):'');}).join('');
+  $('campNote').innerHTML='Emails sent and leads reached are the effort. The bar is the share of those leads that became marketing-qualified, which is what separates a campaign worth repeating from one that is only large. Open a campaign for its funnel and its emails \u2014 every step counts <b>leads</b>, while emails are touches, so they sit in their own table.'+
+    '<br><b>This section follows the period only.</b> Country, sector, lead source and owner do not apply to it yet, and its figures are not yet clickable through to the records, because campaign membership is read from the lead tag and task subjects rather than a Salesforce campaign. Both arrive with the live build.';
 }
 function fmtRate(r){const p=r*100;return (p>=10?p.toFixed(0):p>=1?p.toFixed(1):p.toFixed(2))+'%';}
+function spark(v){if(!v||v.length<5)return '';const mx=Math.max(...v,1),w=46,h=14,st=w/Math.max(1,v.length-1);
+  return '<svg class="cspk" viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'"><polyline points="'+v.map((x,i)=>(i*st).toFixed(1)+','+(h-(x/mx)*h).toFixed(1)).join(' ')+'" fill="none" stroke="var(--violet)" stroke-width="1.4"/></svg>';}
 function campDetail(c){
   const steps=[['Leads reached',c.leads,null],['Marketing-qualified',c.mql,c.leads],['Meeting booked',c.booked,c.mql],['Fit call held',c.held,c.booked],['SAL',c.sal,c.held]];
   const mx=Math.max(1,c.leads);
-  return '<div class="cdhd"><button class="lnk" id="campBack">&#8249; All campaigns</button>'+
-    '<div class="cdt"><b>'+esc(c.name)+'</b><span>'+(c.from?dstr(+c.from.replace(/-/g,'')):'')+' \u2013 '+(c.to?dstr(+c.to.replace(/-/g,'')):'')+' · '+nf(c.sent)+' emails sent · '+nf(c.leads)+' leads reached</span></div></div>'+
+  return '<div class="cdet">'+
+    '<div class="cdt">'+(c.from?dstr(+c.from.replace(/-/g,'')):'')+' \u2013 '+(c.to?dstr(+c.to.replace(/-/g,'')):'')+' · '+nf(c.sent)+' emails sent · '+nf(c.leads)+' leads reached</div>'+
     '<div class="cfn">'+steps.map(([k,v,d])=>
       '<div class="cfr"><div class="cfk">'+k+'</div>'+
       '<div class="cftw"><span class="cfb'+(v?'':' z')+'" style="width:'+Math.max(v/mx*100,v?1.2:0).toFixed(2)+'%"></span></div>'+
@@ -947,7 +946,7 @@ function campDetail(c){
     (spark(c.spark)?'<div class="cdsec">By week<span>'+spark(c.spark)+' leads reached</span></div>':'')+
     '<div class="cdsec">Emails in this campaign</div>'+
     '<div class="tw"><table class="d small"><thead><tr><th>Subject</th><th class="r">Sent</th><th class="r">Open</th><th class="r">Click</th><th class="r">MQL</th></tr></thead>'+
-    '<tbody><tr><td colspan="5" class="cpendrow">Per-email sends, opens and clicks come from <b>Phave</b>. Not in this extract.</td></tr></tbody></table></div>';
+    '<tbody><tr><td colspan="5" class="cpendrow">Per-email sends, opens and clicks come from <b>Phave</b>. Not in this extract.</td></tr></tbody></table></div></div>';
 }
 /* ---------- 7 marketing-qualified ---------- */
 function drawMQ(){
@@ -1001,7 +1000,7 @@ function drawData(){
   $('dataKpi').innerHTML=[['Lead records in period',nf(s.leads.n),F.country?'selected countries':'all countries'],['In scope · enriched',nf(s.scope.n),pc(s.scope.n,s.leads.n)+' of records'],['Opportunities created in period',nf(a.opps.created_all),'all types'],['Open in the breakdown',nf(a.pipe.allN),(F.opptype==='nl'?'New Logo':'all types')+' · '+money(a.pipe.allAcv)],['Of those, marketing-sourced',nf(a.pipe.n),(a.pipe.allAcv?pc(a.pipe.mktAcv,a.pipe.allAcv):'—')+' of ACV'],['Accounts in Salesforce',nf(a.mqf.universe),F.country?'selected countries':'all countries']].map(x=>'<div class="kp"><div class="a">'+x[0]+'</div><div class="b">'+x[1]+'</div><div class="c">'+x[2]+'</div></div>').join('');
   const fl=[['Period','Lead '+(F.by==='created'?'CreatedDate':'LastModifiedDate')+' from '+PER[F.w].rng+'.'+(F.by==='created'?' Leads are followed through every later stage, whenever it happened.':' Any creation date; closest to a Salesforce report.')],
     ['Country',F.country?[...F.country].map(i=>COUNTRIES[i]).join(', '):'All countries'],['Sector',F.sector?[...F.sector].map(i=>SECTORS[i]).join(', '):'All sectors'],['Lead source',F.source?[...F.source].map(i=>D.rawsrc[i]).join(', '):'All sources'],['Entry path',F.path?(F.path==='mq'?'Marketing-qualified only':'Direct outbound only'):'Both paths'],['Owner',F.owner?[...F.owner].map(i=>OWNERS[i]).join(', '):'All owners'],
-    ['Opportunities',(F.opptype==='nl'?'New Logo only, ':'All types, ')+'created in period, same country, sector and owner filters.'],['Pipeline breakdown','Opportunities created in the period and still open, split by the stage each one is in today: Incubation, Discovery, Evaluating, Negotiation, Pending Approval, PCN Requested. Every deal appears once, so the stages add back to the total. Hold, Closed Won and Closed Lost are listed under the breakdown, outside the total.'],['Marketing-sourced','New Logo deals where '+MKTR[MKTF].sent+'. Switchable in the Pipeline funnel header. Renewals and add-ons are never counted as marketing-sourced, and only 67 of 5,073 opportunities carry a lead-conversion link, so attribution is at account level.'],['ACV',acvName()+', in US dollars. Currency__c is USD on every opportunity in the extract.'],['Needs Action','All 2026 leads, same filters except period — a today view.'],['Activity chart','All Salesforce Task records by ActivityDate, any lead or contact, not affected by other filters. Bars are whole Mon–Sun weeks that start inside the period, so a part-week at either end is left out.'],['Estimates','Responded, response rate, connection rate, reply mix: not in Salesforce, marked est.'],['Signal','Enriched scope, lead score, incumbent platform: produced by Signal, marked Signal.']];
+    ['Opportunities',(F.opptype==='nl'?'New Logo only, ':'All types, ')+'created in period, same country, sector and owner filters.'],['Pipeline breakdown','Opportunities created in the period and still open, split by the stage each one is in today: Incubation, Discovery, Evaluating, Negotiation, Pending Approval, PCN Requested. Every deal appears once, so the stages add back to the total. Hold, Closed Won and Closed Lost are listed under the breakdown, outside the total.'],['Campaign performance','Membership is read from Lead.Asset_Details__c and campaign names in task subjects, since the three campaigns are not Salesforce Campaign records. The section follows the period filter only, and its figures do not drill through to records yet.'],['Marketing-sourced','New Logo deals where '+MKTR[MKTF].sent+'. Switchable in the Pipeline funnel header. Renewals and add-ons are never counted as marketing-sourced, and only 67 of 5,073 opportunities carry a lead-conversion link, so attribution is at account level.'],['ACV',acvName()+', in US dollars. Currency__c is USD on every opportunity in the extract.'],['Needs Action','All 2026 leads, same filters except period — a today view.'],['Activity chart','All Salesforce Task records by ActivityDate, any lead or contact, not affected by other filters. Bars are whole Mon–Sun weeks that start inside the period, so a part-week at either end is left out.'],['Estimates','Responded, response rate, connection rate, reply mix: not in Salesforce, marked est.'],['Signal','Enriched scope, lead score, incumbent platform: produced by Signal, marked Signal.']];
   $('dataFilters').innerHTML=fl.map(x=>'<div class="frow2"><b>'+x[0]+'</b><span>'+esc(x[1])+'</span></div>').join('');
   $('dataObjs').innerHTML=X.objects.map(o=>'<tr'+(o[1]<o[2]?' class="mute"':'')+'><td class="mono">'+o[0]+'</td><td class="r">'+nf(o[1])+'</td><td class="r">'+nf(o[2])+'</td><td>'+(o[1]<o[2]?'<span class="tag bad">truncated</span>':'')+'</td></tr>').join('');
   $('reconL').innerHTML=R.leads.map((x,i)=>'<tr'+(i===0?' style="font-weight:650"':'')+'><td>'+esc(x[0])+'</td><td class="r">'+nf(x[1].booked)+'</td><td class="r">'+nf(x[1].held)+'</td><td class="r">'+nf(x[1].sal)+'</td><td class="r">'+nf(x[1].mqa)+'</td></tr>').join('');
@@ -1074,7 +1073,7 @@ $('mktCsv').addEventListener('click',()=>{const hdr=[...$('mHead').querySelector
 $('sTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ST=b.dataset.k;[...$('sTabs').children].forEach(x=>x.setAttribute('aria-selected',x===b));drawScore();});
 $('qTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;QT=b.dataset.k;QALL=false;drawQ();});
 $('qMore').addEventListener('click',()=>{QALL=!QALL;drawQ();});
-document.addEventListener('keydown',e=>{const t=e.target;if((e.key==='Enter'||e.key===' ')&&t.classList&&(t.classList.contains('mqgo')||t.classList.contains('frow')||t.classList.contains('lst')||t.classList.contains('covgo')||t.classList.contains('mgo')||t.classList.contains('pgo'))){e.preventDefault();t.click();}});
+document.addEventListener('keydown',e=>{const t=e.target;if((e.key==='Enter'||e.key===' ')&&t.classList&&(t.classList.contains('mqgo')||t.classList.contains('frow')||t.classList.contains('lst')||t.classList.contains('covgo')||t.classList.contains('mgo')||t.classList.contains('pgo')||t.classList.contains('clrow'))){e.preventDefault();t.click();}});
 document.addEventListener('click',e=>{
   const pb=e.target.closest&&e.target.closest('rect.pbar');
   if(pb){const ym=+pb.dataset.m,lab=pb.dataset.lab,L=A().L;
@@ -1119,10 +1118,8 @@ document.addEventListener('click',e=>{
     const eb=v=>v<=0?'0':v<10?'1-9':v<50?'10-49':v<150?'50-149':'150+';
     const rows=ST==='eng'?L.filter(x=>eb(x[12])===b):L.filter(x=>['80+','65-79','50-64','Under 50'][x[19]]===b);
     openLeads((ST==='eng'?'Engagement score ':'Account Fit Score ')+b,rows,'leads in this band','#pplBlk .card');return;}
-  const cb=e.target.closest&&e.target.closest('#campBack');
-  if(cb){CAMP=null;drawCamp();return;}
   const cr=e.target.closest&&e.target.closest('[data-camp]');
-  if(cr){CAMP=cr.dataset.camp;drawCamp();return;}
+  if(cr){const k=cr.dataset.camp;CAMP.has(k)?CAMP.delete(k):CAMP.add(k);drawCamp();return;}
   const ps=e.target.closest&&e.target.closest('.pside');
   if(ps){openPipeDrill(ps.dataset.plab);return;}
   const g=e.target.closest&&e.target.closest('.mqgo');if(g&&!e.target.closest('[data-tip].def')){const r=+g.dataset.rank,l=g.dataset.lab;if(DRILL&&DLAB===l){DRILL=false;}else{DRILL=true;DRANK=r;DLAB=l;DALL=false;}drawMQ();}const fr=e.target.closest&&e.target.closest('.frow.click');
